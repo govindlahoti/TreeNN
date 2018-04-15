@@ -35,7 +35,7 @@ class Node:
 			return None
 		
 		else:
-			self.parent = xmlrpclib.ServerProxy(parent_address, allow_none=True)
+			self.parent = xmlrpclib.ServerProxy(self.parent_address, allow_none=True)
 			
 			while True:
 				print 'Waiting for parent', self.parent_address, ' ...'
@@ -81,22 +81,3 @@ class Node:
 		server.register_function(self.push_from_child, "push_from_child")
 		server.register_function(self.pull_from_child, "pull_from_child")
 		server.serve_forever()
-
-
-
-
-parent_address = 'http://localhost:8000'
-own_address = ("localhost", 8001)
-
-n1 = Node(1, ("localhost", 8000), None)
-n2 = Node(2, own_address, parent_address)
-
-print n1.a
-print n2.a
-print n2.push_to_parent(2,3)
-print n2.pull_from_parent()
-print n1.a
-print n1.a
-
-
-time.sleep(10)
