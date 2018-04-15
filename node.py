@@ -1,20 +1,11 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 import time
-
-# def is_even(n):
-# 	time.sleep(10)
-# 	return n % 2 == 0
-
-# server = SimpleXMLRPCServer(("localhost", 8000))
-# print("Listening on port 8000...")
-# server.register_function(is_even, "is_even")
-# server.serve_forever()
-# print 'ok'
-
 from queue import Queue
 import xmlrpclib
 import thread
-# import network
+import network
+
+
 
 class Node:
 
@@ -23,11 +14,21 @@ class Node:
 		self.own_address = own_address
 		self.parent_address = parent_address
 
-		if parent_address:
+		if self.parent_address:
 			self.parent = xmlrpclib.ServerProxy(parent_address, allow_none=True)
+			
+			while True:
+				print 'Waiting for parent', self.parent_address, ' ...'
+				try:
+					self.pull_from_parent()
+					print 'Connected with parent', self.parent_address
+					break
+				except:
+					time.sleep(2)
 		
-		self.acquired_gradients = Queue()
+		self.acquired_gradients_from_kids = Queue()
 
+		thread.start_new_thread(self.use_gradients_from_kids, ())
 		thread.start_new_thread(self.run_rpc_server, ())
 
 		
@@ -35,12 +36,13 @@ class Node:
 		self.b = 2
 
 	def push_from_child(self, weight_gradient, bias_gradient):
-		self.a = weight_gradient
-		self.b = bias_gradient
+		self.acquired_gradients_from_kids.put((weight_gradient, bias_gradient))
 	
+
 	def pull_from_child(self):
 		return self.a, self.b
 	
+
 	def push_to_parent(self, weight_gradient, bias_gradient):
 		if not self.parent_address:
 			return
@@ -51,6 +53,13 @@ class Node:
 		if not self.parent_address:
 			return
 		return self.parent.pull_from_child()
+
+
+	def use_gradients_from_kids(self):
+		while True:
+			weight_gradient, bias_gradient = self.acquired_gradients_from_kids.get()
+			self.a = weight_gradient
+
 
 
 	def run_rpc_server(self):
@@ -66,7 +75,7 @@ parent_address = 'http://localhost:8000'
 own_address = ("localhost", 8001)
 
 n1 = Node(1, ("localhost", 8000), None)
-time.sleep(2)
+# time.sleep(2)
 n2 = Node(2, own_address, parent_address)
 
 print n1.a
@@ -74,7 +83,8 @@ print n2.a
 print n2.push_to_parent(2,3)
 print n2.pull_from_parent()
 print n1.a
-print n2.a
+time.sleep(1)
+print n1.a
 
 
 time.sleep(10)

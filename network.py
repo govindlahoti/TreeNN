@@ -1,20 +1,6 @@
-"""
-network.py
-~~~~~~~~~~
-
-A module to implement the stochastic gradient descent learning
-algorithm for a feedforward neural network.  Gradients are calculated
-using backpropagation.  Note that I have focused on making the code
-simple, easily readable, and easily modifiable.  It is not optimized,
-and omits many desirable features.
-"""
-
-#### Libraries
-# Standard library
 import random
-
-# Third-party libraries
 import numpy as np
+import threading
 
 class Network(object):
 
@@ -34,6 +20,8 @@ class Network(object):
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
+
+        self.update_lock = threading.Lock()
 
     def feedforward(self, a):
         """Return the output of the network if ``a`` is input."""
