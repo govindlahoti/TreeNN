@@ -1,0 +1,9 @@
+Nodes:
+  - id: 1
+    ip: localhost
+    port: 8001
+    parent_id: 2
+
+  - id: 2
+    ip: localhost
+    port: 8000

@@ -23,6 +23,16 @@ class Network(object):
 
         self.update_lock = threading.Lock()
 
+
+    def get_model(self):
+        pass
+    
+    def apply_kid_gradient(self):
+        pass
+
+    def use_parent_network(self):
+        pass
+
     def feedforward(self, a):
         """Return the output of the network if ``a`` is input."""
         for b, w in zip(self.biases, self.weights):
