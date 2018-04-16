@@ -1,6 +1,7 @@
 import random
 import numpy as np
 import threading
+from copy import deepcopy
 
 class Network(object):
 
@@ -21,17 +22,51 @@ class Network(object):
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
 
-        self.update_lock = threading.Lock()
+        self._reset_acquired_weights_and_biases()
+        self.parent_update_lock = threading.Lock()
+
+
+    def _reset_acquired_weights_and_biases(self):
+        self.acquired_biases = [np.zeros(y, 1) for y in sizes[1:]]
+        self.acquired_weights = [np.zeros(y, x)
+                        for x, y in zip(sizes[:-1], sizes[1:])]
 
 
     def get_model(self):
-        pass
+        self.parent_update_lock.acquire()
+        weights = deepcopy(self.weights)
+        biases = deepcopy(self.biases)
+        self.parent_update_lock.release()
+        return weights, biases
     
-    def apply_kid_gradient(self):
-        pass
 
-    def use_parent_network(self):
-        pass
+    def apply_kid_gradient(self, weight_gradient, bias_gradient):
+        self.parent_update_lock.acquire()
+
+        self.weights = [w + wg for w, wg in zip(self.weights, self.weight_gradient)]
+        self.biases = [b + bg for b, bg in zip(self.biases, self.bias_gradient)]
+        self.acquired_weights = [w + wg for w, wg in zip(self.acquired_weights, self.weight_gradient)]
+        self.acquired_biases = [b + bg for b, bg in zip(self.acquired_biases, self.bias_gradient)]
+
+        self.parent_update_lock.release()
+
+
+    def use_parent_model(self, weight, bias):
+        self.parent_update_lock.acquire()
+        self.weights = weight
+        self.biases = bias
+        self._reset_acquired_weights_and_biases()
+        self.parent_update_lock.release()
+
+
+    def get_and_reset_acquired_gradients(self):
+        self.parent_update_lock.acquire()
+        acquired_weights = deepcopy(self.acquired_weights)
+        acquired_biases = deepcopy(self.acquired_biases)
+        self._reset_acquired_weights_and_biases()
+        self.parent_update_lock.release()
+        return acquired_weights, acquired_biases
+
 
     def feedforward(self, a):
         """Return the output of the network if ``a`` is input."""
@@ -63,6 +98,7 @@ class Network(object):
                     j, self.evaluate(test_data), n_test)
             else:
                 print "Epoch {0} complete".format(j)
+
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying
@@ -122,14 +158,12 @@ class Network(object):
         neuron in the final layer has the highest activation."""
         test_results = [(self.feedforward(x), y)
                         for (x, y) in test_data]
-        return sum(np.linalg.norm(x -y) for (x, y) in test_results)
+        return sum(np.linalg.norm(x-y) for (x, y) in test_results)
 
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
         \partial a for the output activations."""
         return (output_activations-y)
-
-
 
     def generate_data(self):
         w = np.random.normal(0, 1, (48, 729))
@@ -141,7 +175,6 @@ class Network(object):
 
         return zip(x_vals, y_vals)
 
-#### Miscellaneous functions
 def sigmoid(z):
     """The sigmoid function."""
     return 1.0/(1.0+np.exp(-z))
@@ -154,9 +187,11 @@ def sigmoid_prime(z):
 def main():
     n = Network([729, 729, 729, 48])
     z = n.generate_data()
-    print n.evaluate(z)
 
-    n.SGD(z, 10000, 10, 0.1, test_data=z)
+    z_train = z[:int(len(z) * 0.8)]
+    z_test = z[int(len(z) * 0.8):]
+
+    n.SGD(z, 10000, 20, 0.05, test_data=z)
 
 if __name__ == '__main__':
     main()

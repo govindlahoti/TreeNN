@@ -3,29 +3,26 @@ import time
 from queue import Queue
 import xmlrpclib
 import thread
-from network import Network
+from network import *
 
 
 
 class Node:
 
-	def __init__(self, id, own_address, parent_address):
+	def __init__(self, id, own_address, parent_address, is_worker):
 		self.id = id
 		self.own_address = own_address
 		self.parent_address = parent_address
+		self.is_worker = is_worker
 		self.connected_with_parent = False
-
 		
 		self.acquired_gradients_from_kids = Queue()
 
 		thread.start_new_thread(self.comsume_gradients_from_kids_thread, ())
 		thread.start_new_thread(self.run_rpc_server_thread, ())
+		thread.start_new_thread(self.run_sharing_logic_thread, ())
 
-		
-		self.network = Network([1,2])
-		self.a = 1
-		self.b = 2
-
+		self.run_sharing_logic()
 
 	def get_parent(self):
 		if self.connected_with_parent:
@@ -73,7 +70,7 @@ class Node:
 	def comsume_gradients_from_kids_thread(self):
 		while True:
 			weight_gradient, bias_gradient = self.acquired_gradients_from_kids.get()
-			self.network.apply_kid_gradient()
+			self.network.apply_kid_gradient(weight_gradient, bias_gradient)
 
 
 	def run_rpc_server_thread(self):
@@ -81,3 +78,28 @@ class Node:
 		server.register_function(self.push_from_child, "push_from_child")
 		server.register_function(self.pull_from_child, "pull_from_child")
 		server.serve_forever()
+
+	def run_sharing_logic_thread(self):
+		if self.is_worker:
+			self.network = Network([1,2])
+
+			for e in range(epochs):
+				if e % worker_fetch_interval == 0:
+					if self.parent_address:
+						self.network.use_parent_model(*self.pull_from_parent())
+
+				self.network.SGD(self.get_data())
+
+				if e % worker_push_interval == 0:
+					if self.parent_address:
+						self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
+		else:
+			while True:
+				if e % worker_fetch_interval == 0:
+					if self.parent_address:
+						self.network.use_parent_model(*self.pull_from_parent())
+
+				if e % worker_push_interval == 0:
+					if self.parent_address:
+						self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
+
