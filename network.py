@@ -120,14 +120,26 @@ class Network(object):
         network outputs the correct result. Note that the neural
         network's output is assumed to be the index of whichever
         neuron in the final layer has the highest activation."""
-        test_results = [(np.argmax(self.feedforward(x)), y)
+        test_results = [(self.feedforward(x), y)
                         for (x, y) in test_data]
-        return sum(int(x == y) for (x, y) in test_results)
+        return sum(np.linalg.norm(x -y) for (x, y) in test_results)
 
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
         \partial a for the output activations."""
         return (output_activations-y)
+
+
+
+    def generate_data(self):
+        w = np.random.normal(0, 1, (48, 729))
+        def get_y(x):
+            return sigmoid(np.dot(w, x))
+            
+        x_vals = [np.random.normal(0, 1, (729, 1)) for _ in range(20)]
+        y_vals = map(get_y, x_vals)
+
+        return zip(x_vals, y_vals)
 
 #### Miscellaneous functions
 def sigmoid(z):
@@ -137,3 +149,14 @@ def sigmoid(z):
 def sigmoid_prime(z):
     """Derivative of the sigmoid function."""
     return sigmoid(z)*(1-sigmoid(z))
+
+
+def main():
+    n = Network([729, 729, 729, 48])
+    z = n.generate_data()
+    print n.evaluate(z)
+
+    n.SGD(z, 10000, 10, 0.1, test_data=z)
+
+if __name__ == '__main__':
+    main()

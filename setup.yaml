@@ -7,3 +7,4 @@ Nodes:
   - id: 2
     ip: localhost
     port: 8000
+    parent_id: 1
