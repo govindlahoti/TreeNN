@@ -27,9 +27,9 @@ class Network(object):
 
 
     def _reset_acquired_weights_and_biases(self):
-        self.acquired_biases = [np.zeros(y, 1) for y in sizes[1:]]
-        self.acquired_weights = [np.zeros(y, x)
-                        for x, y in zip(sizes[:-1], sizes[1:])]
+        self.acquired_biases = [np.zeros((y, 1)) for y in self.sizes[1:]]
+        self.acquired_weights = [np.zeros((y, x))
+                        for x, y in zip(self.sizes[:-1], self.sizes[1:])]
 
 
     def get_model(self):
@@ -37,16 +37,16 @@ class Network(object):
         weights = deepcopy(self.weights)
         biases = deepcopy(self.biases)
         self.parent_update_lock.release()
-        return weights, biases
+        return [weights, biases]
     
 
     def apply_kid_gradient(self, weight_gradient, bias_gradient):
         self.parent_update_lock.acquire()
 
-        self.weights = [w + wg for w, wg in zip(self.weights, self.weight_gradient)]
-        self.biases = [b + bg for b, bg in zip(self.biases, self.bias_gradient)]
-        self.acquired_weights = [w + wg for w, wg in zip(self.acquired_weights, self.weight_gradient)]
-        self.acquired_biases = [b + bg for b, bg in zip(self.acquired_biases, self.bias_gradient)]
+        self.weights = [w + wg for w, wg in zip(self.weights, weight_gradient)]
+        self.biases = [b + bg for b, bg in zip(self.biases, bias_gradient)]
+        self.acquired_weights = [w + wg for w, wg in zip(self.acquired_weights, weight_gradient)]
+        self.acquired_biases = [b + bg for b, bg in zip(self.acquired_biases, bias_gradient)]
 
         self.parent_update_lock.release()
 
@@ -65,7 +65,7 @@ class Network(object):
         acquired_biases = deepcopy(self.acquired_biases)
         self._reset_acquired_weights_and_biases()
         self.parent_update_lock.release()
-        return acquired_weights, acquired_biases
+        return [acquired_weights, acquired_biases]
 
 
     def feedforward(self, a):
@@ -74,7 +74,7 @@ class Network(object):
             a = sigmoid(np.dot(w, a)+b)
         return a
 
-    def SGD(self, training_data, epochs, mini_batch_size, eta,
+    def SGD(self, training_data, epochs=1, mini_batch_size=16, eta=0.01,
             test_data=None):
         """Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
@@ -165,33 +165,12 @@ class Network(object):
         \partial a for the output activations."""
         return (output_activations-y)
 
-    def generate_data(self):
-        w = np.random.normal(0, 1, (48, 729))
-        def get_y(x):
-            return sigmoid(np.dot(w, x))
-            
-        x_vals = [np.random.normal(0, 1, (729, 1)) for _ in range(20)]
-        y_vals = map(get_y, x_vals)
-
-        return zip(x_vals, y_vals)
 
 def sigmoid(z):
     """The sigmoid function."""
     return 1.0/(1.0+np.exp(-z))
 
+
 def sigmoid_prime(z):
     """Derivative of the sigmoid function."""
     return sigmoid(z)*(1-sigmoid(z))
-
-
-def main():
-    n = Network([729, 729, 729, 48])
-    z = n.generate_data()
-
-    z_train = z[:int(len(z) * 0.8)]
-    z_test = z[int(len(z) * 0.8):]
-
-    n.SGD(z, 10000, 20, 0.05, test_data=z)
-
-if __name__ == '__main__':
-    main()

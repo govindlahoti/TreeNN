@@ -7,4 +7,7 @@ Nodes:
   - id: 2
     ip: localhost
     port: 8000
-    parent_id: 1
+
+worker_pull_interval: 5
+
+worker_push_interval: 5
