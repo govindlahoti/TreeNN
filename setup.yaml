@@ -8,6 +8,12 @@ Nodes:
     ip: localhost
     port: 8000
 
+  - id: 3
+    ip: localhost
+    port: 8002
+    parent_id: 2
+
+
 worker_pull_interval: 5
 
 worker_push_interval: 5

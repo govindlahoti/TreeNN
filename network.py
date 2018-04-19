@@ -58,7 +58,6 @@ class Network(object):
         self.biases = bias
         self._reset_acquired_weights_and_biases()
         self.parent_update_lock.release()
-        print 'YESSSS'
 
 
     def get_and_reset_acquired_gradients(self):

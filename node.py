@@ -8,6 +8,17 @@ from network import *
 np.random.seed(42)
 data_trend = np.random.normal(0, 1, (48, 729))
 
+def get_data():
+	def get_y(x):
+		return sigmoid(np.dot(data_trend, x))
+		
+	x_vals = [np.random.normal(0, 1, (729, 1)) for _ in range(20)]
+	y_vals = map(get_y, x_vals)
+
+	return zip(x_vals, y_vals)
+
+data = get_data()
+
 class Node:
 
 	def __init__(self, id, parent_id, own_address, parent_address, is_worker, worker_pull_interval, worker_push_interval):
@@ -18,6 +29,7 @@ class Node:
 		self.is_worker = is_worker
 		self.connected_with_parent = False
 		self.e = 0
+		self.prev_e = 0
 		self.e_lock = threading.Lock()
 		self.worker_push_interval = worker_push_interval
 		self.worker_pull_interval = worker_pull_interval
@@ -43,10 +55,10 @@ class Node:
 			self.parent = xmlrpclib.ServerProxy(self.parent_address, allow_none=True)
 			
 			while True:
-				print 'Node', self.id, ': Waiting for parent', self.parent_address, ' ...'
+				self.log('Node {} : Waiting for parent {} ... '.format(self.id, self.parent_address))
 				try:
 					self.parent.pull_from_child(self.id)
-					print 'Node', self.id, ': Connected with parent', self.parent_address
+					self.log('Node {} : Connected with parent {}'.format(self.id, self.parent_address))
 					self.connected_with_parent = True
 					break
 				except Exception, e:
@@ -88,6 +100,8 @@ class Node:
 		self.log('Got model from parent ' + str(self.parent_id))
 		return model
 
+	def get_loss(self):
+		return float(self.network.evaluate(data))
 
 	def comsume_gradients_from_kids_thread(self):
 		while True:
@@ -102,11 +116,12 @@ class Node:
 		server = SimpleXMLRPCServer(self.own_address, allow_none=True)
 		server.register_function(self.push_from_child, "push_from_child")
 		server.register_function(self.pull_from_child, "pull_from_child")
+		server.register_function(self.get_loss, "get_loss")
 		server.serve_forever()
 
 
 	def run_sharing_logic_thread(self):
-		data = self.get_data()
+		# data = self.get_data()
 		
 		while True:
 			if self.is_worker:
@@ -128,6 +143,12 @@ class Node:
 				e = self.e
 				self.e_lock.release()
 				
+				if e != self.prev_e:
+					self.prev_e = e
+				else:
+					time.sleep(1)
+					continue
+				
 				if e % self.worker_pull_interval == 0:
 					if self.parent_address:
 						self.network.use_parent_model(*self.pull_from_parent())
@@ -136,19 +157,8 @@ class Node:
 					if self.parent_address:
 						self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
 
-				time.sleep(1)
+			self.log('Epoch {} Loss = {}'.format(self.e, self.network.evaluate(data)))
 
-			self.log('Epoch {} Score = {}'.format(self.e, self.network.evaluate(data)))
-
-
-	def get_data(self):
-		def get_y(x):
-			return sigmoid(np.dot(data_trend, x))
-			
-		x_vals = [np.random.normal(0, 1, (729, 1)) for _ in range(20)]
-		y_vals = map(get_y, x_vals)
-
-		return zip(x_vals, y_vals)
 
 	def log(self, s):
 		self.log_file.write(s +'\n')
