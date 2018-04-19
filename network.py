@@ -18,6 +18,7 @@ class Network(object):
         ever used in computing the outputs from later layers."""
         self.num_layers = len(sizes)
         self.sizes = sizes
+        np.random.seed(42)
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
@@ -43,8 +44,8 @@ class Network(object):
     def apply_kid_gradient(self, weight_gradient, bias_gradient):
         self.parent_update_lock.acquire()
 
-        self.weights = [w + wg for w, wg in zip(self.weights, weight_gradient)]
-        self.biases = [b + bg for b, bg in zip(self.biases, bias_gradient)]
+        self.weights = [w - wg for w, wg in zip(self.weights, weight_gradient)]
+        self.biases = [b - bg for b, bg in zip(self.biases, bias_gradient)]
         self.acquired_weights = [w + wg for w, wg in zip(self.acquired_weights, weight_gradient)]
         self.acquired_biases = [b + bg for b, bg in zip(self.acquired_biases, bias_gradient)]
 
@@ -57,6 +58,7 @@ class Network(object):
         self.biases = bias
         self._reset_acquired_weights_and_biases()
         self.parent_update_lock.release()
+        print 'YESSSS'
 
 
     def get_and_reset_acquired_gradients(self):
@@ -94,11 +96,11 @@ class Network(object):
                 for k in xrange(0, n, mini_batch_size)]
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
-            if test_data:
-                print "Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test)
-            else:
-                print "Epoch {0} complete".format(j)
+            # if test_data:
+            #     print "Epoch {0}: {1} / {2}".format(
+            #         j, self.evaluate(test_data), n_test)
+            # else:
+            #     print "Epoch {0} complete".format(j)
 
 
     def update_mini_batch(self, mini_batch, eta):
@@ -112,10 +114,17 @@ class Network(object):
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
             nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
-        self.weights = [w-(eta/len(mini_batch))*nw
+
+        self.weights = [w-eta*nw
                         for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b-(eta/len(mini_batch))*nb
+        self.biases = [b-eta*nb
                        for b, nb in zip(self.biases, nabla_b)]
+
+        self.acquired_weights = [w+eta*nw
+                        for w, nw in zip(self.acquired_weights, nabla_w)]
+        self.acquired_biases = [b+eta*nb
+                       for b, nb in zip(self.acquired_biases, nabla_b)]
+        
 
     def backprop(self, x, y):
         """Return a tuple ``(nabla_b, nabla_w)`` representing the

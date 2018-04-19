@@ -24,6 +24,9 @@ def main():
 				data[x['id']]['parent_ip'] = data[x['parent_id']]['ip']
 				data[x['id']]['parent_port'] = data[x['parent_id']]['port']
 				data[x['parent_id']]['is_worker'] = False
+				data[x['id']]['parent_id'] = x['parent_id']
+			else:
+				data[x['id']]['parent_id'] = -1
 
 		nodes = {}
 
@@ -34,7 +37,7 @@ def main():
 			else:
 				parent_address = None
 			
-			node = Node(x, (y['ip'], y['port']), parent_address, y['is_worker'], worker_push_interval, worker_pull_interval)
+			node = Node(x, y['parent_id'], (y['ip'], y['port']), parent_address, y['is_worker'], worker_push_interval, worker_pull_interval)
 			nodes[x] = node
 
 		while True:
