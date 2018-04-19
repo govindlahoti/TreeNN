@@ -21,18 +21,20 @@ data = get_data()
 
 class Node:
 
-	def __init__(self, id, parent_id, own_address, parent_address, is_worker, worker_pull_interval, worker_push_interval):
-		self.id = id
-		self.own_address = own_address
-		self.parent_id = parent_id
-		self.parent_address = parent_address
-		self.is_worker = is_worker
+	def __init__(self, data):
+		self.id = data['id']
+		self.own_address = data['own_address']
+		self.parent_id = data['parent_id']
+		self.parent_address = data['parent_address']
+		self.is_worker = data['is_worker']
 		self.connected_with_parent = False
 		self.e = 0
 		self.prev_e = 0
 		self.e_lock = threading.Lock()
-		self.worker_push_interval = worker_push_interval
-		self.worker_pull_interval = worker_pull_interval
+		self.push_interval = data['push_interval']
+		self.pull_interval = data['pull_interval']
+		self.delays = data['delays']
+		
 		self.network = Network([729, 48])
 
 		self.log_file = open(str(self.id) + '.log', 'a')
@@ -126,13 +128,13 @@ class Node:
 		while True:
 			if self.is_worker:
 
-				if self.e % self.worker_pull_interval == 0:
+				if self.e % self.pull_interval == 0:
 					if self.parent_address:
 						self.network.use_parent_model(*self.pull_from_parent())
 
 				self.network.SGD(data, test_data=data, epochs=1)
 
-				if self.e % self.worker_push_interval == 0:
+				if self.e % self.push_interval == 0:
 					if self.parent_address:
 						self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
 
@@ -149,11 +151,11 @@ class Node:
 					time.sleep(1)
 					continue
 				
-				if e % self.worker_pull_interval == 0:
+				if e % self.pull_interval == 0:
 					if self.parent_address:
 						self.network.use_parent_model(*self.pull_from_parent())
 
-				if e % self.worker_push_interval == 0:
+				if e % self.push_interval == 0:
 					if self.parent_address:
 						self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
 

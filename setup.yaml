@@ -1,4 +1,4 @@
-Nodes:
+nodes:
   - id: 1
     ip: localhost
     port: 8001
@@ -12,8 +12,18 @@ Nodes:
     ip: localhost
     port: 8002
     parent_id: 2
+    push_interval: 1
 
 
-worker_pull_interval: 5
+# delay should be in milliseconds
+delays:
+  - src_id: 1
+    dest_id: 2
+    delay: 2000
 
-worker_push_interval: 5
+
+default_delay: 0
+
+default_pull_interval: 5
+
+default_push_interval: 2
