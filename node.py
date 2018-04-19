@@ -106,7 +106,8 @@ class Node:
 					if self.parent_address:
 						self.network.use_parent_model(*self.pull_from_parent())
 
-				self.network.SGD(self.get_data())
+				data = self.get_data()
+				self.network.SGD(data, test_data=data, epochs=10000)
 
 				if self.e % self.worker_push_interval == 0:
 					if self.parent_address:

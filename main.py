@@ -37,7 +37,8 @@ def main():
 			node = Node(x, (y['ip'], y['port']), parent_address, y['is_worker'], worker_push_interval, worker_pull_interval)
 			nodes[x] = node
 
-		time.sleep(9)
+		while True:
+			time.sleep(9)
 
 
 

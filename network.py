@@ -74,6 +74,7 @@ class Network(object):
             a = sigmoid(np.dot(w, a)+b)
         return a
 
+
     def SGD(self, training_data, epochs=1, mini_batch_size=16, eta=0.01,
             test_data=None):
         """Train the neural network using mini-batch stochastic
