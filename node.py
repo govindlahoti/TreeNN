@@ -8,16 +8,19 @@ from network import *
 np.random.seed(42)
 data_trend = np.random.normal(0, 1, (48, 729))
 
-def get_data():
+def get_data(random=False):
 	def get_y(x):
 		return sigmoid(np.dot(data_trend, x))
-		
+	
+	if not random:
+		np.random.seed(42)
+	
 	x_vals = [np.random.normal(0, 1, (729, 1)) for _ in range(20)]
 	y_vals = map(get_y, x_vals)
 
 	return zip(x_vals, y_vals)
 
-data = get_data()
+
 
 class Node:
 
@@ -124,16 +127,17 @@ class Node:
 
 
 	def run_sharing_logic_thread(self):
-		# data = self.get_data()
 		
 		while True:
+			data = get_data()
+			
 			if self.is_worker:
 
 				if self.e % self.pull_interval == 0:
 					if self.parent_address:
 						self.network.use_parent_model(*self.pull_from_parent())
 
-				self.network.SGD(data, test_data=data, epochs=1)
+				self.network.SGD(data, epochs=1)
 
 				if self.e % self.push_interval == 0:
 					if self.parent_address:
