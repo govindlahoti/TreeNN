@@ -17,7 +17,6 @@ def main():
 		for x in raw_data['nodes']:
 			data[x['id']] = x
 			data[x['id']]['is_worker'] = True
-			data[x['id']]['delays'] = {}
 			data[x['id']]['own_address'] = (x['ip'], x['port'])
 			
 			if 'pull_interval' not in x:
@@ -34,6 +33,11 @@ def main():
 			else:
 				data[x['id']]['parent_id'] = -1
 				data[x['id']]['parent_address'] = None
+
+		for x in data:
+			data[x]['delays'] = {}
+			for y in data:
+				data[x]['delays'][y] = default_delay
 
 		for x in raw_data['delays']:
 			data[x['src_id']]['delays'][x['dest_id']] = x['delay']

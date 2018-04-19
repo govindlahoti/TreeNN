@@ -47,6 +47,7 @@ class Node:
 
 
 	def get_parent(self):
+		time.sleep(self.delays[self.parent_id] / 1000.)
 		if self.connected_with_parent:
 			return self.parent
 
@@ -57,7 +58,7 @@ class Node:
 			self.parent = xmlrpclib.ServerProxy(self.parent_address, allow_none=True)
 			
 			while True:
-				self.log('Node {} : Waiting for parent {} ... '.format(self.id, self.parent_address))
+				self.log('Node {} : Waiting for parent {} ...'.format(self.id, self.parent_address))
 				try:
 					self.parent.pull_from_child(self.id)
 					self.log('Node {} : Connected with parent {}'.format(self.id, self.parent_address))

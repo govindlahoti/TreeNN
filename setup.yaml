@@ -19,7 +19,7 @@ nodes:
 delays:
   - src_id: 1
     dest_id: 2
-    delay: 2000
+    delay: 200
 
 
 default_delay: 0
