@@ -6,6 +6,7 @@ import numpy as np
 import threading
 from copy import deepcopy
 
+# The class of DNN
 class Network(object):
 
     def __init__(self, sizes):
