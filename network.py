@@ -1,3 +1,6 @@
+# Citation: Part of the code is taken from publicly avaiable implementation on
+# http://neuralnetworksanddeeplearning.com/chap1.html
+
 import random
 import numpy as np
 import threading
@@ -28,12 +31,14 @@ class Network(object):
 
 
     def _reset_acquired_weights_and_biases(self):
+        """Reset the acquired weights to zeros"""
         self.acquired_biases = [np.zeros((y, 1)) for y in self.sizes[1:]]
         self.acquired_weights = [np.zeros((y, x))
                         for x, y in zip(self.sizes[:-1], self.sizes[1:])]
 
 
     def get_model(self):
+        """Return the present model (weights and biases)"""
         self.parent_update_lock.acquire()
         weights = deepcopy(self.weights)
         biases = deepcopy(self.biases)
@@ -42,6 +47,7 @@ class Network(object):
     
 
     def apply_kid_gradient(self, weight_gradient, bias_gradient):
+        """Update the model (weights, biases) by adding the graients obtained from the child node"""
         self.parent_update_lock.acquire()
 
         self.weights = [w - wg for w, wg in zip(self.weights, weight_gradient)]
@@ -53,6 +59,7 @@ class Network(object):
 
 
     def use_parent_model(self, weight, bias):
+        """Replace own model completely by the parent model"""
         self.parent_update_lock.acquire()
         self.weights = weight
         self.biases = bias
@@ -61,6 +68,7 @@ class Network(object):
 
 
     def get_and_reset_acquired_gradients(self):
+        """Return the acquired gradients in the model. Also reset this to zero"""
         self.parent_update_lock.acquire()
         acquired_weights = deepcopy(self.acquired_weights)
         acquired_biases = deepcopy(self.acquired_biases)
@@ -76,8 +84,7 @@ class Network(object):
         return a
 
 
-    def SGD(self, training_data, epochs=1, mini_batch_size=16, eta=0.01,
-            test_data=None):
+    def SGD(self, training_data, epochs=1, mini_batch_size=16, eta=0.01):
         """Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
         ``(x, y)`` representing the training inputs and the desired
@@ -95,11 +102,6 @@ class Network(object):
                 for k in xrange(0, n, mini_batch_size)]
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
-            # if test_data:
-            #     print "Epoch {0}: {1} / {2}".format(
-            #         j, self.evaluate(test_data), n_test)
-            # else:
-            #     print "Epoch {0} complete".format(j)
 
 
     def update_mini_batch(self, mini_batch, eta):
