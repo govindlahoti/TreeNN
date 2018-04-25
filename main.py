@@ -1,3 +1,8 @@
+"""
+Run this as 
+python main.py setup.yaml
+"""
+
 import yaml
 import sys
 from node import Node
@@ -5,13 +10,19 @@ import time
 
 
 def main():
+	# Read the spec file passed as command line argument
 	with open(sys.argv[1], 'r') as f:
 		raw_data = yaml.load(f.read())
 
+		# extract the data from the yaml file
+
+		# Obatin the default values of properties
 		default_push_interval = raw_data['default_push_interval']
 		default_pull_interval = raw_data['default_pull_interval']
 		default_delay = raw_data['default_delay']
 
+
+		# Obtain the meta-data for all the nodes
 		data = {}
 
 		for x in raw_data['nodes']:
@@ -34,6 +45,8 @@ def main():
 				data[x['id']]['parent_id'] = -1
 				data[x['id']]['parent_address'] = None
 
+
+		# Obtain the network latency information
 		for x in data:
 			data[x]['delays'] = {}
 			for y in data:
@@ -42,13 +55,17 @@ def main():
 		for x in raw_data['delays']:
 			data[x['src_id']]['delays'][x['dest_id']] = x['delay']
 
+
+		# Spawn all the nodes as mentioned in the spec file
 		nodes = {}
 
 		for x in data:
-			node = Node(data[x])
+			nodes[x] = Node(data[x])
 		
+		# Run this thread indefinitely
 		while True:
-			time.sleep(9)
+			# Code to monitor all the nodes' state can be written here
+			time.sleep(100)
 
 
 
