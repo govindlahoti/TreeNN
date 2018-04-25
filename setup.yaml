@@ -1,9 +1,27 @@
-nodes:
-  - id: 1
-    ip: localhost
-    port: 8001
-    parent_id: 2
+# delay should be in milliseconds
+delays:
+  - src_id: 1
+    dest_id: 2
+    delay: 200
 
+# Default network delay (in ms) between the nodes
+default_delay: 0
+
+# No. of epochs after which the child node pulls the model from its parent
+default_pull_interval: 5
+
+# No. of epochs after which the child node pushes the gradients to its parent
+default_push_interval: 2 
+
+
+# Mention the list of all nodes (VMs)
+nodes:
+  - id: 1 # The unique ID for the node
+    ip: localhost # The IP address on which its RPC server is to be run
+    port: 8001 # The port on which its RPC server is to be run
+    parent_id: 2 # The unique ID of its parent node (if present)
+
+  # Example of node with no parent
   - id: 2
     ip: localhost
     port: 8000
@@ -12,18 +30,4 @@ nodes:
     ip: localhost
     port: 8002
     parent_id: 2
-    push_interval: 1
-
-
-# delay should be in milliseconds
-delays:
-  - src_id: 1
-    dest_id: 2
-    delay: 200
-
-
-default_delay: 0
-
-default_pull_interval: 5
-
-default_push_interval: 2
+    push_interval: 1 # Default properties mentioned above can be customized for each node
