@@ -2,6 +2,7 @@ from SimpleXMLRPCServer import SimpleXMLRPCServer
 import time
 from queue import Queue
 import xmlrpclib
+import sys
 import thread
 from network import *
 
@@ -23,6 +24,13 @@ def get_data(random=False):
 
 	return zip(x_vals, y_vals)
 
+
+def get_size(l):
+	"""Returns the size of list/tuple (even if it is nested)"""
+	if type(l) == list or type(l) == tuple:
+		return sum(get_size(subl) for subl in l)
+	else:
+		return 1
 
 # The class for simulating an edge device
 class Node:
@@ -91,6 +99,7 @@ class Node:
 	def push_from_child(self, weight_gradient, bias_gradient, child_id):
 		"""RPC function. Add the graients obtained from child node into the queue"""
 		self.log('Got gradients from child ' + str(child_id))
+		self.log('Network cost incurrec = ' + str(get_size([weight_gradient, bias_gradient])))
 		weight_gradient = [np.array(x) for x in weight_gradient]
 		bias_gradient = [np.array(x) for x in bias_gradient]
 		self.acquired_gradients_from_kids.put([weight_gradient, bias_gradient])
@@ -102,6 +111,7 @@ class Node:
 		model = self.network.get_model()
 		model[0] = [x.tolist() for x in model[0]]
 		model[1] = [x.tolist() for x in model[1]]
+		self.log('Network cost incurred = ' + str(get_size(model)))
 		return model
 	
 
@@ -109,6 +119,7 @@ class Node:
 		"""Push the gradients to the parent node. Calls parent's RPC function internally"""
 		if not self.parent_address:
 			return
+		self.log('Sending gradients to parent' + str(self.parent_id))
 		weight_gradient = [x.tolist() for x in weight_gradient]
 		bias_gradient = [x.tolist() for x in bias_gradient]
 		self.get_parent().push_from_child(weight_gradient, bias_gradient, self.id)
