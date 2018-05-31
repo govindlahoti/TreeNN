@@ -17,17 +17,17 @@ default_push_interval: 2
 # Mention the list of all nodes (VMs)
 nodes:
   - id: 1 # The unique ID for the node
-    ip: localhost # The IP address on which its RPC server is to be run
+    ip: 100.72.68.68 # The IP address on which its RPC server is to be run
     port: 8001 # The port on which its RPC server is to be run
     parent_id: 2 # The unique ID of its parent node (if present)
 
   # Example of node with no parent
   - id: 2
-    ip: localhost
+    ip: 100.72.68.68
     port: 8000
 
   - id: 3
-    ip: localhost
+    ip: 100.72.68.68
     port: 8002
     parent_id: 2
     push_interval: 1 # Default properties mentioned above can be customized for each node

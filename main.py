@@ -57,10 +57,7 @@ def main():
 
 
 		# Spawn all the nodes as mentioned in the spec file
-		nodes = {}
-
-		for x in data:
-			nodes[x] = Node(data[x])
+		node = Node(data[int(sys.argv[2])])
 		
 		# Run this thread indefinitely
 		while True:
