@@ -35,7 +35,7 @@ def main():
 
 			if 'push_interval' not in x:
 				x['push_interval'] = default_push_interval
-
+                        #read file name
 			if 'file_name' in x:
 				data[x['id']]['file_name'] = x['file_name']
             	#data[x['id']]['file_name'] = x['file_name']			

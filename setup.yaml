@@ -27,7 +27,7 @@ nodes:
   - id: 2
     ip: 10.129.157.89
     port: 8000
-    file_name: "LabelledTestData.csv"
+    file_name: "LabelledTestData.csv" # test data for parent node
 
   - id: 3
     ip: 10.102.157.34
