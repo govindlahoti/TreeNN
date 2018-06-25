@@ -34,5 +34,5 @@ nodes:
     port: 8002
     parent_id: 2
     push_interval: 1 # Default properties mentioned above can be customized for each node
-    file_name: "UnlabelledTrainData.csv"
+    file_name: "UnlabelledTrainData.csv" # unlabelled data
    

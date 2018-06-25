@@ -26,7 +26,7 @@ from network import *
 #
 #	return zip(x_vals, y_vals)
 
-# read data from file
+# read data of sensors from file
 def get_data(fileName):
 	with open(fileName) as csv_file:
 		print "reading data"

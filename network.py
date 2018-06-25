@@ -164,7 +164,7 @@ class Network(object):
                 for mini_batch in mini_batches:
                     self.update_l_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
                     print "mini batch", i
-                    i = i+1
+                   # i = i+1
                    # if(i==10):
                    #     break
                     
@@ -176,7 +176,7 @@ class Network(object):
                 for mini_batch in mini_batches:
                     self.update_u_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
                     print "mini batch", l
-                    l = l+1
+                   # l = l+1
                    # if(l==10):
                    #     break
                     
