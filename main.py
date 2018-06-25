@@ -49,8 +49,10 @@ def main():
 		# Obtain the network latency information
 		for x in data:
 			data[x]['delays'] = {}
+			data[x]['addresses'] = {}
 			for y in data:
 				data[x]['delays'][y] = default_delay
+				data[x]['addresses'][y] = 'http://{}:{}'.format(data[y]['ip'], data[y]['port'])
 
 		for x in raw_data['delays']:
 			data[x['src_id']]['delays'][x['dest_id']] = x['delay']
