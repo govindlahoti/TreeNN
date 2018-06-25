@@ -26,37 +26,41 @@ def main():
 		data = {}
 
 		for x in raw_data['nodes']:
-			data[x['id']] = x
+			data[x['id']] = {}
 			data[x['id']]['is_worker'] = True
 			data[x['id']]['own_address'] = (x['ip'], x['port'])
-			
+         
 			if 'pull_interval' not in x:
 				x['pull_interval'] = default_pull_interval
 
 			if 'push_interval' not in x:
 				x['push_interval'] = default_push_interval
 
-
+			if 'file_name' in x:
+				data[x['id']]['file_name'] = x['file_name']
+            	#data[x['id']]['file_name'] = x['file_name']			
+			
 		for x in raw_data['nodes']:
 			if 'parent_id' in x:
 				data[x['id']]['parent_address'] = 'http://{}:{}'.format(data[x['parent_id']]['ip'], data[x['parent_id']]['port'])
-				data[x['parent_id']]['is_worker'] = False
+				data[x['parent_id']]['is_worker'] = False				
 			else:
 				data[x['id']]['parent_id'] = -1
 				data[x['id']]['parent_address'] = None
 
-
+         
 		# Obtain the network latency information
 		for x in data:
 			data[x]['delays'] = {}
 			for y in data:
-				data[x]['delays'][y] = default_delay
+				data[x]['delays'][y] = default_delay # y is node id
 
 		for x in raw_data['delays']:
 			data[x['src_id']]['delays'][x['dest_id']] = x['delay']
 
 
 		# Spawn all the nodes as mentioned in the spec file
+		print "initiate a node", data[int(sys.argv[2])] 
 		node = Node(data[int(sys.argv[2])])
 		
 		# Run this thread indefinitely

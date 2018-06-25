@@ -17,17 +17,22 @@ default_push_interval: 2
 # Mention the list of all nodes (VMs)
 nodes:
   - id: 1 # The unique ID for the node
-    ip: 100.72.68.68 # The IP address on which its RPC server is to be run
+    ip: 10.196.0.30 # The IP address on which its RPC server is to be run
     port: 8001 # The port on which its RPC server is to be run
     parent_id: 2 # The unique ID of its parent node (if present)
+    file_name: "LabelledTrainData.csv"
+    
 
   # Example of node with no parent
   - id: 2
-    ip: 100.72.68.68
+    ip: 10.129.157.89
     port: 8000
+    file_name: "LabelledTestData.csv"
 
   - id: 3
-    ip: 100.72.68.68
+    ip: 10.102.157.34
     port: 8002
     parent_id: 2
     push_interval: 1 # Default properties mentioned above can be customized for each node
+    file_name: "UnlabelledTrainData.csv"
+   

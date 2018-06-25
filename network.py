@@ -4,9 +4,42 @@
 import random
 import numpy as np
 import threading
+import timeit
 from copy import deepcopy
 
 # The class of DNN
+def dist(x,y):   
+    z = np.sqrt(np.sum((x-y)**2))
+    #print z, np.exp(-z)
+    return np.exp(-z)
+
+def mapToFloat(x):
+        #x = map(float,x)
+        x = x[1:-1]
+        #x = tuple(x)
+        x = x.replace("'", "")
+        x = tuple(x.split(','))
+        x = list(x)
+      #  print x[0], x[1], x[2]govindlahoti22@hotmail.com
+        #print x
+        r = map(float,x)
+        return r
+
+def mapToFloaty(y):
+        #x = map(float,x)
+        y = y[1:-2]
+        #print y
+        #x = tuple(x)
+        y = y.replace("'", "")
+        #print y
+        #y = tuple(y)
+        #print y
+        #y = list(y)
+      #  print x[0], x[1], x[2]
+        #print y
+        r = float(y)
+        #print r
+        return r
 class Network(object):
 
     def __init__(self, sizes):
@@ -80,12 +113,38 @@ class Network(object):
 
     def feedforward(self, a):
         """Return the output of the network if ``a`` is input."""
+        a = np.asarray(a)
+        a.shape = (len(a),1)
         for b, w in zip(self.biases, self.weights):
             a = sigmoid(np.dot(w, a)+b)
         return a
 
 
-    def SGD(self, training_data, epochs=1, mini_batch_size=16, eta=0.01):
+    def feedforward_learning(self,a):
+        a = np.asarray(a)
+        a.shape = (len(a),1)
+        activations = [a] # list to store all the activations, layer by layer
+        activation = a
+        zs = [] # list to store all the z vectors, layer by layer
+        for b, w in zip(self.biases, self.weights):
+           # print (np.dot(w, activation) + b)
+           # print b.shape, w.shape, activation.shape
+            z = np.dot(w, activation) 
+            #print "before", z.shape, b.shape
+            z.shape = (len(z),1)
+           # print "after", z.shape, b.shape
+            #z = np.add(z, b)
+            z = z + b
+            zs.append(z)
+            #z = np.dot(w, activation)
+            #print "z.shape", z.shape
+            activation = sigmoid(z)
+            activations.append(activation)
+            #print "feedforward", activation.shape, z.shape
+        return zs, activations
+    
+
+    def SGD(self, training_data, epochs=1, mini_batch_size=10, eta=0.01, lmbda = 1, alpha=10, beta=15):
         """Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
         ``(x, y)`` representing the training inputs and the desired
@@ -97,20 +156,41 @@ class Network(object):
         n = len(training_data)
         for j in xrange(epochs):
             random.shuffle(training_data)
-            mini_batches = [
-                training_data[k:k+mini_batch_size]
-                for k in xrange(0, n, mini_batch_size)]
-            for mini_batch in mini_batches:
-                self.update_mini_batch(mini_batch, eta)
+            if(len(training_data[0]) == 6):
+                mini_batches = [
+                    training_data[k:k+mini_batch_size]
+                    for k in xrange(0, n, mini_batch_size)]
+                i = 0
+                for mini_batch in mini_batches:
+                    self.update_l_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
+                    print "mini batch", i
+                    i = i+1
+                    if(i==10):
+                        break
+                    
+            else:
+                l=0
+                mini_batches = [
+                    training_data[k:k+mini_batch_size]
+                    for k in xrange(0, n, mini_batch_size)]
+                for mini_batch in mini_batches:
+                    self.update_u_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
+                    print "mini batch", l
+                    l = l+1
+                    if(l==10):
+                        break
+                    
+                
 
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying
-        gradient descent using backpropagation to a single mini batch.
+        gradient descent using backpropagation to a single mini batch.v
         The ``mini_batch`` is a list of tuples ``(x, y)``, and ``eta``
         is the learning rate."""
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
+        
         for x, y in mini_batch:
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
@@ -126,7 +206,498 @@ class Network(object):
         self.acquired_biases = [b+eta*nb
                        for b, nb in zip(self.acquired_biases, nabla_b)]
         
-
+    
+    def update_l_mini_batch(self, mini_batch, eta, lmbda, alpha, beta, n):
+        """Update the network's weights and biases by applying
+        gradient descent using backpropagation to a single mini batch.
+        The ``mini_batch`` is a list of tuples ``(x, y)``, and ``eta``
+        is the learning rate. L2 regularization is added"""
+        nabla_b = [np.zeros(b.shape) for b in self.biases] 
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        
+            #print mini_batch
+        for x, xs1, xs2, xt1, xt2, y in mini_batch:
+            #print "backprop", x
+            delta_nabla_b, delta_nabla_w = self.backprop_l(x, xs1, xs2, xt1, xt2, y, alpha, beta)
+            #for nb, dnb in zip(nabla_b, delta_nabla_b):
+                #print "weight update", nb.shape, dnb.shape 
+            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
+            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
+            
+        #self.weights = [w-(eta/len(mini_batch))*nw
+         #               for w, nw in zip(self.weights, nabla_w)]
+        #self.biases = [b-(eta/len(mini_batch))*nb
+         #              for b, nb in zip(self.biases, nabla_b)]
+        #print "next"
+        #print nabla_b
+        self.weights = [w-eta*(lmbda/len(mini_batch))*w-(eta/len(mini_batch))*nw
+                        for w, nw in zip(self.weights, nabla_w)]
+        self.biases = [b-(eta/len(mini_batch))*nb
+                       for b, nb in zip(self.biases, nabla_b)]
+        
+        self.acquired_weights = [w+eta*(lmbda/len(mini_batch))*w+(eta/len(mini_batch))*nw
+                        for w, nw in zip(self.acquired_weights, nabla_w)]
+        self.acquired_biases = [b+(eta/len(mini_batch))*nb
+                       for b, nb in zip(self.acquired_biases, nabla_b)]
+        #for b in self.biases:
+        #    print b
+        #    print "next layer b"
+        #return weights, biases
+    
+     # for unlabelled data
+    def update_u_mini_batch(self, mini_batch, eta, lmbda, alpha, beta, n):
+        """Update the network's weights and biases by applying
+        gradient descent using backpropagation to a single mini batch.
+        The ``mini_batch`` is a list of tuples ``(x, y)``, and ``eta``
+        is the learning rate. L2 regularization is added"""
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+            #print mini_batch
+        for x, xs1, xs2, xt1, xt2 in mini_batch:
+            #print "backprop"
+            delta_nabla_b, delta_nabla_w = self.backprop_u(x, xs1, xs2, xt1, xt2, alpha, beta)
+            
+            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
+            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
+            
+        #self.weights = [w-(eta/len(mini_batch))*nw
+         #               for w, nw in zip(self.weights, nabla_w)]
+        #self.biases = [b-(eta/len(mini_batch))*nb
+         #              for b, nb in zip(self.biases, nabla_b)]
+        
+        
+        
+        self.weights = [w-(eta/len(mini_batch))*nw
+                        for w, nw in zip(self.weights, nabla_w)]
+        self.biases = [b-(eta/len(mini_batch))*nb
+                       for b, nb in zip(self.biases, nabla_b)]
+        
+        self.acquired_weights = [w+(eta/len(mini_batch))*nw
+                        for w, nw in zip(self.acquired_weights, nabla_w)]
+        self.acquired_biases = [b+(eta/len(mini_batch))*nb
+                       for b, nb in zip(self.acquired_biases, nabla_b)]
+        
+        
+        
+    def computeNeighbor(self,x,y):
+        activation_nbd = x
+        activations_nbd = [x] # list to store all the activations, layer by layer
+        zs_nbd = [] # list to store all the z vectors, layer by layer
+        for b, w in zip(self.biases, self.weights):
+            z = np.dot(w, activation_nbd)+b
+            zs_nbd.append(z)
+            activation_nbd = sigmoid(z)
+            activations_nbd.append(activation_nbd)
+        return zs_nbd, activations_nbd
+    
+    #++++++   for labelled dataset 
+    def backprop_l(self, x, xs1, xs2, xt1, xt2, y, alpha, beta):
+        """Return a tuple ``(nabla_b, nabla_w)`` representing the
+        gradient for the cost function C_x.  ``nabla_b`` and
+        ``nabla_w`` are layer-by-layer lists of numpy arrays, similar
+        to ``self.biases`` and ``self.weights``."""
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        # feedforward
+        #print "feedforward"
+        x = mapToFloat(x)
+        #x = map(float,x)
+        
+        
+    
+      #  x =  map(float, x.split(','))
+        #x = map(float, x)
+      #  print x
+      #  print x
+       # x = np.array(x).transpose()
+       # y = np.arange(2).reshape(1, 2)
+       # l = len(x)
+        #print xs1
+        xs1 = mapToFloat(xs1)
+        #print xs2
+        xs2 = mapToFloat(xs2)
+        #print xt1, xt2
+        xt1 = mapToFloat(xt1)
+        xt2 = mapToFloat(xt2)
+        
+        d1 = dist(np.asarray(x),np.asarray(xs1))
+        #print "dist", d1
+        zs1,a1 = self.feedforward_learning(xs1)
+        d2 = dist(np.asarray(x),np.asarray(xs2))
+        zs2,a2 = self.feedforward_learning(xs2)
+        d3 = dist(np.asarray(x),np.asarray(xt1))
+        zs3,a3 = self.feedforward_learning(xt1)
+        d4 = dist(np.asarray(x),np.asarray(xt2))
+        zs4,a4 = self.feedforward_learning(xt2)
+       # print "size of zs1", zs1[-1].shape, zs2[-2].shape, zs3[-3].shape
+        
+        #print y
+        #if(len(y)>1):
+        #    y = mapToFloat(y)
+        #else:
+        y = mapToFloaty(y)
+        #y = map(float, y)
+        y = np.asarray(y)
+        #print y
+        #y.shape = (len(y),1)
+       # y = np.array(y).transpose()
+        activation = np.asarray(x)
+        activation.shape = (len(activation),1)
+       # print "activation", activation.shape
+       # print activation
+        activations = [x] # list to store all the activations, layer by layer
+        zs = [] # list to store all the z vectors, layer by layer
+        u=0
+        for b, w in zip(self.biases, self.weights):
+           # print (np.dot(w, activation) + b)
+           # print b.shape, w.shape, activation.shape
+            z = np.dot(w, activation) 
+            #z.shape = (len(z),1)
+           # print "before", z.shape
+            #z = z+b
+            z = np.add(z, b)
+            #z = np.dot(w, activation)
+           # print "z.shape", z.shape
+            zs.append(z)
+            activation = sigmoid(z)
+            activations.append(activation)
+           # print "sigmoid", len(activations[-1]), len(zs[-1])
+            
+        # backward pass
+        
+        #print activations[-1]
+       # delta = self.cost_derivative(activations[-1], y)
+        #print delta
+        delta = self.cost_derivative(activations[-1], y) * \
+            sigmoid_prime(zs[-1])
+        #print a1[-1].shape, activations[-1].shape
+        delta11 = self.cost_derivative(activations[-1], a1[-1]) * \
+            sigmoid_prime(zs1[-1])
+            
+        delta1 = np.dot(delta11, a1[-2].transpose())
+         
+        delta12 = self.cost_derivative(activations[-1], a1[-1]) * \
+            sigmoid_prime(zs[-1])
+        u=u+1
+        #print u, len(delta12), len(activations[-2])    
+        #print  u, delta.shape, delta11.shape, delta1.shape, delta12.shape, activations[-2].shape
+        delta2 = np.dot(delta12, activations[-2].transpose())
+         
+        #print "cost derivative", delta.shape
+        
+        
+        
+        # for second spatial neighbor
+        
+        
+        delta21 = self.cost_derivative(activations[-1], a2[-1]) * \
+            sigmoid_prime(zs2[-1])
+            
+        delta3 = np.dot(delta21, a2[-2].transpose())
+         
+        delta22 = self.cost_derivative(activations[-1],a2[-1]) * \
+            sigmoid_prime(zs[-1])
+            
+        delta4 = np.dot(delta22, activations[-2].transpose())
+         
+        #print "cost derivative", delta.shape
+        
+        
+        # for first temporal neighbor
+        delta31 = self.cost_derivative(activations[-1],a3[-1]) * \
+            sigmoid_prime(zs3[-1])
+            
+        delta5 = np.dot(delta31, a3[-2].transpose())
+         
+        delta32 = self.cost_derivative(activations[-1],a3[-1]) * \
+            sigmoid_prime(zs[-1])
+            
+        delta6 = np.dot(delta32, activations[-2].transpose())
+         
+        #print "cost derivative", delta.shape
+       
+        
+        # for second temporal neighbor
+        delta41 = self.cost_derivative(activations[-1],a4[-1]) * \
+            sigmoid_prime(zs4[-1])
+            
+        delta7 = np.dot(delta41, a4[-2].transpose())
+         
+        delta42 = self.cost_derivative(activations[-1],a4[-1]) * \
+            sigmoid_prime(zs[-1])
+            
+        delta8 = np.dot(delta42, activations[-2].transpose())
+         
+        #print "cost derivative", delta.shape
+        nabla_b[-1] = delta + alpha*(d1*(delta12 - delta11) + d2*(delta22 - delta21)) + beta*(d3*(delta32 - delta31) + d4*(delta42 - delta41))
+        nabla_w[-1] = np.dot(delta, activations[-2].transpose()) + alpha*(d1*(delta2 - delta1) + d2*(delta4 - delta3)) + beta*(d3*(delta6 - delta5) + d4*(delta8 - delta7))
+       # print "shape", nabla_b[-1].shape
+      #  print nabla_w[-1]
+        # Note that the variable l in the loop below is used a little
+        # differently to the notation in Chapter 2 of the book.  Here,
+        # l = 1 means the last layer of neurons, l = 2 is the
+        # second-last layer, and so on.  It's a renumbering of the
+        # scheme in the book, used here to take advantage of the fact
+        # that Python can use negative indices in lists.
+        for l in xrange(2, self.num_layers):
+            #print "delta", delta.shape
+            z = zs[-l]
+            sp = sigmoid_prime(z)
+            #print "sp", sp
+            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
+            #print "next layer"
+            #print delta(
+           # nabla_b[-l] = delta
+            #print delta.shape
+            activations[-l-1] = np.asarray(activations[-l-1]) 
+            activations[-l-1].shape = (len(activations[-l-1]),1)
+            #print activations[-l-1].shape
+            #nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
+            #nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
+            
+            z1 = zs1[-l]
+            sp1 = sigmoid_prime(z1)
+            delta11  = np.dot(self.weights[-l+1].transpose(), delta11) * sp1
+            #print l, delta11.shape, a1[-l-1].shape
+            
+            delta1 = np.dot(delta11, a1[-l-1].transpose())
+         
+            delta12 = np.dot(self.weights[-l+1].transpose(), delta12) * sp
+            
+            delta2 = np.dot(delta12, activations[-l-1].transpose())
+            
+            # second neighbor
+            
+            z2 = zs2[-l]
+            sp2 = sigmoid_prime(z2)
+            delta21  = np.dot(self.weights[-l+1].transpose(), delta21) * sp2
+            
+            delta3 = np.dot(delta21, a2[-l-1].transpose())
+         
+            delta22 = np.dot(self.weights[-l+1].transpose(), delta22) * sp
+            
+            delta4 = np.dot(delta22, activations[-l-1].transpose())
+            
+            # third neighborou can change the credentials now 
+            z3 = zs3[-l]
+            sp3 = sigmoid_prime(z3)
+            delta31  = np.dot(self.weights[-l+1].transpose(), delta31) * sp3
+            
+            delta5 = np.dot(delta31, a3[-l-1].transpose())
+         
+            delta32 = np.dot(self.weights[-l+1].transpose(), delta32) * sp
+            
+            delta6 = np.dot(delta32, activations[-l-1].transpose())
+            
+            # fourth neighbor
+             
+            z4 = zs4[-l]
+            sp4 = sigmoid_prime(z4)
+            delta41  = np.dot(self.weights[-l+1].transpose(), delta41) * sp4
+            
+            delta7 = np.dot(delta41, a4[-l-1].transpose())
+         
+            delta42 = np.dot(self.weights[-l+1].transpose(), delta42) * sp
+            
+            delta8 = np.dot(delta42, activations[-l-1].transpose())
+             
+         
+        #print "cost derivative", delta.shape
+            nabla_b[-l] = delta + alpha*(d1*(delta12 - delta11) + d2*(delta22 - delta21)) + beta*(d3*(delta32 - delta31) + d4*(delta42 - delta41))
+            nabla_w[-l] = np.dot(delta, activations[-2].transpose()) + alpha*(d1*(delta2 - delta1) + d2*(delta4 - delta3)) + beta*(d3*(delta32 - delta31) + d4*(delta42 - delta41))
+       # print nabla_w    ou can change the credentials now 
+        return (nabla_b, nabla_w)
+    
+    # backpropogatin for unlabelled dataset
+    def backprop_u(self, x, xs1, xs2, xt1, xt2, alpha, beta):
+        """Return a tuple ``(nabla_b, nabla_w)`` representing the
+        gradient for the cost function C_x.  ``nabla_b`` and
+        ``nabla_w`` are layer-by-layer lists of numpy arrays, similar
+        to ``self.biases`` and ``self.weights``."""
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        # feedforward
+        #print "feedforward"
+        #print x
+        x = mapToFloat(x)
+      #  print x
+       # x = np.array(x).transpose()
+       # y = np.arange(2).reshape(1, 2)
+       # l = len(x)
+        xs1 = mapToFloat(xs1)
+        xs2 = mapToFloat(xs2)
+        xt1 = mapToFloat(xt1)
+        xt2 = mapToFloat(xt2)
+        
+        d1 = dist(np.asarray(x),np.asarray(xs1))
+        #print "dist", d1
+        zs1,a1 = self.feedforward_learning(xs1)
+        d2 = dist(np.asarray(x),np.asarray(xs2))
+        zs2,a2 = self.feedforward_learning(xs2)
+        d3 = dist(np.asarray(x),np.asarray(xt1))
+        zs3,a3 = self.feedforward_learning(xt1)
+        d4 = dist(np.asarray(x),np.asarray(xt2))
+        zs4,a4 = self.feedforward_learning(xt2)
+         # y = np.array(y).transpose()
+        activation = np.asarray(x)
+        activation.shape = (len(activation),1)
+       # print "activation", activation.shape
+       # print activation
+        activations = [x] # list to store all the activations, layer by layer
+        zs = [] # list to store all the z vectors, layer by layer
+        for b, w in zip(self.biases, self.weights):
+           # print (np.dot(w, activation) + b)
+           # print b.shape, w.shape, activation.shape
+            z = np.dot(w, activation) 
+           # print "before", z.shape
+            z = np.add(z, b)
+            #z = np.dot(w, activation)
+           # print "z.shape", z.shape
+            zs.append(z)
+            activation = sigmoid(z)
+            activations.append(activation)
+           # print "sigmoid", len(activations[-1]), len(zs[-1])
+            
+        # backward pass
+        
+        #print activations[-1]
+       # delta = self.cost_derivative(activations[-1], y)
+        #print delta
+        delta11 = self.cost_derivative(activations[-1],a1[-1]) * \
+            sigmoid_prime(zs1[-1])
+            
+        delta1 = np.dot(delta11, a1[-2].transpose())
+         
+        delta12 = self.cost_derivative(activations[-1],a1[-1]) * \
+            sigmoid_prime(zs[-1])
+            
+        delta2 = np.dot(delta12, activations[-2].transpose())
+         
+        #print "cost derivative", delta.shape
+        
+        
+        
+        # for second spatial neighbor
+        
+        
+        delta21 = self.cost_derivative(activations[-1],a2[-1]) * \
+            sigmoid_prime(zs2[-1])
+            
+        delta3 = np.dot(delta21, a2[-2].transpose())
+         
+        delta22 = self.cost_derivative(activations[-1],a2[-1]) * \
+            sigmoid_prime(zs[-1])
+            
+        delta4 = np.dot(delta22, activations[-2].transpose())
+         
+        #print "cost derivative", delta.shape
+        
+        
+        # for first temporal neighbor
+        delta31 = self.cost_derivative(activations[-1],a3[-1]) * \
+            sigmoid_prime(zs3[-1])
+            
+        delta5 = np.dot(delta31, a3[-2].transpose())
+         
+        delta32 = self.cost_derivative(activations[-1],a3[-1]) * \
+            sigmoid_prime(zs[-1])
+            
+        delta6 = np.dot(delta32, activations[-2].transpose())
+         
+        #print "cost derivative", delta.shape
+       
+        
+        # for second temporal neighbor
+        delta41 = self.cost_derivative(activations[-1],a4[-1]) * \
+            sigmoid_prime(zs4[-1])
+            
+        delta7 = np.dot(delta41, a4[-2].transpose())
+         
+        delta42 = self.cost_derivative(activations[-1],a4[-1]) * \
+            sigmoid_prime(zs[-1])
+            
+        delta8 = np.dot(delta42, activations[-2].transpose())
+         
+        #print "cost derivative", delta.shape
+        nabla_b[-1] = alpha*(d1*(delta12 - delta11) + d2*(delta22 - delta21)) + beta*(d3*(delta32 - delta31) + d4*(delta42 - delta41))
+        nabla_w[-1] = alpha*(d1*(delta2 - delta1) + d2*(delta4 - delta3)) + beta*(d3*(delta6 - delta5) + d4*(delta8 - delta7))
+        #print delta
+      #  print nabla_w[-1]
+        # Note that the variable l in the loop below is used a little
+        # differently to the notation in Chapter 2 of the book.  Here,
+        # l = 1 means the last layer of neurons, l = 2 is the
+        # second-last layer, and so on.  It's a renumbering of the
+        # scheme in the book, used here to take advantage of the fact
+        # that Python can use negative indices in lists.
+        for l in xrange(2, self.num_layers):
+            #print "delta", delta.shape
+            z = zs[-l]
+            sp = sigmoid_prime(z)
+            #print "sp", sp
+            
+            #print "next layer"
+            #print delta(
+           # nabla_b[-l] = delta
+            #print delta.shape
+            activations[-l-1] = np.asarray(activations[-l-1]) 
+            activations[-l-1].shape = (len(activations[-l-1]),1)
+            #print activations[-l-1].shape
+            #nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
+            #nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
+            
+            z1 = zs1[-l]
+            sp1 = sigmoid_prime(z1)
+            delta11  = np.dot(self.weights[-l+1].transpose(), delta11) * sp1
+            
+            delta1 = np.dot(delta11, a1[-l-1].transpose())
+         
+            delta12 = np.dot(self.weights[-l+1].transpose(), delta12) * sp
+            
+            delta2 = np.dot(delta12, activations[-l-1].transpose())
+            
+            # second neighbor
+            
+            z2 = zs2[-l]
+            sp2 = sigmoid_prime(z2)
+            delta21  = np.dot(self.weights[-l+1].transpose(), delta21) * sp2
+            
+            delta3 = np.dot(delta21, a2[-l-1].transpose())
+         
+            delta22 = np.dot(self.weights[-l+1].transpose(), delta22) * sp
+            
+            delta4 = np.dot(delta22, activations[-l-1].transpose())
+            
+            # third neighbor
+            z3 = zs3[-l]
+            sp3 = sigmoid_prime(z3)
+            delta31  = np.dot(self.weights[-l+1].transpose(), delta31) * sp3
+            
+            delta5 = np.dot(delta31, a3[-l-1].transpose())
+         
+            delta32 = np.dot(self.weights[-l+1].transpose(), delta32) * sp
+            
+            delta6 = np.dot(delta32, activations[-l-1].transpose())
+            
+            # fourth neighbor
+             
+            z4 = zs4[-l]
+            sp4 = sigmoid_prime(z4)
+            delta41  = np.dot(self.weights[-l+1].transpose(), delta41) * sp4
+            
+            delta7 = np.dot(delta41, a4[-l-1].transpose())
+         
+            delta42 = np.dot(self.weights[-l+1].transpose(), delta42) * sp
+            
+            delta8 = np.dot(delta42, activations[-l-1].transpose())
+             
+         
+        #print "cost derivative", delta.shape
+            nabla_b[-l] = alpha*(d1*(delta12 - delta11) + d2*(delta22 - delta21)) + beta*(d3*(delta32 - delta31) + d4*(delta42 - delta41))
+            nabla_w[-l] = alpha*(d1*(delta2 - delta1) + d2*(delta4 - delta3)) + beta*(d3*(delta32 - delta31) + d4*(delta42 - delta41))
+       # print nabla_w    
+        return (nabla_b, nabla_w)
+    
+        
     def backprop(self, x, y):
         """Return a tuple ``(nabla_b, nabla_w)`` representing the
         gradient for the cost function C_x.  ``nabla_b`` and
@@ -167,8 +738,18 @@ class Network(object):
         network outputs the correct result. Note that the neural
         network's output is assumed to be the index of whichever
         neuron in the final layer has the highest activation."""
-        test_results = [(self.feedforward(x), y)
+        #if(len(test_data)[0]==6 || len(test_data)[0] == 2)
+        if(len(test_data[0]) == 6):
+            
+            test_results = [(self.feedforward(mapToFloat(x)), mapToFloaty(y))
+                        for (x, xs1, xs2, xt1, xt2, y) in test_data]
+        else:
+            if(len(test_data[0])==2):
+                test_results = [(self.feedforward(mapToFloat(x)), mapToFloaty(y))
                         for (x, y) in test_data]
+            else:
+                test_results = [(self.feedforward(mapToFloat(x)), 0.0)
+                        for (x, xs1,xs2,xt1,xt2) in test_data]    
         return sum(np.linalg.norm(x-y) for (x, y) in test_results)
 
     def cost_derivative(self, output_activations, y):

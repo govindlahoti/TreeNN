@@ -1,28 +1,41 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 import time
-from queue import Queue
+from Queue import Queue
 import xmlrpclib
 import sys
 import thread
+import csv
+from distlib.util import CSVReader
 from network import *
 
 
 # The logic for generating data
-np.random.seed(42)
-data_trend = np.random.normal(0, 1, (48, 729))
+#np.random.seed(42)
+#data_trend = np.random.normal(0, 1, (48, 729))
 
-def get_data(random=False):
-	"""Returns the randomly generated data"""
-	def get_y(x):
-		return sigmoid(np.dot(data_trend, x))
-	
-	if not random:
-		np.random.seed(42)
-	
-	x_vals = [np.random.normal(0, 1, (729, 1)) for _ in range(20)]
-	y_vals = map(get_y, x_vals)
+#def get_data(random=False):
+#	"""Returns the randomly generated data"""
+#	def get_y(x):
+#		return sigmoid(np.dot(data_trend, x))
+#	
+#	if not random:
+#		np.random.seed(42)
+#	
+#	x_vals = [np.random.normal(0, 1, (729, 1)) for _ in range(20)]
+#	y_vals = map(get_y, x_vals)
+#
+#	return zip(x_vals, y_vals)
 
-	return zip(x_vals, y_vals)
+def get_data(fileName):
+	with open(fileName) as csv_file:
+		print "reading data"
+		csv_reader = csv.reader(csv_file)
+		train_data = list(csv_reader)
+		print "train data", len(train_data)
+	
+	return train_data
+
+
 
 
 def get_size(l):
@@ -49,18 +62,20 @@ class Node:
 		self.parent_address = data['parent_address']
 		self.is_worker = data['is_worker']
 		self.connected_with_parent = False
-		self.e = 0
-		self.prev_e = 0
+		self.e = 0  # how many epoches 
+		self.prev_e = 0 # 
 		self.e_lock = threading.Lock()
 		self.push_interval = data['push_interval']
 		self.pull_interval = data['pull_interval']
 		self.delays = data['delays']
+		self.inputfile = data['file_name']
+		print self.inputfile
 		
-		self.network = Network([729, 48])
+		self.network = Network([276, 276, 276, 1])
 
 		self.log_file = open(str(self.id) + '.log', 'a')
 		
-		self.acquired_gradients_from_kids = Queue()
+		self.acquired_gradients_from_kids = Queue()                          # what does it mean ????
 
 		thread.start_new_thread(self.comsume_gradients_from_kids_thread, ())
 		thread.start_new_thread(self.run_rpc_server_thread, ())
@@ -157,6 +172,7 @@ class Node:
 		server.register_function(self.push_from_child, "push_from_child")
 		server.register_function(self.pull_from_child, "pull_from_child")
 		server.register_function(self.get_loss, "get_loss")
+		# add functions for communication between workers
 		server.serve_forever()
 
 
@@ -166,7 +182,7 @@ class Node:
 		BTP Report to understand the downpour SGD logic
 		"""
 		while True:
-			data = get_data()
+			data = get_data(self.inputfile)
 			
 			if self.is_worker:
 
@@ -195,12 +211,12 @@ class Node:
 				
 				if e % self.pull_interval == 0:
 					if self.parent_address:
-						self.network.use_parent_model(*self.pull_from_parent())
+						self.network.use_parent_model(*self.pull_from_parent())                     # this code is run by non-worker node
 
 				if e % self.push_interval == 0:
 					if self.parent_address:
 						self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
-
+              
 			self.log('Epoch {} Loss = {}'.format(self.e, self.network.evaluate(data)))
 
 
