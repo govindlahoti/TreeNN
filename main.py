@@ -26,7 +26,7 @@ def main():
 		data = {}
 
 		for x in raw_data['nodes']:
-			data[x['id']] = {}
+			data[x['id']] = x
 			data[x['id']]['is_worker'] = True
 			data[x['id']]['own_address'] = (x['ip'], x['port'])
          
@@ -42,7 +42,9 @@ def main():
 			
 		for x in raw_data['nodes']:
 			if 'parent_id' in x:
+				
 				data[x['id']]['parent_address'] = 'http://{}:{}'.format(data[x['parent_id']]['ip'], data[x['parent_id']]['port'])
+				print data[x['parent_id']]
 				data[x['parent_id']]['is_worker'] = False				
 			else:
 				data[x['id']]['parent_id'] = -1
@@ -52,8 +54,12 @@ def main():
 		# Obtain the network latency information
 		for x in data:
 			data[x]['delays'] = {}
+			data[x]['addresses'] = {}
 			for y in data:
 				data[x]['delays'][y] = default_delay # y is node id
+				data[x]['addresses'][y] = 'http://{}:{}'.format(data[y]['ip'], data[y]['port'])
+				print "print", data[y]['ip']
+				print data[x]['ip']
 
 		for x in raw_data['delays']:
 			data[x['src_id']]['delays'][x['dest_id']] = x['delay']

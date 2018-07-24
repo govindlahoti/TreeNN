@@ -1,0 +1,70 @@
+# delay should be in milliseconds
+delays:
+  - src_id: 1
+    dest_id: 2
+    delay: 0
+
+# Default network delay (in ms) between the nodes
+default_delay: 0
+
+# No. of epochs after which the child node pulls the model from its parent
+default_pull_interval: 5
+
+# No. of epochs after which the child node pushes the gradients to its parent
+default_push_interval: 2 
+
+
+# Mention the list of all nodes (VMs)
+# 10.129.2.21 address of vm1 for setup1 , it contains 5 worker nodes
+# IP: 10.129.2.29 address of vms for setup2, it conatins 3 parameter server and 1 worker node 
+nodes:
+  - id: 1 # The unique ID for the node
+    ip: 10.129.2.29 # The IP address on which its RPC server is to be run
+    port: 8000 # The port on which its RPC server is to be run
+    file_name: "Cluster7_Data.csv"
+
+  - id: 4
+    ip: 10.129.2.29
+    port: 8003
+    parent_id: 1
+    push_interval: 1 # Default properties mentioned above can be customized for each node
+    file_name: "Cluster6_Data.csv" # unlabelled data
+    
+    
+  - id: 5
+    ip: 10.129.2.29 
+    port: 8004
+    parent_id: 1
+    push_interval: 1 # Default properties mentioned above can be customized for each node
+    file_name: "Cluster1_Data.csv" # unlabelled data
+   
+  - id: 6
+    ip: 10.129.2.29
+    port: 8005
+    parent_id: 1
+    push_interval: 1 # Default properties mentioned above can be customized for each node
+    file_name: "Cluster2_Data.csv" # unlabelled data
+  
+  - id: 7
+    ip: 10.129.2.21
+    port: 8006
+    parent_id: 1
+    push_interval: 1 # Default properties mentioned above can be customized for each node
+    file_name: "Cluster3_Data.csv" # unlabelled data
+  
+  - id: 8
+    ip: 10.129.2.21
+    port: 8007
+    parent_id: 1
+    push_interval: 1 # Default properties mentioned above can be customized for each node
+    file_name: "Cluster4_Data.csv" # unlabelled data
+    
+  - id: 9
+    ip: 10.129.2.21
+    port: 8008
+    parent_id: 1
+    push_interval: 1 # Default properties mentioned above can be customized for each node
+    file_name: "Cluster5_Data.csv" # unlabelled data
+   
+  
+  

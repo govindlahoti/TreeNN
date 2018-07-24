@@ -63,6 +63,15 @@ class Node:
 		self.parent_address = data['parent_address']
 		self.is_worker = data['is_worker']
 		self.connected_with_parent = False
+		
+		self.connected_with_nodes = {}
+		self.connection_objs = {}
+		self.addresses = data['addresses']
+
+		for w in data['delays']:
+			self.connected_with_nodes[w] = False
+			self.connection_objs[w] = None
+		
 		self.e = 0  # how many epoches 
 		self.prev_e = 0 # 
 		self.e_lock = threading.Lock()
@@ -72,7 +81,7 @@ class Node:
 		self.inputfile = data['file_name']
 		print self.inputfile
 		
-		self.network = Network([276, 276, 276, 1])
+		self.network = Network([276, 276, 276, 48])
 
 		self.log_file = open(str(self.id) + '.log', 'a')
 		
@@ -112,14 +121,46 @@ class Node:
 			return self.parent
 
 
+	def get_node(self, node_id):
+		"""
+		Connect with the node's RPC server if not already connected. 
+		And then return the connection object
+		"""
+		time.sleep(self.delays[node_id] / 1000.)
+		
+		if self.connected_with_nodes[node_id]:
+			return self.connection_objs[node_id]
+		else:
+			self.connection_objs[node_id] = xmlrpclib.ServerProxy(self.addresses[node_id], allow_none=True)
+			
+			while True:
+				self.log('Waiting for node {} ...'.format(node_id))
+				try:
+					self.connection_objs[node_id].recv_message(self.id, 'hello')
+					self.log('Connected with node {}'.format(node_id))
+					self.connected_with_nodes[node_id] = True
+					break
+				except Exception, e:
+					print e
+					time.sleep(1)
+
+			return self.connection_objs[node_id]	
+
 	def push_from_child(self, weight_gradient, bias_gradient, child_id):
 		"""RPC function. Add the graients obtained from child node into the queue"""
 		self.log('Got gradients from child ' + str(child_id))
 		self.log('Network cost incurrec = ' + str(get_size([weight_gradient, bias_gradient])))
-		weight_gradient = [np.array(x) for x in weight_gradient]
-		bias_gradient = [np.array(x) for x in bias_gradient]
+		if(str(child_id)=='2' or str(str(child_id) == '3')):
+                	weight_gradient = [np.array(x)/2 for x in weight_gradient]
+			bias_gradient = [np.array(x)/2 for x in bias_gradient]
+			self.log('from child1 ' + str(child_id))
+                else:
+			weight_gradient = [np.array(x)/3 for x in weight_gradient]
+                        bias_gradient = [np.array(x)/3 for x in bias_gradient]
+                        self.log('from child2 ' + str(child_id))
+
 		self.acquired_gradients_from_kids.put([weight_gradient, bias_gradient])
-	
+	        self.log('acquired gradients at node ' + str(self.id))
 
 	def pull_from_child(self, child_id):
 		"""RPC function. Return the model (weights and biases) to the child node"""
@@ -166,6 +207,14 @@ class Node:
 			self.e += 1
 			self.e_lock.release()
 
+	
+	def recv_message(self, sender_id, msg):
+		"""
+			Add the logic of what is to be done upon
+			recipt of message from some other worker
+		"""
+		self.log('Recived message from node id {}, msg: {}'.format(sender_id, msg))		
+
 
 	def run_rpc_server_thread(self):
 		"""Thread to run the RPC server for the node"""
@@ -173,6 +222,7 @@ class Node:
 		server.register_function(self.push_from_child, "push_from_child")
 		server.register_function(self.pull_from_child, "pull_from_child")
 		server.register_function(self.get_loss, "get_loss")
+		server.register_function(self.recv_message, "recv_message")
 		# add functions for communication between workers
 		server.serve_forever()
 
@@ -217,9 +267,32 @@ class Node:
 				if e % self.push_interval == 0:
 					if self.parent_address:
 						self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
-              
-			self.log('Epoch {} Loss = {}'.format(self.e, self.network.evaluate(data)))
+                        if self.is_worker:
+				self.log('run time {}'.format(time.time()))
+			else: 
+				self.log('Epoch {} Loss = {} run time {}'.format(self.e, self.network.evaluate(data), time.time()))
+            
+            		"""
+				Following code lines in this function are meant to demo
+				the functionality to send data to arbitary nodes.
+				Delete them before use.
 
+				Check the logs to node 1 and 3 to verify the exchange of message
+			"""
+
+	#		if self.id == 1:
+	#			self.send_message(3, 'Demo! How are you?')
+
+
+
+
+	def send_message(self, receiver_id, msg):
+		"""
+			Use this function to send the data to whichever
+			node you wish to
+		"""
+		self.log('Sending message to node_id {}, msg: {}'.format(receiver_id, msg))
+		self.get_node(receiver_id).recv_message(self.id, msg)
 
 	def log(self, s):
 		"""Write s to the log file of this node"""

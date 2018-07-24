@@ -1,10 +1,15 @@
 # Citation: Part of the code is taken from publicly avaiable implementation on
 # http://neuralnetworksanddeeplearning.com/chap1.html
-
+#check the dataprep file and modify the code. Right now the file may contain null values for the spatial neigbhborhood and flag is associated at each row to know whether it labelled
+# or unlabelled data ..................we need to choose the function based on the input row.
+# a batch may contain labelled and unlabelled both type of rows  
 import random
 import numpy as np
 import threading
 import timeit
+import time
+import sys
+import csv
 from copy import deepcopy
 
 # The class of DNN
@@ -19,10 +24,23 @@ def mapToFloat(x):
         #x = tuple(x)
         x = x.replace("'", "")
         x = tuple(x.split(','))
-        x = list(x)
+    
+        #print x
+        z = []
+        #print y
+        for w in x:
+            temp = ()
+            if w:
+               #print x
+               if(w != ' '):
+                  # print x
+                   z.append(w)
+        z = list(z)
+       
       #  print x[0], x[1], x[2]govindlahoti22@hotmail.com
         #print x
-        r = map(float,x)
+        r = map(float,z)
+        #print "length", len(r)
         return r
 
 def mapToFloaty(y):
@@ -31,13 +49,31 @@ def mapToFloaty(y):
         #print y
         #x = tuple(x)
         y = y.replace("'", "")
+       # y = filter(None,y)
+        y = tuple(y.split(','))
+        z = []
+        #print y
+        for x in y:
+            temp = ()
+            if x:
+               #print x
+               if(x != '  '):
+                  # print x
+                   z.append(x) 
+        #z.append(temp)
+        z = list(z)
+            
+        #y = list(filter(None,y))
+      #  print x[0], x[1], x[2]govindlahoti22@hotmail.com
+        #print x
+        r = map(float,z)
         #print y
         #y = tuple(y)
         #print y
         #y = list(y)
       #  print x[0], x[1], x[2]
         #print y
-        r = float(y)
+        #r = float(y)
         #print r
         return r
 class Network(object):
@@ -117,6 +153,9 @@ class Network(object):
         a.shape = (len(a),1)
         for b, w in zip(self.biases, self.weights):
             a = sigmoid(np.dot(w, a)+b)
+        a = list(a)
+        a = np.asarray(a)
+	a.shape = (len(a),1) 
         return a
 
 
@@ -144,7 +183,7 @@ class Network(object):
         return zs, activations
     
 
-    def SGD(self, training_data, epochs=1, mini_batch_size=10, eta=0.01, lmbda = 1, alpha=10, beta=15):
+    def SGD(self, training_data, epochs=1, mini_batch_size=10, eta=0.01, lmbda = 2, alpha=5, beta=0.2):
         """Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
         ``(x, y)`` representing the training inputs and the desired
@@ -154,33 +193,42 @@ class Network(object):
         epoch, and partial progress printed out.  This is useful for
         tracking progress, but slows things down substantially."""
         n = len(training_data)
+        print "length of training data", n
         for j in xrange(epochs):
             random.shuffle(training_data)
-            if(len(training_data[0]) == 6):
-                mini_batches = [
-                    training_data[k:k+mini_batch_size]
-                    for k in xrange(0, n, mini_batch_size)]
-                i = 0
-                for mini_batch in mini_batches:
-                    self.update_l_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
-                    print "mini batch", i
-                   # i = i+1
-                   # if(i==10):
-                   #     break
+            #if(len(training_data[0]) == 6):
+            mini_batches = [
+                training_data[k:k+mini_batch_size]
+                for k in xrange(0, n, mini_batch_size)]
+            i = 0
+            print "number of minibatches", len(mini_batches)
+            for mini_batch in mini_batches:
+                self.update_l_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
+              #  print "mini batch", i
+              #  i = i+1
+                #if(i==1):
+                #    break
                     
-            else:
-                l=0
-                mini_batches = [
-                    training_data[k:k+mini_batch_size]
-                    for k in xrange(0, n, mini_batch_size)]
-                for mini_batch in mini_batches:
-                    self.update_u_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
-                    print "mini batch", l
-                   # l = l+1
-                   # if(l==10):
-                   #     break
-                    
-                
+            #else:
+             #   l=0
+             #   mini_batches = [
+             #       training_data[k:k+mini_batch_size]
+             #       for k in xrange(0, n, mini_batch_size)]
+             #   for mini_batch in mini_batches:
+             #       self.update_u_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
+             #       print "mini batch", l
+             #       l = l+1
+             #       if(l==10):
+             #           break
+            print "model is learnt"       
+            #print "model is learnt"
+            #stop1 = timeit.default_timer()
+            #print "evaluation started"
+            #if training_data:
+            #    print "Epoch {0}: {1} / {2}".format(
+            #        j, self.evaluate(training_data), n)
+            #else:
+            #    print "Epoch {0} complete".format(j)    
 
 
     def update_mini_batch(self, mini_batch, eta):
@@ -214,31 +262,76 @@ class Network(object):
         is the learning rate. L2 regularization is added"""
         nabla_b = [np.zeros(b.shape) for b in self.biases] 
         nabla_w = [np.zeros(w.shape) for w in self.weights]
+        nabla_bl = [np.zeros(b.shape) for b in self.biases]
+        nabla_wl = [np.zeros(w.shape) for w in self.weights]
+        i=0
+        l_i = 0
         
             #print mini_batch
-        for x, xs1, xs2, xt1, xt2, y in mini_batch:
-            #print "backprop", x
-            delta_nabla_b, delta_nabla_w = self.backprop_l(x, xs1, xs2, xt1, xt2, y, alpha, beta)
+        for x, xs1, xs2, xt1, xt2, y, flag in mini_batch:
+            #print i
+            flag = flag[1:-2]
+           # i=i+1
+           # print i
+            if(flag == "1" and len(mapToFloaty(y))==48 and len(mapToFloat(x)) == 276 and len(mapToFloat(xs1)) == 276 and len(mapToFloat(xs2)) == 276 and len(mapToFloat(xt1)) == 276 and len(mapToFloat(xt2)) == 276):
+                #print "1 is started"
+                l_i = l_i+1
+                delta_nabla_b, delta_nabla_w = self.backprop_l(x, xs1, xs2, xt1, xt2, y, alpha, beta)
             #for nb, dnb in zip(nabla_b, delta_nabla_b):
                 #print "weight update", nb.shape, dnb.shape 
-            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
-            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
+                nabla_bl = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
+                nabla_wl = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
+                #lmbda1 = lmbda
+            else:
+                if(flag == "0" and len(mapToFloat(x)) == 276 and len(mapToFloat(xs1)) == 276 and len(mapToFloat(xs2)) == 276 and len(mapToFloat(xt1)) == 276 and len(mapToFloat(xt2)) == 276):
+                    delta_nabla_b, delta_nabla_w = self.backprop_u(x, xs1, xs2, xt1, xt2, alpha, beta)
             
+                    nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
+                    nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
+                    #lmbda1 = 0
+                #else:
+                #    print "error"
+        
+
+	nabw = [eta*lmbda*w+(eta/len(mini_batch))*nw
+                        for w, nw in zip(self.weights, nabla_w)]
+
+  # for labelled data
+        if(l_i>0):
+        	nabw = [w+(eta/l_i)*nw
+                        for w, nw in zip(nabw, nabla_wl)]
+
+		
+        self.weights = [w-nw for w, nw in zip(self.weights, nabw)]
+        self.biases = [b-(eta/len(mini_batch))*nb
+                       for b, nb in zip(self.biases, nabla_b)]
+        if(l_i>0):
+        	self.biases = [b-(eta/l_i)*nb
+                       for b, nb in zip(self.biases, nabla_bl)]
+
+        
+        self.acquired_weights = [w+nw
+                        for w, nw in zip(self.acquired_weights, nabw)]
+        self.acquired_biases = [b+(eta/len(mini_batch))*nb
+                       for b, nb in zip(self.acquired_biases, nabla_b)]
+        if(l_i>0):
+        	self.acquired_biases = [b+(eta/l_i)*nb
+                       for b, nb in zip(self.acquired_biases, nabla_bl)]        
         #self.weights = [w-(eta/len(mini_batch))*nw
          #               for w, nw in zip(self.weights, nabla_w)]
         #self.biases = [b-(eta/len(mini_batch))*nb
          #              for b, nb in zip(self.biases, nabla_b)]
         #print "next"
         #print nabla_b
-        self.weights = [w-eta*(lmbda/len(mini_batch))*w-(eta/len(mini_batch))*nw
-                        for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b-(eta/len(mini_batch))*nb
-                       for b, nb in zip(self.biases, nabla_b)]
+        #self.weights = [w-eta*(lmbda1/len(mini_batch))*w-(eta/len(mini_batch))*nw
+                        #for w, nw in zip(self.weights, nabla_w)]
+        #self.biases = [b-(eta/len(mini_batch))*nb
+                       #for b, nb in zip(self.biases, nabla_b)]
         
-        self.acquired_weights = [w+eta*(lmbda/len(mini_batch))*w+(eta/len(mini_batch))*nw
-                        for w, nw in zip(self.acquired_weights, nabla_w)]
-        self.acquired_biases = [b+(eta/len(mini_batch))*nb
-                       for b, nb in zip(self.acquired_biases, nabla_b)]
+        #self.acquired_weights = [w+eta*(lmbda1/len(mini_batch))*w+(eta/len(mini_batch))*nw
+                       # for w, nw in zip(self.acquired_weights, nabla_w)]
+        #self.acquired_biases = [b+(eta/len(mini_batch))*nb
+                       #for b, nb in zip(self.acquired_biases, nabla_b)]
         #for b in self.biases:
         #    print b
         #    print "next layer b"
@@ -253,8 +346,10 @@ class Network(object):
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
             #print mini_batch
-        for x, xs1, xs2, xt1, xt2 in mini_batch:
-            #print "backprop"
+        i=0
+	for x, xs1, xs2, xt1, xt2 in mini_batch:
+            i=i+1
+	    print i
             delta_nabla_b, delta_nabla_w = self.backprop_u(x, xs1, xs2, xt1, xt2, alpha, beta)
             
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
@@ -339,8 +434,8 @@ class Network(object):
         #y = map(float, y)
         y = np.asarray(y)
         #print y
-        #y.shape = (len(y),1)
-       # y = np.array(y).transpose()
+        y.shape = (len(y),1)
+        #y = np.array(y).transpose()
         activation = np.asarray(x)
         activation.shape = (len(activation),1)
        # print "activation", activation.shape
@@ -370,7 +465,7 @@ class Network(object):
         #print delta
         delta = self.cost_derivative(activations[-1], y) * \
             sigmoid_prime(zs[-1])
-        #print a1[-1].shape, activations[-1].shape
+        #print len(y), activations[-1].shape, delta.shape
         delta11 = self.cost_derivative(activations[-1], a1[-1]) * \
             sigmoid_prime(zs1[-1])
             
@@ -739,10 +834,10 @@ class Network(object):
         network's output is assumed to be the index of whichever
         neuron in the final layer has the highest activation."""
         #if(len(test_data)[0]==6 || len(test_data)[0] == 2)
-        if(len(test_data[0]) == 6):
+        if(len(test_data[0]) == 7):
             
             test_results = [(self.feedforward(mapToFloat(x)), mapToFloaty(y))
-                        for (x, xs1, xs2, xt1, xt2, y) in test_data]
+                        for (x, xs1, xs2, xt1, xt2, y,flag) in test_data]
         else:
             if(len(test_data[0])==2):
                 test_results = [(self.feedforward(mapToFloat(x)), mapToFloaty(y))
@@ -750,7 +845,17 @@ class Network(object):
             else:
                 test_results = [(self.feedforward(mapToFloat(x)), 0.0)
                         for (x, xs1,xs2,xt1,xt2) in test_data]    
-        return sum(np.linalg.norm(x-y) for (x, y) in test_results)
+        r=0
+        n = 0
+        for x,y in test_results:
+            y = list(y)
+            y = np.asarray(y)
+            y.shape = (len(y),1)
+            if(len(y)==48):
+                r = r+ np.linalg.norm(x-y)/48
+                n=n+1
+        return r/n    
+        #return sum(np.linalg.norm(x-y) for (x, y) in test_results) # L2 Norm
 
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
