@@ -1,3 +1,5 @@
-for pid in $(ps -ef | grep "python slave.py" | awk '{print $2}'); 
-	do kill -9 $pid; 
+for pid in $(ps -ef | egrep 'python3 slave.py|python3 main.py' | awk '{print $2}'); 
+do
+	echo "$pid";
+	kill -9 $pid; 
 done

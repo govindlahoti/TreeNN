@@ -41,7 +41,7 @@ def mapToFloat(x):
         #print x
         r = map(float,z)
         #print "length", len(r)
-        return r
+        return list(r)
 
 def mapToFloaty(y):
         #x = map(float,x)
@@ -75,7 +75,8 @@ def mapToFloaty(y):
         #print y
         #r = float(y)
         #print r
-        return r
+        return list(r)
+
 class Network(object):
 
     def __init__(self, sizes):
@@ -155,7 +156,7 @@ class Network(object):
             a = sigmoid(np.dot(w, a)+b)
         a = list(a)
         a = np.asarray(a)
-	a.shape = (len(a),1) 
+        a.shape = (len(a),1) 
         return a
 
 
@@ -193,15 +194,15 @@ class Network(object):
         epoch, and partial progress printed out.  This is useful for
         tracking progress, but slows things down substantially."""
         n = len(training_data)
-        print "length of training data", n
-        for j in xrange(epochs):
+        print("length of training data", n)
+        for j in range(epochs):
             random.shuffle(training_data)
             #if(len(training_data[0]) == 6):
             mini_batches = [
                 training_data[k:k+mini_batch_size]
-                for k in xrange(0, n, mini_batch_size)]
+                for k in range(0, n, mini_batch_size)]
             i = 0
-            print "number of minibatches", len(mini_batches)
+            print("number of minibatches", len(mini_batches))
             for mini_batch in mini_batches:
                 self.update_l_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
               #  print "mini batch", i
@@ -213,14 +214,14 @@ class Network(object):
              #   l=0
              #   mini_batches = [
              #       training_data[k:k+mini_batch_size]
-             #       for k in xrange(0, n, mini_batch_size)]
+             #       for k in range(0, n, mini_batch_size)]
              #   for mini_batch in mini_batches:
              #       self.update_u_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
              #       print "mini batch", l
              #       l = l+1
              #       if(l==10):
              #           break
-            print "model is learnt"       
+            print("model is learnt")       
             #print "model is learnt"
             #stop1 = timeit.default_timer()
             #print "evaluation started"
@@ -293,7 +294,7 @@ class Network(object):
                 #    print "error"
         
 
-	nabw = [eta*lmbda*w+(eta/len(mini_batch))*nw
+        nabw = [eta*lmbda*w+(eta/len(mini_batch))*nw
                         for w, nw in zip(self.weights, nabla_w)]
 
   # for labelled data
@@ -347,9 +348,9 @@ class Network(object):
         nabla_w = [np.zeros(w.shape) for w in self.weights]
             #print mini_batch
         i=0
-	for x, xs1, xs2, xt1, xt2 in mini_batch:
+        for x, xs1, xs2, xt1, xt2 in mini_batch:
             i=i+1
-	    print i
+            print(i)
             delta_nabla_b, delta_nabla_w = self.backprop_u(x, xs1, xs2, xt1, xt2, alpha, beta)
             
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
@@ -534,7 +535,7 @@ class Network(object):
         # second-last layer, and so on.  It's a renumbering of the
         # scheme in the book, used here to take advantage of the fact
         # that Python can use negative indices in lists.
-        for l in xrange(2, self.num_layers):
+        for l in range(2, self.num_layers):
             #print "delta", delta.shape
             z = zs[-l]
             sp = sigmoid_prime(z)
@@ -724,7 +725,7 @@ class Network(object):
         # second-last layer, and so on.  It's a renumbering of the
         # scheme in the book, used here to take advantage of the fact
         # that Python can use negative indices in lists.
-        for l in xrange(2, self.num_layers):
+        for l in range(2, self.num_layers):
             #print "delta", delta.shape
             z = zs[-l]
             sp = sigmoid_prime(z)
@@ -820,7 +821,7 @@ class Network(object):
         # second-last layer, and so on.  It's a renumbering of the
         # scheme in the book, used here to take advantage of the fact
         # that Python can use negative indices in lists.
-        for l in xrange(2, self.num_layers):
+        for l in range(2, self.num_layers):
             z = zs[-l]
             sp = sigmoid_prime(z)
             delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
