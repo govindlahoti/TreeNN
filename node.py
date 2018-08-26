@@ -62,9 +62,6 @@ class Node(ABC):
 
 		### Information about the learning model
 		self.epoch_limit = data['epoch_limit']
-		self.e = 0  
-		self.prev_e = 0  
-		self.e_lock = threading.Lock()
 		self.inputfile = data['file_name']
 		self.batch_size = data['batch_size']
 		print(self.inputfile)
@@ -80,21 +77,11 @@ class Node(ABC):
 	def init_threads(self):
 		print("Method not implemented")
 
-	@abstractmethod
-	def run_sharing_logic_thread(self):
-		"""
-		Runs the downpour SGD logic for sharing the weights/models with the parent and child
-		nodes. Leaf nodes train the model using the data while the non-leaf nodes don't. Refer the
-		BTP Report to understand the downpour SGD logic
-		"""
-		print("Method not implemented")
-
 	### Server thread 
 	@abstractmethod
 	def run_rpc_server_thread(self):
 		"""Thread to run the RPC server for the node"""
 		print("Method not implemented")		
-
 
 	###------------------------- Connection functions -----------------------------------------
 	def get_master(self):
@@ -153,7 +140,7 @@ class Node(ABC):
 		self.log(self.create_log('CONN',{
 									'Network cost incurred in bytes' : get_size([weight_gradient, bias_gradient])
 								}))
-		
+
 		self.get_parent().push_from_child(weight_gradient, bias_gradient, self.id)
 
 	def pull_from_parent(self):
@@ -165,6 +152,9 @@ class Node(ABC):
 		model[1] = [np.array(x) for x in model[1]]
 		
 		self.log(self.create_log('CONN','Got model from parent %d'%(self.parent_id)))
+		self.log(self.create_log('CONN',{
+									'Network cost incurred in bytes' : get_size(model)
+								}))
 		
 		return model
 
@@ -179,8 +169,7 @@ class Node(ABC):
 	
 	def remote_shutdown(self):
 		t = threading.Thread(target=self.shutdown_thread)
-		t.start()
-		t.join()
+		t.start();t.join()
 
 	def shutdown_thread(self):
 		self.server.shutdown()

@@ -7,6 +7,7 @@ class Worker(Node):
 
 	def __init__(self, data):
 		super().__init__(data) 
+		self.e = 0 
 
 	def init_threads(self):
 		'''
