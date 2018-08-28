@@ -1,33 +1,25 @@
-"""
-Run this as 
-python main.py setup.yaml
-"""
-
 import yaml
-import sys
-import netifaces as ni
 import json
 from time import sleep
-import threading
+import netifaces as ni
 from paramiko import client
-from xmlrpc.server import SimpleXMLRPCServer
+from collections import OrderedDict
 
-# Obtain the meta-data for all the nodes
-data = {}
+data = OrderedDict()
 
 # Class for ssh into the machine and trigger nodes
 class ssh:
 
 	def __init__(self, address, username, password):
-		print("Connecting to %s@%s..."%(username,address))
+		print("Connecting to %s@%s ..."%(username,address))
 		try:
 			self.client = client.SSHClient()
 			self.client.set_missing_host_key_policy(client.AutoAddPolicy())
 			self.client.connect(address, username=username, password=password, look_for_keys=False)
 			print("Connected to %s@%s"%(username,address))
-		except:
+		except Exception as e:
 			self.client = None
-			print("Authentication failed")
+			print("Authentication failed: %s"%e)
  	
 	def trigger_node(self, node_id, node_data):
 		if(self.client):
@@ -54,10 +46,10 @@ class ssh:
 			self.client.close()
 
 # Read yaml from config file
-def read_yaml(master_address):
+def read_yaml(master_address,config_file):
 	global data
 	# Read the spec file passed as command line argument
-	with open(sys.argv[1], 'r') as f:
+	with open(config_file, 'r') as f:
 		raw_data = yaml.load(f.read())
 
 		# Extract the data from the yaml file
@@ -98,7 +90,9 @@ def read_yaml(master_address):
 
 		for x in raw_data['delays']:
 			data[x['src_id']]['delays'][x['dest_id']] = x['delay']
-		
+
+	return data
+	
 # Log into machine and trigger node
 def trigger_scripts():
 	# Can do a group by to login into the machine once and trigger all the scripts
@@ -109,17 +103,6 @@ def trigger_scripts():
 		connection.disconnect()
 		sleep(1)
 
-# Start XML RPC server on the Master machine
-def start_server(own_address):
-	print('RPC server started at http://%s:%d'%own_address)
-	server = SimpleXMLRPCServer(own_address, allow_none=True)
-	server.register_function(log_report)
-	server.serve_forever()
-
-# Get logs from nodes
-def log_report(log):
-	print(log)
-
 # Get own IP
 def get_ip():
 	ifaces = ni.interfaces()
@@ -129,16 +112,3 @@ def get_ip():
 			return(ni.ifaddresses(iface)[ni.AF_INET][0]['addr'])
 		except:
 			continue
-
-if __name__ == '__main__':
-	
-	if len(sys.argv) < 2:
-		print("Format: python3 main.py <yaml file>")
-		exit(0)
-
-	own_address = (get_ip(),9000)
-	read_yaml(own_address)
-	server_thread = threading.Thread(target=start_server,args=(own_address,))
-	server_thread.start()
-	trigger_scripts()
-	server_thread.join()
