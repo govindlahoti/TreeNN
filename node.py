@@ -29,7 +29,7 @@ def get_size(l):
 	if type(l) == list or type(l) == tuple:
 		return sum(get_size(subl) for subl in l)
 	else:
-		return 1
+		return 8	### Float size = 8 bytes
 
 # An abstract class for simulating an edge device
 class Node(ABC):
@@ -165,7 +165,7 @@ class Node(ABC):
 
 	def recv_message(self, sender_id, msg):
 		"""Add the logic of what is to be done upon	reciept of message from some other worker"""
-		self.log('Received message from node id {}, msg: {}'.format(sender_id, msg))		
+		self.log(self.create_log('CONN','Received message from node id %d, msg: %s'%(sender_id, msg)))		
 	
 	def remote_shutdown(self):
 		t = threading.Thread(target=self.shutdown_thread)

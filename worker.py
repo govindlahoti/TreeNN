@@ -1,3 +1,5 @@
+import os
+import psutil
 import threading
 from collections import OrderedDict
 
@@ -34,9 +36,10 @@ class Worker(Node):
 
 	def run_sharing_logic_thread(self):
 
+		py = psutil.Process(os.getpid())
 		while self.e <= self.epoch_limit:
+			epoch_start_cpu, epoch_start = time.time(), time.clock()
 			data = get_data(self.inputfile)
-			
 			### Pull model from parent			
 			self.network.use_parent_model(*self.pull_from_parent())
 
@@ -45,13 +48,14 @@ class Worker(Node):
 
 			self.log(self.create_log('STAT',OrderedDict({
 				'Epoch ID': self.e,
-				'Runtime': time.time(),
+				'Runtime': time.clock() - epoch_start,
+				'Process time': time.time() - epoch_start_cpu,
+				'Memory Usage': py.memory_info()[0]/2.**30,
 				'Accuracy':self.network.evaluate(data),
 				})))
 
 			### Push model to parent
 			self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
-			
 			self.e += 1
 			
 		client = ServerProxy(self.own_server_address)
