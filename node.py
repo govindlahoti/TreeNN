@@ -170,7 +170,7 @@ class Node(ABC):
 	
 	def remote_shutdown(self):
 		t = threading.Thread(target=self.shutdown_thread)
-		t.start();
+		t.start()
 
 	def shutdown_thread(self):
 		self.server.shutdown()
