@@ -81,7 +81,12 @@ class Node(ABC):
 	@abstractmethod
 	def run_rpc_server_thread(self):
 		"""Thread to run the RPC server for the node"""
-		print("Method not implemented")		
+		print("Method not implemented")	
+
+	@abstractmethod
+	def receive_message(self, sender_id, msg):
+		"""Add the logic of what is to be done upon	receipt of message from some other Node"""
+		print("Method not implemented")
 
 	###------------------------- Connection functions -----------------------------------------
 	def get_master(self):
@@ -118,7 +123,7 @@ class Node(ABC):
 			while True:
 				self.log(self.create_log('CONN','Waiting for node %s to connect'%(node_id)))
 				try:
-					self.connection_objs[node_id].recv_message(self.id, 'hello')
+					self.connection_objs[node_id].receive_message(self.id, 'connected')
 					self.log(self.create_log('CONN','Connected with node %s'%(node_id)))
 					break
 				except Exception as e:
@@ -161,15 +166,11 @@ class Node(ABC):
 	###-------------------------- RPC functions -----------------------------------------
 	def get_loss(self):
 		"""RPC function. Return the loss of the present model at the node"""
-		return float(self.network.evaluate(data))
-
-	def recv_message(self, sender_id, msg):
-		"""Add the logic of what is to be done upon	reciept of message from some other worker"""
-		self.log(self.create_log('CONN','Received message from node id %d, msg: %s'%(sender_id, msg)))		
+		return float(self.network.evaluate(data))		
 	
 	def remote_shutdown(self):
 		t = threading.Thread(target=self.shutdown_thread)
-		t.start();t.join()
+		t.start();
 
 	def shutdown_thread(self):
 		self.server.shutdown()
@@ -177,8 +178,8 @@ class Node(ABC):
 	### Meta functions
 	def send_message(self, receiver_id, msg):
 		"""Use this function to send the data to whichever node you wish to"""
-		self.log('Sending message to node_id {}, msg: {}'.format(receiver_id, msg))
-		self.get_node(receiver_id).recv_message(self.id, msg)
+		self.log(self.create_log('CONN','Sending message to node %d, msg: %s'%(receiver_id, msg)))
+		self.get_node(receiver_id).receive_message(self.id, msg)
 	
 	def create_log(self, log_type, payload):
 		log = OrderedDict({

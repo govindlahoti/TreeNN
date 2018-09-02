@@ -24,7 +24,6 @@ nodes:
     push_interval: 1 
     file_name: "Cluster8_Data.csv"
     batch_size: 10
-    epoch_limit: 5
    
   
   

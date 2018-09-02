@@ -12,6 +12,9 @@ class ParameterServer(Node):
 		self.merge_id = 0
 		self.merge_lock = threading.Lock()
 
+		self.active_children = set()
+		self.child_ever_connected = False
+
 	def init_threads(self):
 		'''
 		Parameter server spawns three threads - 
@@ -32,7 +35,7 @@ class ParameterServer(Node):
 		This thread runs indefinitely. It monitors the queue of acquired gradients from the 
 		child nodes. It modifies the node's model using those gradients.
 		"""
-		while True:
+		while len(self.active_children) > 0 or not self.child_ever_connected:
 			weight_gradient, bias_gradient = self.acquired_gradients_from_kids.get()
 			
 			### Pull from parent
@@ -64,8 +67,12 @@ class ParameterServer(Node):
 			self.merge_id += 1
 			self.merge_lock.release()
 
+		### Stop Server Thread
 		client = ServerProxy(self.own_server_address)
 		client.remote_shutdown()
+
+		### Send Done acknowledgement to Master
+		self.log(self.create_log('DONE',''))
 
 	def run_rpc_server_thread(self):
 		"""Thread to run the RPC server for the node"""
@@ -73,12 +80,12 @@ class ParameterServer(Node):
 		self.server.register_function(self.push_from_child, "push_from_child")
 		self.server.register_function(self.pull_from_child, "pull_from_child")
 		self.server.register_function(self.get_loss, "get_loss")
-		self.server.register_function(self.recv_message, "recv_message")
+		self.server.register_function(self.receive_message, "receive_message")
 		self.server.register_function(self.remote_shutdown, "remote_shutdown")
 		# add functions for communication between workers
 		self.server.serve_forever()
 
-	###-------------------------- RPC functions -----------------------------------------
+	###-------------------------- Additional RPC functions ---------------------------------
 
 	def push_from_child(self, weight_gradient, bias_gradient, child_id):
 		"""RPC function. Add the gradients obtained from child node into the queue"""
@@ -102,3 +109,10 @@ class ParameterServer(Node):
 		model[0] = [x.tolist() for x in model[0]]
 		model[1] = [x.tolist() for x in model[1]]
 		return model
+
+	def receive_message(self, sender_id, msg):
+		self.child_ever_connected = True
+		if msg == 'connected': self.active_children.add(sender_id)
+		elif msg == 'disconnected': self.active_children.remove(sender_id)
+
+		self.log(self.create_log('CONN','Received message from node id %d: %s'%(sender_id, msg)))   
