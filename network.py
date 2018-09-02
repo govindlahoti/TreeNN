@@ -12,6 +12,8 @@ import sys
 import csv
 from copy import deepcopy
 
+from application import Application
+
 # The class of DNN
 def dist(x,y):   
     z = np.sqrt(np.sum((x-y)**2))
@@ -77,7 +79,7 @@ def mapToFloaty(y):
         #print r
         return list(r)
 
-class Network(object):
+class Network(Application):
 
     def __init__(self, sizes):
         """The list ``sizes`` contains the number of neurons in the
@@ -100,14 +102,6 @@ class Network(object):
         self._reset_acquired_weights_and_biases()
         self.parent_update_lock = threading.Lock()
 
-
-    def _reset_acquired_weights_and_biases(self):
-        """Reset the acquired weights to zeros"""
-        self.acquired_biases = [np.zeros((y, 1)) for y in self.sizes[1:]]
-        self.acquired_weights = [np.zeros((y, x))
-                        for x, y in zip(self.sizes[:-1], self.sizes[1:])]
-
-
     def get_model(self):
         """Return the present model (weights and biases)"""
         self.parent_update_lock.acquire()
@@ -115,10 +109,16 @@ class Network(object):
         biases = deepcopy(self.biases)
         self.parent_update_lock.release()
         return [weights, biases]
+
+    def _reset_acquired_weights_and_biases(self):
+        """Reset the acquired weights to zeros"""
+        self.acquired_biases = [np.zeros((y, 1)) for y in self.sizes[1:]]
+        self.acquired_weights = [np.zeros((y, x))
+                        for x, y in zip(self.sizes[:-1], self.sizes[1:])]
     
 
     def apply_kid_gradient(self, weight_gradient, bias_gradient):
-        """Update the model (weights, biases) by adding the graients obtained from the child node"""
+        """Update the model (weights, biases) by adding the gradients obtained from the child node"""
         self.parent_update_lock.acquire()
 
         self.weights = [w - wg for w, wg in zip(self.weights, weight_gradient)]
@@ -184,7 +184,7 @@ class Network(object):
         return zs, activations
     
 
-    def SGD(self, training_data, epochs=1, mini_batch_size=10, eta=0.01, lmbda = 2, alpha=5, beta=0.2):
+    def train(self, training_data, epochs=1, mini_batch_size=10, eta=0.01, lmbda = 2, alpha=5, beta=0.2):
         """Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
         ``(x, y)`` representing the training inputs and the desired

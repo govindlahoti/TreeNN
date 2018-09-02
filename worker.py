@@ -44,7 +44,7 @@ class Worker(Node):
 			self.network.use_parent_model(*self.pull_from_parent())
 
 			### Run SGD algorithm
-			self.network.SGD(data, epochs=1, mini_batch_size=self.batch_size)
+			self.network.train(data, epochs=1, mini_batch_size=self.batch_size)
 
 			self.log(self.create_log('STAT',OrderedDict({
 				'Epoch ID': self.e,

@@ -152,6 +152,7 @@ class Node(ABC):
 		"""Pull the mode from the parent node. Calls parent's RPC function internally"""
 		if not self.parent_address:
 			return
+			
 		model = self.get_parent().pull_from_child(self.id)
 		model[0] = [np.array(x) for x in model[0]]
 		model[1] = [np.array(x) for x in model[1]]
