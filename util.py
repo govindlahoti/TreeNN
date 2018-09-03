@@ -1,3 +1,10 @@
+"""
+Contains utility functions for master.py
+1. read_yaml(): Read yaml file and store configuration data
+2. trigger_scripts(): Log into slave machines and trigger nodes
+3. get_ip(): Get own IP address
+"""
+
 import yaml
 import json
 from time import sleep
@@ -5,12 +12,17 @@ import netifaces as ni
 from paramiko import client
 from collections import OrderedDict
 
+from const import *
+
 data = OrderedDict()
 
-# Class for ssh into the machine and trigger nodes
 class ssh:
+	"""
+	Class for ssh into the slave machine and trigger nodes
+	"""
 
 	def __init__(self, address, username, password):
+
 		print("Connecting to %s@%s ..."%(username,address))
 		try:
 			self.client = client.SSHClient()
@@ -22,11 +34,11 @@ class ssh:
 			print("Authentication failed: %s"%e)
  	
 	def trigger_node(self, node_id, node_data):
+
 		if(self.client):
 			
-			### *** Edit command for triggering node here
-			command = "cd Simulator/TreeNN && python3 slave.py %d '%s' &"%(node_id, node_data)
-			
+			command = TRIGGER_NODE_COMMAND%(node_id, node_data)
+
 			print("Running command: %s"%command)
 			stdin, stdout, stderr = self.client.exec_command(command)
 			while not stderr.channel.exit_status_ready():
@@ -42,17 +54,20 @@ class ssh:
 			print("Connection not opened")
 
 	def disconnect(self):
+
 		if(self.client):
 			self.client.close()
 
-# Read yaml from config file
 def read_yaml(master_address,config_file):
+	"""
+	Read yaml from config file
+	master_address is sent to slaves so that they can report back the logs
+	"""
 	global data
-	# Read the spec file passed as command line argument
-	with open(config_file, 'r') as f:
-		raw_data = yaml.load(f.read())
 
-		# Extract the data from the yaml file
+	with open(config_file, 'r') as f:
+		
+		raw_data = yaml.load(f.read())
 
 		# Obtain the default values of properties
 		default_delay = raw_data['default_delay']
@@ -79,7 +94,6 @@ def read_yaml(master_address,config_file):
 				data[x['id']]['parent_id'] = -1
 				data[x['id']]['parent_address'] = None
 
-		 
 		# Obtain the network latency information
 		for x in data:
 			data[x]['delays'] = {}
@@ -93,8 +107,11 @@ def read_yaml(master_address,config_file):
 
 	return data
 	
-# Log into machine and trigger node
 def trigger_scripts():
+	"""
+	Log into machine and trigger node
+	"""
+
 	# Can do a group by to login into the machine once and trigger all the scripts
 	for node_id in data:
 		# Create a connection. Format: IP address, username, password
@@ -103,8 +120,11 @@ def trigger_scripts():
 		connection.disconnect()
 		sleep(1)
 
-# Get own IP
 def get_ip():
+	"""
+	Get own IP address
+	"""
+
 	ifaces = ni.interfaces()
 	ifaces.sort(reverse=True)
 	for iface in ifaces:

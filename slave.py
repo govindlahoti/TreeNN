@@ -1,3 +1,16 @@
+"""
+This wrapper script is placed on the slave machine and is triggered by an external master machine
+It is expected that the Node files and Application files are available to the slave on the machine
+
+Can be run individually as:
+	python3 slave.py <node_id> <node_data>
+But the above method is not advisable as the Simulation has additional dependencies of a Master machine 
+RPC server (for reporting) and the parent-child heirarchy defined by the configuration file
+
+1. Converts node data provided as arguments to a dictionary
+2. Initializes threads for the node and waits for them to complete execution
+"""
+
 import sys
 import json
 from parameter_server import ParameterServer
@@ -5,11 +18,11 @@ from worker import Worker
 import time
 
 def main():
+	
 	if(len(sys.argv)<3):
-		print("Usage: python slave.py <node_id> <node_data>")
+		print("Usage: python3 slave.py <node_id> <node_data>")
 		exit()
 
-	# # Spawn all the nodes as mentioned in the spec file
 	print("Initiating node %s"%sys.argv[1])
 	data = json.loads(sys.argv[2])
 
@@ -20,12 +33,5 @@ def main():
 	for t in threads:
 		t.join()
 	
-	# # Run this thread indefinitely
-	# while True:
-	# 	# Collect reports periodically
-	# 	time.sleep(100)
-
-	#send finish signal to master
-
 if __name__ == '__main__':
 	main()
