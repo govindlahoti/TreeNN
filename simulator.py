@@ -161,12 +161,21 @@ def start_server(own_address):
 	print('RPC server started at http://%s:%d'%own_address)
 	server = SimpleXMLRPCServer(own_address, allow_none=True)
 	server.register_function(log_report)
+	server.register_function(shutdown_thread)
 	server.serve_forever()
 
-simulator = None
+def remote_shutdown():
+	print("alskdaskdlask")
+	t = threading.Thread(target=shutdown_thread)
+	t.start();t.join()
+
+def shutdown_thread():
+	server.shutdown()
+
 # Get logs from nodes
 def log_report(log):
 	print(log)
+	log = json.loads(log)
 	if __name__ == '__main__':
 		log = json.loads(log)
 		if log["node_id"] not in report:

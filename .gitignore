@@ -1,3 +1,7 @@
 *.pyc
 *.log
 *.csv
+local.yaml
+client.py 
+sampleText.txt
+example.py

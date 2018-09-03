@@ -4,7 +4,7 @@ Logs into slave machines and triggers Nodes on the slave machines.
 Starts an RPC server to receive logs about the simulation form the slaves
 
 Run this as:
-	python master.py network.yaml
+	python3 master.py network.yaml
 """
 
 import sys

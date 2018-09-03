@@ -76,7 +76,7 @@ def read_yaml(master_address,config_file):
 			data[x['id']] = x
 			data[x['id']]['is_worker'] = True
 			data[x['id']]['own_address'] = (x['ip'], x['port'])
-		 
+
 			default_fields = ['push_interval','pull_interval','epoch_limit','batch_size']
 			for field in default_fields:
 				x[field] = raw_data['default_'+field] if field not in x else x[field]
@@ -115,7 +115,7 @@ def trigger_scripts():
 	# Can do a group by to login into the machine once and trigger all the scripts
 	for node_id in data:
 		# Create a connection. Format: IP address, username, password
-		connection = ssh(data[node_id]['ip'],'aniket','08081997ani')
+		connection = ssh(data[node_id]['ip'],data[node_id]['username'],data[node_id]['password'])
 		connection.trigger_node(node_id, json.dumps(data[node_id]))
 		connection.disconnect()
 		sleep(1)
