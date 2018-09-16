@@ -1,5 +1,5 @@
 """
-Abstract class for instantiating any application which can be simulated by the Simulator
+An abstract class for instantiating any application which can be simulated by the Simulator
 """
 
 from abc import ABC, abstractmethod

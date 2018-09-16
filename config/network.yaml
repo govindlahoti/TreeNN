@@ -4,9 +4,6 @@ delays:
     delay: 0
 
 default_delay: 0
-
-default_pull_interval: 5
-default_push_interval: 2
 default_batch_size: 10
 default_epoch_limit: 1
 
@@ -23,7 +20,6 @@ nodes:
     ip: 10.129.2.29
     port: 8006
     parent_id: 1
-    push_interval: 1 
     file_name: "Cluster8_Data.csv"
     batch_size: 10
     username: "synerg"

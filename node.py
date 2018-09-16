@@ -28,6 +28,7 @@ def get_data(filename):
 		print("reading data")
 		csv_reader = csv.reader(csv_file)
 		train_data = list(csv_reader)
+		# print(train_data[0])
 		print("train data", len(train_data))
 	
 	return train_data
@@ -62,8 +63,6 @@ class Node(ABC):
 		self.addresses = { int(k):v for k,v in data['addresses'].items() }
 		for w in data['delays']:
 			self.connection_objs[int(w)] = None
-		self.push_interval = data['push_interval']
-		self.pull_interval = data['pull_interval']
 		self.delays = { int(k):v for k,v in data['delays'].items() }
 
 		### Information about the learning model
@@ -237,22 +236,3 @@ class Node(ABC):
 		self.get_master().log_report(s)
 		self.log_file.write(s +'\n')
 		self.log_file.flush()
-
-
-
-# The logic for generating data
-#np.random.seed(42)
-#data_trend = np.random.normal(0, 1, (48, 729))
-
-#def get_data(random=False):
-#	"""Returns the randomly generated data"""
-#	def get_y(x):
-#		return sigmoid(np.dot(data_trend, x))
-#	
-#	if not random:
-#		np.random.seed(42)
-#	
-#	x_vals = [np.random.normal(0, 1, (729, 1)) for _ in range(20)]
-#	y_vals = map(get_y, x_vals)
-#
-#	return zip(x_vals, y_vals)

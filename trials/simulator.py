@@ -165,7 +165,6 @@ def start_server(own_address):
 	server.serve_forever()
 
 def remote_shutdown():
-	print("alskdaskdlask")
 	t = threading.Thread(target=shutdown_thread)
 	t.start();t.join()
 

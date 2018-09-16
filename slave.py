@@ -5,7 +5,7 @@ It is expected that the Node files and Application files are available to the sl
 Can be run individually as:
 	python3 slave.py <node_id> <node_data>
 But the above method is not advisable as the Simulation has additional dependencies of a Master machine 
-RPC server (for reporting) and the parent-child heirarchy defined by the configuration file
+RPC server (for reporting) and the parent-child hierarchy defined by the configuration file
 
 1. Converts node data provided as arguments to a dictionary
 2. Initializes threads for the node and waits for them to complete execution
