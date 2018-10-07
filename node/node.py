@@ -28,7 +28,7 @@ def get_data(filename):
 		print("reading data")
 		csv_reader = csv.reader(csv_file)
 		train_data = list(csv_reader)
-		print(train_data[0])
+		# print(train_data[0])
 		print("train data", len(train_data))
 	
 	return train_data
@@ -70,7 +70,7 @@ class Node(ABC):
 		self.network = Network([276, 276, 276, 48])
 
 		### Meta
-		self.log_file = open(str(self.id) + '.log', 'a')
+		self.log_file = open('logs/%d.log'%self.id, 'a')
 		self.master_address = data['master_address']
 		self.master = None
 	

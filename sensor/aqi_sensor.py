@@ -8,7 +8,7 @@ def send_data(topic):
 	data_rate = 1e-1
 	with open('../data/Cluster8_Data.csv', 'r') as f:
 		for data_point in f:
-			producer.send(topic, data_point.rstrip().encode('utf-8'))
+			producer.send(topic, data_point.encode('utf-8'))
 			sleep(data_rate)
 
 if __name__ == '__main__':

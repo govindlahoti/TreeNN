@@ -4,8 +4,10 @@ An implementation of abstract class Node for simulating worker nodes
 
 import os
 import csv
+import time
 import psutil
 import threading
+from io import StringIO
 from collections import OrderedDict
 
 from node.node import *
@@ -27,10 +29,12 @@ class Worker(Node):
 
 		try:
 			self.consumer = KafkaConsumer(str(self.id))
+			self.log(self.create_log(CONNECTION,'Connected with the Kafka server'))
 		except NoBrokersAvailable:
 			print("No Brokers are Available. Please start the Kafka server")
+			self.log(self.create_log(CONNECTION,'No Brokers are Available. Please start the Kafka server'))
 			exit(0)
-			
+
 	def init_threads(self):
 		"""
 		Abstract Method Implementation
@@ -38,6 +42,7 @@ class Worker(Node):
 		1. To run the training thread
 		2. To run the RPC server
 		"""
+
 		train_thread = threading.Thread(target = self.training_thread)
 		server_thread = threading.Thread(target = self.run_rpc_server_thread)
 		
@@ -112,16 +117,20 @@ class Worker(Node):
 		"""
 			Consumes data points received from Kafka in batches
 		"""
-		sensor_data, data_points = [], 0
+		sensor_data_string, data_points = "", 0
 		for msg in self.consumer:
-			# if data_points==0: print([msg.value.decode('utf-8')[1:-1].replace("\\", "")])
-			sensor_data.append(csv.reader(msg.value.decode('utf-8')))
+			sensor_data_string += msg.value.decode('utf-8')
 			data_points+=1
 			if data_points == self.window_size:
 				print(data_points,self.window_size)
 				break
-		print(sensor_data[0])
-		return sensor_data
+		
+		sensor_data = StringIO(sensor_data_string)
+		csv_reader = csv.reader(sensor_data)
+		train_data = list(csv_reader)
+
+		print(train_data[0])
+		return train_data
 		
 
 	###-------------------------- Additional RPC functions ---------------------------------
