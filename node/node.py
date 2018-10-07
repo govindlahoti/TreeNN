@@ -11,8 +11,8 @@ import json
 from collections import OrderedDict
 from distlib.util import CSVReader
 
-from const import *
-from network import *
+from utility.const import *
+from application.network import *
 
 from abc import ABC, abstractmethod
 
@@ -28,7 +28,7 @@ def get_data(filename):
 		print("reading data")
 		csv_reader = csv.reader(csv_file)
 		train_data = list(csv_reader)
-		# print(train_data[0])
+		print(train_data[0])
 		print("train data", len(train_data))
 	
 	return train_data
@@ -66,10 +66,7 @@ class Node(ABC):
 		self.delays = { int(k):v for k,v in data['delays'].items() }
 
 		### Information about the learning model
-		self.epoch_limit = data['epoch_limit']
 		self.inputfile = data['file_name']
-		self.batch_size = data['batch_size']
-		print(self.inputfile)
 		self.network = Network([276, 276, 276, 48])
 
 		### Meta

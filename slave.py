@@ -3,7 +3,7 @@ This wrapper script is placed on the slave machine and is triggered by an extern
 It is expected that the Node files and Application files are available to the slave on the machine
 
 Can be run individually as:
-	python3 slave.py <node_id> <node_data>
+	python3 slave.py -ni <node_id> -nd <node_data>
 But the above method is not advisable as the Simulation has additional dependencies of a Master machine 
 RPC server (for reporting) and the parent-child hierarchy defined by the configuration file
 
@@ -11,20 +11,22 @@ RPC server (for reporting) and the parent-child hierarchy defined by the configu
 2. Initializes threads for the node and waits for them to complete execution
 """
 
-import sys
 import json
-from parameter_server import ParameterServer
-from worker import Worker
 import time
+import argparse
+
+from node.parameter_server import ParameterServer
+from node.worker import Worker
 
 def main():
 	
-	if(len(sys.argv)<3):
-		print("Usage: python3 slave.py <node_id> <node_data>")
-		exit()
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-ni","--node_id", type=str, help="Node id", required=True)
+	parser.add_argument("-nd","--node_data", type=str, help="Node data", required=True)
+	args = parser.parse_args()
 
-	print("Initiating node %s"%sys.argv[1])
-	data = json.loads(sys.argv[2])
+	print("Initiating node %s"%args.node_id)
+	data = json.loads(args.node_data)
 
 	node = Worker(data) if data['is_worker'] else ParameterServer(data)
 	

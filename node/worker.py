@@ -3,19 +3,34 @@ An implementation of abstract class Node for simulating worker nodes
 """
 
 import os
+import csv
 import psutil
 import threading
 from collections import OrderedDict
 
-from node import *
-from const import *
+from node.node import *
+from utility.const import *
+
+from kafka import KafkaConsumer
+from kafka.errors import NoBrokersAvailable
 
 class Worker(Node):
 
 	def __init__(self, data):
-		super().__init__(data) 
+		super().__init__(data)
+		
+		self.window_size = data['window_size']
+		self.mini_batch_size = data['mini_batch_size'] 
+
+		self.epoch_limit = data['epoch_limit']
 		self.epoch_count = 0
 
+		try:
+			self.consumer = KafkaConsumer(str(self.id))
+		except NoBrokersAvailable:
+			print("No Brokers are Available. Please start the Kafka server")
+			exit(0)
+			
 	def init_threads(self):
 		"""
 		Abstract Method Implementation
@@ -25,7 +40,7 @@ class Worker(Node):
 		"""
 		train_thread = threading.Thread(target = self.training_thread)
 		server_thread = threading.Thread(target = self.run_rpc_server_thread)
-
+		
 		train_thread.start()
 		server_thread.start()
 
@@ -62,13 +77,13 @@ class Worker(Node):
 		py = psutil.Process(os.getpid())
 		while self.epoch_count < self.epoch_limit:
 			epoch_start_cpu, epoch_start = time.time(), time.clock()
-			data = get_data(self.inputfile)
+			data = self.get_data()
 			
 			### Pull model from parent			
 			self.network.use_parent_model(*self.pull_from_parent())
 
 			### Run training algorithm
-			self.network.train(data, epochs=1, mini_batch_size=self.batch_size)
+			self.network.train(data, epochs=1, mini_batch_size=self.mini_batch_size)
 
 			### Log Statistics for the epoch
 			self.log(self.create_log(STATISTIC,OrderedDict({
@@ -92,6 +107,22 @@ class Worker(Node):
 
 		### Send Done acknowledgement to Master
 		self.log(self.create_log(DONE,''))
+
+	def get_data(self):
+		"""
+			Consumes data points received from Kafka in batches
+		"""
+		sensor_data, data_points = [], 0
+		for msg in self.consumer:
+			# if data_points==0: print([msg.value.decode('utf-8')[1:-1].replace("\\", "")])
+			sensor_data.append(csv.reader(msg.value.decode('utf-8')))
+			data_points+=1
+			if data_points == self.window_size:
+				print(data_points,self.window_size)
+				break
+		print(sensor_data[0])
+		return sensor_data
+		
 
 	###-------------------------- Additional RPC functions ---------------------------------
 

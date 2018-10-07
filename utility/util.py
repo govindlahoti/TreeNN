@@ -12,7 +12,7 @@ import netifaces as ni
 from paramiko import client
 from collections import OrderedDict
 
-from const import *
+from utility.const import *
 
 data = OrderedDict()
 
@@ -77,7 +77,7 @@ def read_yaml(master_address,config_file):
 			data[x['id']]['is_worker'] = True
 			data[x['id']]['own_address'] = (x['ip'], x['port'])
 
-			default_fields = ['push_interval','pull_interval','epoch_limit','batch_size']
+			default_fields = ['epoch_limit','mini_batch_size','window_size']
 			for field in default_fields:
 				x[field] = raw_data['default_'+field] if field not in x else x[field]
 			

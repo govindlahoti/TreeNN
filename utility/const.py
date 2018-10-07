@@ -6,7 +6,7 @@ Contains all hardcoded configuration parameters
 MASTER_RPC_SERVER_PORT = 9000
 
 ### util.py
-TRIGGER_NODE_COMMAND = "cd Simulator/TreeNN && python3 slave.py %d '%s' &"
+TRIGGER_NODE_COMMAND = "cd Simulator/TreeNN && python3 slave.py -ni %d -nd '%s' &"
 
 ### constants for Logging and Reporting
 CONNECTION 	= 'CONN'

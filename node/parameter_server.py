@@ -5,8 +5,8 @@ An implementation of abstract class Node for simulating parameter servers
 import threading
 from queue import Queue
 
-from node import *
-from const import *
+from node.node import *
+from utility.const import *
 
 class ParameterServer(Node):
 

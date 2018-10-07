@@ -4,14 +4,14 @@ Logs into slave machines and triggers Nodes on the slave machines.
 Starts an RPC server to receive logs about the simulation form the slaves
 
 Run this as:
-	python3 master.py network.yaml
+	python3 master.py -c network.yaml
 """
 
-import sys
+import argparse
 import threading
 
-from util import *
-from const import *
+from utility.util import *
+from utility.const import *
 
 from xmlrpc.client import ServerProxy
 from xmlrpc.server import SimpleXMLRPCServer
@@ -66,14 +66,18 @@ if __name__ == '__main__':
 	3. Start RPC server to receive logs
 	"""
 	
-	if len(sys.argv) < 2:
-		print("Format: python3 master.py <yaml file>")
-		exit(0)
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-c","--config", type=str, help="Path to network config yaml file", required=True )
+	parser.add_argument("-t","--trigger", type=int, help="Boolean indicating to trigger scripts (for debugging purposes)", 
+								default=1, choices=[1, 0])
+	args = parser.parse_args()
 
 	own_address = (get_ip(),MASTER_RPC_SERVER_PORT)
-	data = read_yaml(own_address,sys.argv[1])
+	data = read_yaml(own_address,args.config)
 	nodes = set(list(data.keys()))
 	
 	server_thread = threading.Thread(target=start_server,args=(own_address,))
 	server_thread.start()
-	trigger_scripts()
+
+	if args.trigger==1:
+		trigger_scripts()
