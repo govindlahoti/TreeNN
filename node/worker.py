@@ -81,7 +81,7 @@ class Worker(Node):
 		
 		py = psutil.Process(os.getpid())
 		while self.epoch_count < self.epoch_limit:
-			epoch_start_cpu, epoch_start = time.time(), time.clock()
+			epoch_start_cpu, epoch_start = time.process_time(), time.perf_counter()
 			data = self.get_data()
 			
 			### Pull model from parent			
@@ -93,8 +93,8 @@ class Worker(Node):
 			### Log Statistics for the epoch
 			self.log(self.create_log(STATISTIC,OrderedDict({
 				'Epoch ID'		: self.epoch_count,
-				'Runtime'		: time.clock() - epoch_start,
-				'Process time'	: time.time() - epoch_start_cpu,
+				'Runtime'		: time.perf_counter() - epoch_start,
+				'Process time'	: time.process_time() - epoch_start_cpu,
 				'Memory Usage'	: py.memory_info()[0]/2.**30,
 				'Accuracy'		: self.network.evaluate(data),
 				})))
