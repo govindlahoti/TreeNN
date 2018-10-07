@@ -21,7 +21,7 @@ class Worker(Node):
 	def __init__(self, data):
 		super().__init__(data)
 		
-		self.window_size = data['window_size']
+		self.window_interval = data['window_interval']
 		self.mini_batch_size = data['mini_batch_size'] 
 
 		self.epoch_limit = data['epoch_limit']
@@ -117,21 +117,20 @@ class Worker(Node):
 		"""
 			Consumes data points received from Kafka in batches
 		"""
+
+		start = time.time()
 		sensor_data_string, data_points = "", 0
 		for msg in self.consumer:
 			sensor_data_string += msg.value.decode('utf-8')
 			data_points+=1
-			if data_points == self.window_size:
-				print(data_points,self.window_size)
-				break
+			
+			if (time.time() - start) > self.window_interval: break
 		
 		sensor_data = StringIO(sensor_data_string)
 		csv_reader = csv.reader(sensor_data)
 		train_data = list(csv_reader)
 
-		print(train_data[0])
-		return train_data
-		
+		return train_data		
 
 	###-------------------------- Additional RPC functions ---------------------------------
 

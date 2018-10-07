@@ -20,3 +20,6 @@ PAYLOAD = 'payload'
 ### Communication protocol between Parameter server and Child node
 CONNECTED 	 = 'connected'
 DISCONNECTED = 'disconnected'
+
+### Sensor Data rate, interval between two data points (Assumed to be a constant, can be sampled from an underlying distribution)
+DATA_RATE = 1
