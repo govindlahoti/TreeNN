@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath('../utility'))
 import argparse
 from time import sleep
 
-from const import DATA_RATE
+from const import DATA_RATE, KAFKA_SERVER_ADDRESS
 
 from kafka import KafkaProducer
 from kafka.errors import NoBrokersAvailable
@@ -18,7 +18,7 @@ from kafka.errors import NoBrokersAvailable
 def send_data(topic):
 
 	try:
-		producer = KafkaProducer(bootstrap_servers='localhost:9092')	
+		producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER_ADDRESS)	
 	except NoBrokersAvailable:
 		print("No Brokers are Available. Please start the Kafka server")
 		exit(0)

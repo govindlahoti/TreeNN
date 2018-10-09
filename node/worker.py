@@ -10,6 +10,7 @@ import threading
 from io import StringIO
 from collections import OrderedDict
 
+from const import KAFKA_SERVER_ADDRESS
 from node.node import *
 from utility.const import *
 
@@ -28,7 +29,7 @@ class Worker(Node):
 		self.epoch_count = 0
 
 		try:
-			self.consumer = KafkaConsumer(str(self.id))
+			self.consumer = KafkaConsumer(str(self.id), bootstrap_servers=KAFKA_SERVER_ADDRESS)
 			self.log(self.create_log(CONNECTION,'Connected with the Kafka server'))
 		except NoBrokersAvailable:
 			print("No Brokers are Available. Please start the Kafka server")
