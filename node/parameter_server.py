@@ -117,14 +117,8 @@ class ParameterServer(Node):
 
 		self.log(self.create_log(CONNECTION, 'Got gradients from child %d'%(child_id)))
 		
-		if(str(child_id)=='2' or str(str(child_id) == '3')):
-			weight_gradient = [np.array(x)/2 for x in weight_gradient]
-			bias_gradient = [np.array(x)/2 for x in bias_gradient]
-			self.log(self.create_log(CONNECTION, 'from child1 ' + str(child_id)))
-		else:
-			weight_gradient = [np.array(x)/3 for x in weight_gradient]
-			bias_gradient = [np.array(x)/3 for x in bias_gradient]
-			self.log(self.create_log(CONNECTION, 'from child2 ' + str(child_id)))
+		weight_gradient = [np.array(x)/len(self.active_children) for x in weight_gradient]
+		bias_gradient = [np.array(x)/len(self.active_children) for x in bias_gradient]
 
 		self.acquired_gradients_from_kids.put([weight_gradient, bias_gradient])
 
