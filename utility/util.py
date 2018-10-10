@@ -77,7 +77,7 @@ def read_yaml(master_address,config_file):
 			data[x['id']]['is_worker'] = True
 			data[x['id']]['own_address'] = (x['ip'], x['port'])
 
-			default_fields = ['epoch_limit','mini_batch_size','window_interval']
+			default_fields = ['mini_batch_size','window_interval','window_limit','epochs_per_window']
 			for field in default_fields:
 				x[field] = raw_data['default_'+field] if field not in x else x[field]
 			

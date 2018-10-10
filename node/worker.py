@@ -22,11 +22,12 @@ class Worker(Node):
 	def __init__(self, data):
 		super().__init__(data)
 		
-		self.window_interval = data['window_interval']
 		self.mini_batch_size = data['mini_batch_size'] 
+		self.window_interval = data['window_interval']
+		self.window_limit = data['window_limit']
+		self.epochs_per_window = data['epochs_per_window']
 
-		self.epoch_limit = data['epoch_limit']
-		self.epoch_count = 0
+		self.window_count = 0
 
 		try:
 			self.consumer = KafkaConsumer(str(self.id), bootstrap_servers=KAFKA_SERVER_ADDRESS)
@@ -81,7 +82,7 @@ class Worker(Node):
 		"""
 		
 		py = psutil.Process(os.getpid())
-		while self.epoch_count < self.epoch_limit:
+		while self.window_count < self.window_limit:
 			epoch_start_cpu, epoch_start = time.process_time(), time.perf_counter()
 			data = self.get_data()
 			
@@ -89,11 +90,11 @@ class Worker(Node):
 			self.network.use_parent_model(*self.pull_from_parent())
 
 			### Run training algorithm
-			self.network.train(data, epochs=1, mini_batch_size=self.mini_batch_size)
+			self.network.train(data, epochs=self.epochs_per_window, mini_batch_size=self.mini_batch_size)
 
 			### Log Statistics for the epoch
 			self.log(self.create_log(STATISTIC,OrderedDict({
-				'Epoch ID'		: self.epoch_count,
+				'Window ID'		: self.window_count,
 				'Runtime'		: time.perf_counter() - epoch_start,
 				'Process time'	: time.process_time() - epoch_start_cpu,
 				'Memory Usage'	: py.memory_info()[0]/2.**30,
@@ -102,7 +103,7 @@ class Worker(Node):
 
 			### Push model to parent
 			self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
-			self.epoch_count += 1
+			self.window_count += 1
 		
 		### Alert parent that training is done
 		self.send_message(self.parent_id,DISCONNECTED)

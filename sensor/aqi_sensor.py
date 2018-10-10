@@ -24,7 +24,7 @@ def send_data(topic):
 		exit(0)
 
 	### Need to supplied as an argument
-	with open('../data/Cluster8_Data.csv', 'r') as f:
+	with open('../data/Cluster7_Data.csv', 'r') as f:
 		for data_point in f:
 			producer.send(topic, data_point.encode('utf-8'))
 			sleep(DATA_RATE)
