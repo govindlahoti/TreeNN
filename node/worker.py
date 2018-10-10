@@ -10,7 +10,7 @@ import threading
 from io import StringIO
 from collections import OrderedDict
 
-from const import KAFKA_SERVER_ADDRESS
+from utility.const import KAFKA_SERVER_ADDRESS
 from node.node import *
 from utility.const import *
 
