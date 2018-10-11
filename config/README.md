@@ -1,5 +1,7 @@
 # Config
 
+![An sample configuration](../docs/images/config.png)
+
 ## Configuration fields
 ### Common fields for the hierarchy:
 - Delays between nodes pairwise
