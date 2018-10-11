@@ -18,7 +18,7 @@ Parameter server spawns two threads -
 ## Worker:
 
 Worker spawns two threads - 
-- To run the training thread. For each epoch
+- To run the training thread. For each window of data:
   1. Pulls model from parent 
   2. Runs training algorithm as defined by the application
   3. Log Statistics for the epoch:
