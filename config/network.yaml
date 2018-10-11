@@ -1,0 +1,52 @@
+delays:
+  - src_id: 1
+    dest_id: 2
+    delay: 0
+
+default_delay: 0
+
+default_mini_batch_size: 100
+default_window_interval: 5
+default_window_limit: 2
+default_epochs_per_window: 1
+
+nodes:
+  - id: 1 
+    ip: 10.129.2.21
+    port: 8000 
+    file_name: "data/Cluster8_Data.csv"
+    username: "synerg"
+    password: "synerg"
+  - id: 2
+    ip: 10.129.2.21
+    port: 8006
+    parent_id: 1
+    file_name: "data/Cluster8_Data.csv"
+    mini_batch_size: 10
+    username: "synerg"
+    password: "synerg"
+  - id: 3
+    ip: 10.129.2.21
+    port: 8007
+    parent_id: 1
+    file_name: "data/Cluster8_Data.csv"
+    mini_batch_size: 10
+    username: "synerg"
+    password: "synerg"   
+  - id: 4
+    ip: 10.129.2.21
+    port: 8008
+    parent_id: 1
+    file_name: "data/Cluster8_Data.csv"
+    mini_batch_size: 10
+    username: "synerg"
+    password: "synerg"   
+  - id: 5
+    ip: 10.129.2.21
+    port: 8009
+    parent_id: 1
+    file_name: "data/Cluster8_Data.csv"
+    mini_batch_size: 10
+    username: "synerg"
+    password: "synerg"   
+  

@@ -1,2 +1,9 @@
 *.pyc
 *.log
+*.csv
+*.pickle
+trials/html/
+local.yaml
+client.py 
+sampleText.txt
+example.py
