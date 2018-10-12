@@ -22,5 +22,5 @@ CONNECTED 	 = 'connected'
 DISCONNECTED = 'disconnected'
 
 ### Sensor Data rate, interval between two data points (Assumed to be a constant, can be sampled from an underlying distribution)
-DATA_RATE = 1e-1
+DATA_RATE = 1e-3
 KAFKA_SERVER_ADDRESS = 'localhost:9092'
