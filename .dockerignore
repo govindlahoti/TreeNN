@@ -1,2 +1,4 @@
 data/
 logs/
+docs/
+config/local.yaml

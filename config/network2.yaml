@@ -23,11 +23,11 @@ nodes:
     file_name: "data/Cluster7_Data.csv"
     username: "synerg"
     password: "synerg"
+    
   - id: 4
     ip: 10.129.2.29
     port: 8003
     parent_id: 1
-    push_interval: 1 # Default properties mentioned above can be customized for each node
     file_name: "data/Cluster6_Data.csv" # unlabelled data
     username: "synerg"
     password: "synerg"
@@ -37,7 +37,6 @@ nodes:
     ip: 10.129.2.29 
     port: 8004
     parent_id: 1
-    push_interval: 1 # Default properties mentioned above can be customized for each node
     file_name: "data/Cluster1_Data.csv" # unlabelled data
     username: "synerg"
     password: "synerg"
@@ -46,7 +45,6 @@ nodes:
     ip: 10.129.2.29
     port: 8005
     parent_id: 1
-    push_interval: 1 # Default properties mentioned above can be customized for each node
     file_name: "data/Cluster2_Data.csv" # unlabelled data
     username: "synerg"
     password: "synerg"
@@ -55,7 +53,6 @@ nodes:
     ip: 10.129.2.21
     port: 8006
     parent_id: 1
-    push_interval: 1 # Default properties mentioned above can be customized for each node
     file_name: "data/Cluster3_Data.csv" # unlabelled data
     username: "synerg"
     password: "synerg"
@@ -64,7 +61,6 @@ nodes:
     ip: 10.129.2.21
     port: 8007
     parent_id: 1
-    push_interval: 1 # Default properties mentioned above can be customized for each node
     file_name: "data/Cluster4_Data.csv" # unlabelled data
     username: "synerg"
     password: "synerg"
@@ -73,7 +69,6 @@ nodes:
     ip: 10.129.2.21
     port: 8008
     parent_id: 1
-    push_interval: 1 # Default properties mentioned above can be customized for each node
     file_name: "data/Cluster5_Data.csv" # unlabelled data
     username: "synerg"
     password: "synerg"
