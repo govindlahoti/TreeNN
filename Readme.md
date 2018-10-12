@@ -16,8 +16,8 @@ Specify the [configuration](config/network.yaml)
 Run the following commands:
 ```
 sudo /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
-python3 master.py -c config/network.yaml
-cd sensor && python3 aqi_sensor.py -sid 1 -t 2
+python3 master.py --config config/network.yaml --log 1
+cd sensor && ./start_sensors.sh
 ```
 
 ## Directory Structure:
