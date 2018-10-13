@@ -156,7 +156,7 @@ class Node(ABC):
 		bias_gradient = [x.tolist() for x in bias_gradient]
 
 		self.log(self.create_log(CONNECTION,{
-									'Network cost incurred in bytes' : get_size([weight_gradient, bias_gradient])
+									NETWORK_COST : get_size([weight_gradient, bias_gradient])
 								}))
 
 		self.get_parent().push_from_child(weight_gradient, bias_gradient, self.id)
@@ -175,7 +175,7 @@ class Node(ABC):
 		
 		self.log(self.create_log(CONNECTION,'Got model from parent %d'%(self.parent_id)))
 		self.log(self.create_log(CONNECTION,{
-									'Network cost incurred in bytes' : get_size(model)
+									NETWORK_COST : get_size(model)
 								}))
 		
 		return model

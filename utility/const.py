@@ -31,6 +31,8 @@ PROCESS_TIME = 'Process time'
 MEMORY_USAGE = 'Memory Usage'
 ACCURACY = 'Accuracy'	
 
+NETWORK_COST = 'Network Cost'
+
 ### Communication protocol between Parameter server and Child node
 CONNECTED 	 = 'connected'
 DISCONNECTED = 'disconnected'
