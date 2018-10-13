@@ -97,7 +97,7 @@ class Worker(Node):
 				WINDOW_ID		: self.window_count,
 				RUNTIME			: time.perf_counter() - epoch_start,
 				PROCESS_TIME	: time.process_time() - epoch_start_cpu,
-				MEMORY_USAGE	: py.memory_info()[0]/2.**30,
+				MEMORY_USAGE	: py.memory_percent(),
 				ACCURACY		: self.network.evaluate(data),
 				})))
 
