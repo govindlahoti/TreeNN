@@ -94,11 +94,11 @@ class Worker(Node):
 
 			### Log Statistics for the epoch
 			self.log(self.create_log(STATISTIC,OrderedDict({
-				'Window ID'		: self.window_count,
-				'Runtime'		: time.perf_counter() - epoch_start,
-				'Process time'	: time.process_time() - epoch_start_cpu,
-				'Memory Usage'	: py.memory_info()[0]/2.**30,
-				'Accuracy'		: self.network.evaluate(data),
+				WINDOW_ID		: self.window_count,
+				RUNTIME			: time.perf_counter() - epoch_start,
+				PROCESS_TIME	: time.process_time() - epoch_start_cpu,
+				MEMORY_USAGE	: py.memory_info()[0]/2.**30,
+				ACCURACY		: self.network.evaluate(data),
 				})))
 
 			### Push model to parent

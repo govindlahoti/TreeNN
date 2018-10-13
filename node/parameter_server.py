@@ -56,7 +56,7 @@ class ParameterServer(Node):
 		6. Pushes new model to the parent
 		"""
 
-		while len(self.active_children) > 0 or not self.child_ever_connected:
+		while (len(self.active_children) > 0 or not self.child_ever_connected) and not self.acquired_gradients_from_kids.empty():
 			weight_gradient, bias_gradient = self.acquired_gradients_from_kids.get()
 			
 			### Pull from parent
@@ -65,8 +65,8 @@ class ParameterServer(Node):
 
 			### Log pre merge accuracy
 			self.log(self.create_log(STATISTIC,OrderedDict({
-					'Merge ID': self.merge_id,
-					'Pre Merge Accuracy':self.network.evaluate(self.data),
+					MERGE_ID 			: self.merge_id,
+					PRE_MERGE_ACCURACY	: self.network.evaluate(self.data),
 					})))
 
 			### Merge gradients
@@ -77,8 +77,8 @@ class ParameterServer(Node):
 		
 			### Log post merge accuracy
 			self.log(self.create_log(STATISTIC, OrderedDict({
-					'Merge ID'				: self.merge_id,
-					'Post Merge Accuracy'	: self.network.evaluate(self.data),
+					MERGE_ID			: self.merge_id,
+					POST_MERGE_ACCURACY	: self.network.evaluate(self.data),
 					})))	
 
 			### Push Gradient to parent
