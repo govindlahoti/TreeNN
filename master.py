@@ -69,6 +69,7 @@ if __name__ == '__main__':
 	
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-c","--config", type=str, help="Path to network config yaml file", required=True )
+	parser.add_argument("-d","--docker", type=int, help="Boolean indicating to run in container mode", required=True)
 	parser.add_argument("-t","--trigger", type=int, help="Boolean indicating to trigger scripts (for debugging purposes)", 
 								default=1, choices=[1, 0])
 	parser.add_argument("-l","--log", type=int, help="Boolean indicating to generate log", 
@@ -85,4 +86,4 @@ if __name__ == '__main__':
 	server_thread.start()
 
 	if args.trigger==1:
-		trigger_scripts()
+		trigger_slaves(args.docker)

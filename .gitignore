@@ -4,6 +4,7 @@
 *.pickle
 trials/html/
 local.yaml
+container.yaml
 client.py 
 sampleText.txt
 example.py

@@ -26,7 +26,7 @@ def main():
 	args = parser.parse_args()
 
 	print("Initiating node %s"%args.node_id)
-	data = json.loads(args.node_data)
+	data = json.loads(args.node_data.replace('\'','\"'))
 
 	node = Worker(data) if data['is_worker'] else ParameterServer(data)
 	

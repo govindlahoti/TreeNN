@@ -35,10 +35,16 @@ class ssh:
  	
 	def trigger_node(self, node_id, node_data):
 
-		if(self.client):
-			
-			command = TRIGGER_NODE_COMMAND%(node_id, node_data)
+		command = TRIGGER_NODE_COMMAND%(node_id, node_data)
+		self.run_command(command)
 
+	def trigger_container(self, node_id, node_data, port):
+		command = TRIGGER_CONTAINER_COMMAND%(node_id, node_data, port, port,node_id)
+		self.run_command(command)
+		
+	def run_command(self, command):
+
+		if(self.client):	
 			print("Running command: %s"%command)
 			stdin, stdout, stderr = self.client.exec_command(command)
 			while not stderr.channel.exit_status_ready():
@@ -107,7 +113,7 @@ def read_yaml(master_address,config_file):
 
 	return data
 	
-def trigger_scripts():
+def trigger_slaves(docker):
 	"""
 	Log into machine and trigger node
 	"""
@@ -116,7 +122,12 @@ def trigger_scripts():
 	for node_id in data:
 		# Create a connection. Format: IP address, username, password
 		connection = ssh(data[node_id]['ip'],data[node_id]['username'],data[node_id]['password'])
-		connection.trigger_node(node_id, json.dumps(data[node_id]))
+		if docker == 1:
+			print("Container: %d"%node_id)
+			connection.trigger_container(node_id, json.dumps(data[node_id]).replace('\"','\''), data[node_id]['port'])
+		else:
+			print("Node: %d"%node_id)
+			connection.trigger_node(node_id, json.dumps(data[node_id]).replace('\"','\''))
 		connection.disconnect()
 		sleep(1)
 

@@ -1,0 +1,21 @@
+# Use an official Python runtime as a parent image
+FROM ubuntu:16.10
+FROM python:3.6-slim
+
+# Set the working directory to /TreeNN
+WORKDIR /TreeNN
+
+# Copy the current directory contents into the container at /TreeNN
+COPY requirements.txt /TreeNN
+
+# Install gcc for psutil (for memory usage computation)
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && \
+    apt-get -y install gcc mono-mcs && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install vim editor
+#RUN apt-get install -y vim
+
+# Install any needed packages specified in requirements.txt
+RUN pip3 install --trusted-host pypi.python.org -r requirements.txt

@@ -35,7 +35,7 @@ class ParameterServer(Node):
 		2. To run the RPC server
 		"""
 
-		consume_thread = threading.Thread(target = self.comsume_gradients_from_kids_thread)
+		consume_thread = threading.Thread(target = self.consume_gradients_from_kids_thread)
 		server_thread = threading.Thread(target = self.run_rpc_server_thread)
 
 		consume_thread.start()
@@ -43,9 +43,8 @@ class ParameterServer(Node):
 
 		return [consume_thread, server_thread]    
 
-	def comsume_gradients_from_kids_thread(self):
+	def consume_gradients_from_kids_thread(self):
 		"""
-		Abstract Method Implementation
 		This thread runs till child nodes stop simulating. 
 		In a single rollout:
 		1. Monitors the queue of acquired gradients from the child nodes. (get() method is a blocking function call)
@@ -56,7 +55,7 @@ class ParameterServer(Node):
 		6. Pushes new model to the parent
 		"""
 
-		while (len(self.active_children) > 0 or not self.child_ever_connected) and not self.acquired_gradients_from_kids.empty():
+		while len(self.active_children) > 0 or not self.child_ever_connected or not self.acquired_gradients_from_kids.empty():
 			weight_gradient, bias_gradient = self.acquired_gradients_from_kids.get()
 			
 			### Pull from parent
@@ -96,6 +95,7 @@ class ParameterServer(Node):
 
 	def run_rpc_server_thread(self):
 		"""
+		Abstract Method Implementation
 		Thread to run the RPC server for the node
 		"""
 
