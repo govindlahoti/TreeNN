@@ -46,16 +46,14 @@ class ssh:
 
 		if(self.client):	
 			print("Running command: %s"%command)
-			stdin, stdout, stderr = self.client.exec_command(command)
+			stdin, stdout, stderr = self.client.exec_command(command, get_pty=True)
 			while not stderr.channel.exit_status_ready():
 				if stderr.channel.recv_ready():
 					alldata = stderr.channel.recv(1024)
 					prevdata = b"1"
 					while prevdata:
-						print(str(alldata, "utf8"))
 						prevdata = stderr.channel.recv(1024)
 						alldata += prevdata
- 
 		else:
 			print("Connection not opened")
 

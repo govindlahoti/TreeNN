@@ -18,8 +18,9 @@ TRIGGER_CONTAINER_COMMAND = "docker run -it \
 -e NODE_DATA=\"%s\" \
 -p %d:%d \
 --net=host \
---rm \
 --name c%d \
+--rm \
+--detach \
 simulator:latest"
 
 ### constants for Logging and Reporting
