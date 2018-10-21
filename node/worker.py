@@ -85,6 +85,7 @@ class Worker(Node):
 		while self.window_count < self.window_limit:
 			epoch_start_cpu, epoch_start = time.process_time(), time.perf_counter()
 			data = self.get_data()
+			test_data = self.get_test_data()
 			
 			### Pull model from parent			
 			self.network.use_parent_model(*self.pull_from_parent())
@@ -98,7 +99,7 @@ class Worker(Node):
 				RUNTIME			: time.perf_counter() - epoch_start,
 				PROCESS_TIME	: time.process_time() - epoch_start_cpu,
 				MEMORY_USAGE	: py.memory_percent(),
-				ACCURACY		: self.network.evaluate(data),
+				ACCURACY		: self.network.evaluate(test_data),
 				})))
 
 			### Push model to parent
@@ -128,11 +129,9 @@ class Worker(Node):
 			
 			if (time.time() - start) > self.window_interval: break
 		
-		sensor_data = StringIO(sensor_data_string)
-		csv_reader = csv.reader(sensor_data)
-		train_data = list(csv_reader)
+		train_data = list(csv.reader(StringIO(sensor_data_string)))
 
-		return train_data		
+		return train_data
 
 	###-------------------------- Additional RPC functions ---------------------------------
 

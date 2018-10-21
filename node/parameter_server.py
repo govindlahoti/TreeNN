@@ -20,7 +20,6 @@ class ParameterServer(Node):
 
 		super().__init__(data) 
 		self.acquired_gradients_from_kids = Queue() 
-		self.data = get_data(self.inputfile)
 
 		self.merge_id = 0
 
@@ -62,22 +61,23 @@ class ParameterServer(Node):
 			if self.parent_address:
 				self.network.use_parent_model(*self.pull_from_parent())
 
+			test_data = self.get_test_data()
 			### Log pre merge accuracy
-			self.log(self.create_log(STATISTIC,OrderedDict({
-					MERGE_ID 			: self.merge_id,
-					PRE_MERGE_ACCURACY	: self.network.evaluate(self.data),
-					})))
+			# self.log(self.create_log(STATISTIC,OrderedDict({
+			# 		MERGE_ID 			: self.merge_id,
+			# 		PRE_MERGE_ACCURACY	: self.network.evaluate(self.data),
+			# 		})))
 
 			### Merge gradients
 			self.network.apply_kid_gradient(weight_gradient, bias_gradient)
 
 			### Push to parent
 			self.log(self.create_log(CONNECTION, 'Merged gradients at node %d'%(self.id)))
-		
+			
 			### Log post merge accuracy
 			self.log(self.create_log(STATISTIC, OrderedDict({
 					MERGE_ID			: self.merge_id,
-					POST_MERGE_ACCURACY	: self.network.evaluate(self.data),
+					POST_MERGE_ACCURACY	: self.network.evaluate(test_data),
 					})))	
 
 			### Push Gradient to parent

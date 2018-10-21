@@ -8,6 +8,8 @@ import threading
 
 import csv
 import json
+import random
+from io import StringIO
 from collections import OrderedDict
 from distlib.util import CSVReader
 
@@ -66,7 +68,7 @@ class Node(ABC):
 		self.delays = { int(k):v for k,v in data['delays'].items() }
 
 		### Information about the learning model
-		self.inputfile = data['file_name']
+		self.test_file = open(data['test_file'], 'r')
 		self.network = Network([276, 276, 276, 48])
 
 		### Meta
@@ -203,7 +205,7 @@ class Node(ABC):
 		"""
 		self.server.shutdown()
 
-	### Meta functions
+	###-------------------------- Meta functions -----------------------------------------
 	def send_message(self, receiver_id, msg):
 		"""
 		Use this function to send the data to whichever node you wish to
@@ -211,7 +213,30 @@ class Node(ABC):
 
 		self.log(self.create_log(CONNECTION,'Sending message to node %d, msg: %s'%(receiver_id, msg)))
 		self.get_node(receiver_id).receive_message(self.id, msg)
-	
+
+	def get_test_data(self, size=50):
+		"""
+			Get test data from file. 
+			Using random-seeking in file to limit RAM usage
+		"""		
+
+		sample = []
+		self.test_file.seek(0, 2)
+		filesize = self.test_file.tell()
+
+		random_set = sorted(random.sample(range(filesize), size))
+
+		for i in range(size):
+			self.test_file.seek(random_set[i])
+			# Skip current line (because we might be in the middle of a line) 
+			self.test_file.readline()
+			# Append the next line to the sample set 
+			sample.append(self.test_file.readline())
+
+		test_data = list(csv.reader(StringIO("".join(sample))))
+
+		return test_data
+		
 	def create_log(self, log_type, payload):
 		"""
 		Predefined format for creating logs
