@@ -1,3 +1,4 @@
 data/
 docs/
-config/local.yaml
+config/
+trials/

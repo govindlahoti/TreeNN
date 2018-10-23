@@ -8,3 +8,5 @@ container.yaml
 client.py 
 sampleText.txt
 example.py
+login.py
+*.tar
