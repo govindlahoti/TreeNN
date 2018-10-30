@@ -10,18 +10,19 @@ DATA_RATE = 1e-3
 KAFKA_SERVER_ADDRESS = '192.168.43.18:9092'
 
 ### util.py
-TRIGGER_NODE_COMMAND = "cd Simulator/TreeNN && python3 slave.py -ni %d -nd \"%s\" &"
+TRIGGER_NODE_COMMAND = "cd Simulator/TreeNN && python3 slave.py -ni %d -nd \"%s\" -k %s &"
 
 TRIGGER_CONTAINER_COMMAND = "docker run -it \
--m 50M --cpus=0.25 \
+-m %s --cpus=%f \
 -e NODE_ID='%d' \
 -e NODE_DATA=\"%s\" \
+-e KAFKA_SERVER='%s' \
 -p %d:%d \
 --net=host \
---name c%d \
+--name %s_c%d \
 --rm \
 --detach \
-simulator:latest"
+aniketshirke/distributedlearning:simulator"
 
 ### constants for Logging and Reporting
 CONNECTION 	= 'CONN'

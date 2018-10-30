@@ -14,7 +14,7 @@ from collections import OrderedDict
 from distlib.util import CSVReader
 
 from utility.const import *
-from application.network import *
+from app.network import *
 
 from abc import ABC, abstractmethod
 

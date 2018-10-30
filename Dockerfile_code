@@ -1,4 +1,4 @@
-FROM simulator:intermediate
+FROM aniketshirke/distributedlearning:dependencies
 
 # Set the working directory to /TreeNN
 WORKDIR /TreeNN
@@ -6,11 +6,9 @@ WORKDIR /TreeNN
 # Copy the current directory contents into the container at /TreeNN
 COPY . /TreeNN
 
-# To do ifconfig
-# RUN apt-get install -y net-tools
-
 # Define environment variable
 ENV NAME NODE_ID
 ENV NAME NODE_DATA
+ENV NAME KAFKA_SERVER
 
-CMD python3 slave.py -ni $NODE_ID -nd "$NODE_DATA"
+CMD python3 slave.py -ni $NODE_ID -nd "$NODE_DATA" -k $KAFKA_SERVER

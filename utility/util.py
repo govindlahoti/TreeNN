@@ -33,13 +33,13 @@ class ssh:
 			self.client = None
 			print("Authentication failed: %s"%e)
  	
-	def trigger_node(self, node_id, node_data):
+	def trigger_node(self, node_id, node_data, kafka_server):
 
-		command = TRIGGER_NODE_COMMAND%(node_id, node_data)
+		command = TRIGGER_NODE_COMMAND%(node_id, node_data, kafka_server)
 		self.run_command(command)
 
-	def trigger_container(self, node_id, node_data, port):
-		command = TRIGGER_CONTAINER_COMMAND%(node_id, node_data, port, port,node_id)
+	def trigger_container(self, expname, node_id, node_data, port, kafka_server, cpus, memory):
+		command = TRIGGER_CONTAINER_COMMAND%(memory, cpus, node_id, node_data, kafka_server, port, port, expname, node_id)
 		self.run_command(command)
 		
 	def run_command(self, command):
@@ -111,7 +111,7 @@ def read_yaml(master_address,config_file):
 
 	return data
 	
-def trigger_slaves(docker):
+def trigger_slaves(expname, docker, kafka_server, cpus, memory):
 	"""
 	Log into machine and trigger node
 	"""
@@ -122,10 +122,16 @@ def trigger_slaves(docker):
 		connection = ssh(data[node_id]['ip'],data[node_id]['username'],data[node_id]['password'])
 		if docker == 1:
 			print("Container: %d"%node_id)
-			connection.trigger_container(node_id, json.dumps(data[node_id]).replace('\"','\''), data[node_id]['port'])
+			connection.trigger_container(expname,
+										 node_id, 
+										 json.dumps(data[node_id]).replace('\"','\''), 
+										 data[node_id]['port'],
+										 kafka_server,
+										 cpus,
+										 memory)
 		else:
 			print("Node: %d"%node_id)
-			connection.trigger_node(node_id, json.dumps(data[node_id]).replace('\"','\''))
+			connection.trigger_node(node_id, json.dumps(data[node_id]).replace('\"','\''), kafka_server)
 		connection.disconnect()
 		sleep(1)
 

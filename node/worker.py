@@ -10,7 +10,6 @@ import threading
 from io import StringIO
 from collections import OrderedDict
 
-from utility.const import KAFKA_SERVER_ADDRESS
 from node.node import *
 from utility.const import *
 
@@ -19,7 +18,7 @@ from kafka.errors import NoBrokersAvailable
 
 class Worker(Node):
 
-	def __init__(self, data):
+	def __init__(self, data, kafka_server_address):
 		super().__init__(data)
 		
 		self.mini_batch_size = data['mini_batch_size'] 
@@ -30,7 +29,8 @@ class Worker(Node):
 		self.window_count = 0
 
 		try:
-			self.consumer = KafkaConsumer(str(self.id), bootstrap_servers=KAFKA_SERVER_ADDRESS)
+			print(kafka_server_address)
+			self.consumer = KafkaConsumer(str(self.id), bootstrap_servers=str(kafka_server_address), api_version=(0,10))
 			self.log(self.create_log(CONNECTION,'Connected with the Kafka server'))
 		except NoBrokersAvailable:
 			print("No Brokers are Available. Please start the Kafka server")
