@@ -6,6 +6,7 @@ import sys
 import time
 import threading
 
+import os
 import csv
 import json
 import random
@@ -68,7 +69,8 @@ class Node(ABC):
 		self.delays = { int(k):v for k,v in data['delays'].items() }
 
 		### Information about the learning model
-		self.test_file = open(data['test_file'], 'r')
+		test_files = os.listdir(data['test_directory'])
+		self.test_files = [open(data['test_directory']+f, 'r') for f in test_files]
 		self.network = Network([276, 276, 276, 48])
 
 		### Meta
@@ -214,24 +216,38 @@ class Node(ABC):
 		self.log(self.create_log(CONNECTION,'Sending message to node %d, msg: %s'%(receiver_id, msg)))
 		self.get_node(receiver_id).receive_message(self.id, msg)
 
-	def get_test_data(self, size=50):
+	def get_accuracies(self):
+		"""
+			Calculate accuracies for each sensor prediction
+			Returns a dictionary of accuracies
+		"""
+
+		accuracies = {}
+		
+		for test_file in self.test_files:
+			test_data = self.get_test_data(test_file)
+			accuracies[test_file.name] = self.network.evaluate(test_data)
+		
+		return accuracies
+
+	def get_test_data(self, test_file, size=50):
 		"""
 			Get test data from file. 
 			Using random-seeking in file to limit RAM usage
 		"""		
 
 		sample = []
-		self.test_file.seek(0, 2)
-		filesize = self.test_file.tell()
+		test_file.seek(0, 2)
+		filesize = test_file.tell()
 
 		random_set = sorted(random.sample(range(filesize), size))
 
 		for i in range(size):
-			self.test_file.seek(random_set[i])
+			test_file.seek(random_set[i])
 			# Skip current line (because we might be in the middle of a line) 
-			self.test_file.readline()
+			test_file.readline()
 			# Append the next line to the sample set 
-			sample.append(self.test_file.readline())
+			sample.append(test_file.readline())
 
 		test_data = list(csv.reader(StringIO("".join(sample))))
 

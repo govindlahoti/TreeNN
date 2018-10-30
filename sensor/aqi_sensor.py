@@ -29,8 +29,8 @@ def send_data(topic, source, data_rate, kafka_server):
 		for data_point in f:
 			producer.send(topic, data_point.encode('utf-8'))
 			counter+=1
+			# if counter%100 == 0: print(counter)
 			sleep(data_rate)
-			if counter%100 == 0: print(counter)
 			
 if __name__ == '__main__':
 

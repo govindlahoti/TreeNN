@@ -29,7 +29,6 @@ class Worker(Node):
 		self.window_count = 0
 
 		try:
-			print(kafka_server_address)
 			self.consumer = KafkaConsumer(str(self.id), bootstrap_servers=str(kafka_server_address), api_version=(0,10))
 			self.log(self.create_log(CONNECTION,'Connected with the Kafka server'))
 		except NoBrokersAvailable:
@@ -85,7 +84,6 @@ class Worker(Node):
 		while self.window_count < self.window_limit:
 			epoch_start_cpu, epoch_start = time.process_time(), time.perf_counter()
 			data = self.get_data()
-			test_data = self.get_test_data()
 			
 			### Pull model from parent			
 			self.network.use_parent_model(*self.pull_from_parent())
@@ -99,7 +97,7 @@ class Worker(Node):
 				RUNTIME			: time.perf_counter() - epoch_start,
 				PROCESS_TIME	: time.process_time() - epoch_start_cpu,
 				MEMORY_USAGE	: py.memory_percent(),
-				ACCURACY		: self.network.evaluate(test_data),
+				ACCURACY		: self.get_accuracies(),
 				})))
 
 			### Push model to parent
