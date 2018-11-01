@@ -38,6 +38,7 @@ MERGE_ID= 'Merge ID'
 PRE_MERGE_ACCURACY = 'Pre Merge Accuracy'
 POST_MERGE_ACCURACY = 'Post Merge Accuracy'
 
+TIMESTAMP = 'timestamp'
 WINDOW_ID = 'Window ID'
 RUNTIME = 'Runtime'	
 PROCESS_TIME = 'Process time'

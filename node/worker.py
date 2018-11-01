@@ -98,7 +98,8 @@ class Worker(Node):
 				PROCESS_TIME	: time.process_time() - epoch_start_cpu,
 				MEMORY_USAGE	: py.memory_percent(),
 				ACCURACY		: self.get_accuracies(),
-				})))
+				TIMESTAMP		: time.time()
+			})))
 
 			### Push model to parent
 			self.push_to_parent(*self.network.get_and_reset_acquired_gradients())

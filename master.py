@@ -85,7 +85,7 @@ if __name__ == '__main__':
 	data = read_yaml(own_address,args.config)
 	nodes = set(list(data.keys()))
 	
-	globals()["log_file"] = open('logs/master.log','a') if args.log == 1 else sys.stdout
+	globals()["log_file"] = open('logs/master_%s.log'%args.expname,'a') if args.log == 1 else sys.stdout
 
 	server_thread = threading.Thread(target=start_server,args=(own_address,))
 	server_thread.start()

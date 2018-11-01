@@ -76,8 +76,9 @@ class ParameterServer(Node):
 			### Log post merge accuracy
 			self.log(self.create_log(STATISTIC, OrderedDict({
 					MERGE_ID			: self.merge_id,
-					POST_MERGE_ACCURACY	: self.get_accuracies()
-					})))	
+					POST_MERGE_ACCURACY	: self.get_accuracies(),
+					TIMESTAMP			: time.time()
+				})))	
 
 			### Push Gradient to parent
 			if self.parent_address:
