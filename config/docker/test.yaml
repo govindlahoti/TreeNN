@@ -1,0 +1,34 @@
+delays:
+  - src_id: 1
+    dest_id: 2
+    delay: 0
+
+default_delay: 0
+default_mini_batch_size: 100
+default_window_interval: 5
+default_window_limit: 2
+default_epochs_per_window: 1
+default_kafka_server: "192.168.43.18:9092"
+default_cpus: 0.25
+default_memory: "50M"
+
+default_docker_image: "aniketshirke/distributedlearning:simulator"
+default_host_test_directory: "~/Simulator/TreeNN/data"
+
+nodes:
+  - id: 1 
+    ip: 192.168.43.18
+    port: 8000 
+    test_directory: "/TreeNN/data/"
+    username: "aniket"
+    password: "08081997ani"
+  - id: 2
+    ip: 192.168.43.18
+    port: 8006
+    parent_id: 1
+    test_directory: "/TreeNN/data/"
+    mini_batch_size: 10
+    username: "aniket"
+    password: "08081997ani"
+   
+  

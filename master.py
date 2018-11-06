@@ -76,9 +76,6 @@ if __name__ == '__main__':
 								default=1, choices=[1, 0])
 	parser.add_argument("-l","--log", type=int, help="Boolean indicating to generate log", 
 								default=0, choices=[1,0])
-	parser.add_argument("-k","--kafka_server", type=str, help="Kafka server address", default='localhost:9092')
-	parser.add_argument("-c","--cpus", type=float, help="Specify how much of the available CPU resources a container can use")
-	parser.add_argument("-m","--memory", type=str, help="The maximum amount of memory the container can use.")
 	args = parser.parse_args()
 
 	own_address = (get_ip(),MASTER_RPC_SERVER_PORT)
@@ -91,4 +88,4 @@ if __name__ == '__main__':
 	server_thread.start()
 
 	if args.trigger==1:
-		trigger_slaves(args.expname, args.docker, args.kafka_server, args.cpus, args.memory)
+		trigger_slaves(args.expname, args.docker)

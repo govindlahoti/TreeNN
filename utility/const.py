@@ -19,11 +19,11 @@ TRIGGER_CONTAINER_COMMAND = "docker run -it \
 -e KAFKA_SERVER='%s' \
 -p %d:%d \
 --net=host \
---volume ~/Simulator/TreeNN/data:/TreeNN/data \
+--volume %s:%s \
 --name %s_c%d \
 --rm \
 --detach \
-aniketshirke/distributedlearning:simulator"
+%s"
 
 ### constants for Logging and Reporting
 CONNECTION 	= 'CONN'

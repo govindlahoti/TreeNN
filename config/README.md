@@ -12,16 +12,16 @@
 - Default epochs to be made on a window
 
 ### Fields for configuring nodes:
-- Node id
-- IP address
-- Port
+- Node id: Unique identification of a node
+- IP address: address of the host on which the node will run as a container
+- Port: Port for starting the RPC server
+- Username of slave machine
+- Password of slave machine
+- test_directory: Accuracies will be calculated against each test file present in the directory
 - Mini batch size (Optional)
 - Time interval for a window (Optional)
 - Window limit (Optional)
 - Epochs per window (Optional)
-- Username of slave machine
-- Password of slave machine
-- file_name: File containing test data
 
 ## Link delays
 Delays are sampled from a Gaussian distribution

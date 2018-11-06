@@ -38,8 +38,8 @@ class ssh:
 		command = TRIGGER_NODE_COMMAND%(node_id, node_data, kafka_server)
 		self.run_command(command)
 
-	def trigger_container(self, expname, node_id, node_data, port, kafka_server, cpus, memory):
-		command = TRIGGER_CONTAINER_COMMAND%(memory, cpus, node_id, node_data, kafka_server, port, port, expname, node_id)
+	def trigger_container(self, expname, node_id, node_data, port, kafka_server, cpus, memory, test_directory, host_test_directory, docker_image):
+		command = TRIGGER_CONTAINER_COMMAND%(memory, cpus, node_id, node_data, kafka_server, port, port, host_test_directory, test_directory, expname, node_id, docker_image)
 		self.run_command(command)
 		
 	def run_command(self, command):
@@ -81,7 +81,7 @@ def read_yaml(master_address,config_file):
 			data[x['id']]['is_worker'] = True
 			data[x['id']]['own_address'] = (x['ip'], x['port'])
 
-			default_fields = ['mini_batch_size','window_interval','window_limit','epochs_per_window']
+			default_fields = ['mini_batch_size','window_interval','window_limit','epochs_per_window','kafka_server','cpus','memory','host_test_directory','docker_image']
 			for field in default_fields:
 				x[field] = raw_data['default_'+field] if field not in x else x[field]
 			
@@ -111,7 +111,7 @@ def read_yaml(master_address,config_file):
 
 	return data
 	
-def trigger_slaves(expname, docker, kafka_server, cpus, memory):
+def trigger_slaves(expname, use_docker):
 	"""
 	Log into machine and trigger node
 	"""
@@ -120,18 +120,21 @@ def trigger_slaves(expname, docker, kafka_server, cpus, memory):
 	for node_id in data:
 		# Create a connection. Format: IP address, username, password
 		connection = ssh(data[node_id]['ip'],data[node_id]['username'],data[node_id]['password'])
-		if docker == 1:
+		if use_docker == 1:
 			print("Container: %d"%node_id)
 			connection.trigger_container(expname,
 										 node_id, 
 										 json.dumps(data[node_id]).replace('\"','\''), 
 										 data[node_id]['port'],
-										 kafka_server,
-										 cpus,
-										 memory)
+										 data[node_id]['kafka_server'],
+										 data[node_id]['cpus'],
+										 data[node_id]['memory'],
+										 data[node_id]['test_directory'],
+										 data[node_id]['host_test_directory'],
+										 data[node_id]['docker_image'])
 		else:
 			print("Node: %d"%node_id)
-			connection.trigger_node(node_id, json.dumps(data[node_id]).replace('\"','\''), kafka_server)
+			connection.trigger_node(node_id, json.dumps(data[node_id]).replace('\"','\''), data[node_id]['kafka_server'])
 		connection.disconnect()
 		sleep(1)
 
