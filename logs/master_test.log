@@ -1,0 +1,156 @@
+{"node_id": 2, "type": "CONN", "payload": "Connected with the Kafka server"}
+{"node_id": 2, "type": "CONN", "payload": "Waiting for node 1 to connect"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: connected"}
+{"node_id": 2, "type": "CONN", "payload": "Connected with node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 0, "Runtime": 1916.3666693429986, "Process time": 8.967580665, "Memory Usage": 0.8797460852616191, "Accuracy": {"Cluster3_Data.csv": 0.06614384311654176, "Cluster6_Data.csv": 0.06682355042637263, "Cluster7_Data.csv": 0.07169824449851746, "Cluster4_Data.csv": 0.06726830176570903, "Cluster5_Data.csv": 0.06722002011274493, "Cluster2_Data.csv": 0.06607537852275684, "Cluster8_Data.csv": 0.07208673038745803, "Cluster1_Data.csv": 0.06723640643955865}, "timestamp": 1541602948.3377075}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 0, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.06700639156062393, "Cluster6_Data.csv": 0.06633799356576468, "Cluster7_Data.csv": 0.06946358003043267, "Cluster4_Data.csv": 0.06589289218587419, "Cluster5_Data.csv": 0.06629002558580624, "Cluster2_Data.csv": 0.06640914354505605, "Cluster8_Data.csv": 0.07150363309409866, "Cluster1_Data.csv": 0.06900583090021954}, "timestamp": 1541603016.4386787}}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 1, "Runtime": 476.74118780799836, "Process time": 88.05108877, "Memory Usage": 1.544317057085228, "Accuracy": {"Cluster3_Data.csv": 0.05400913763702337, "Cluster6_Data.csv": 0.05538075365381146, "Cluster7_Data.csv": 0.06189902004982126, "Cluster4_Data.csv": 0.05297191664596416, "Cluster5_Data.csv": 0.05528059662526555, "Cluster2_Data.csv": 0.057212376337366, "Cluster8_Data.csv": 0.06340988797410088, "Cluster1_Data.csv": 0.05705640987505138}, "timestamp": 1541603458.0365884}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 2, "type": "CONN", "payload": "Sending message to node 1, msg: disconnected"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: disconnected"}
+{"node_id": 2, "type": "DONE", "payload": ""}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 1, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.05522615671936952, "Cluster6_Data.csv": 0.05432505391320335, "Cluster7_Data.csv": 0.06123258008767775, "Cluster4_Data.csv": 0.05603753590297503, "Cluster5_Data.csv": 0.05441840250041222, "Cluster2_Data.csv": 0.05662016997522985, "Cluster8_Data.csv": 0.06306806068893911, "Cluster1_Data.csv": 0.05529991652355744}, "timestamp": 1541603503.9004138}}
+{"node_id": 1, "type": "DONE", "payload": ""}
+{"node_id": 2, "type": "CONN", "payload": "Connected with the Kafka server"}
+{"node_id": 2, "type": "CONN", "payload": "Waiting for node 1 to connect"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: connected"}
+{"node_id": 2, "type": "CONN", "payload": "Connected with node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 0, "Runtime": 15.967505828000867, "Process time": 2.222054157, "Memory Usage": 1.16137829588199, "Accuracy": {"Cluster3_Data.csv": 0.06666716114923414, "Cluster6_Data.csv": 0.06723043227566337, "Cluster7_Data.csv": 0.07012754032113107, "Cluster4_Data.csv": 0.06648419192758856, "Cluster5_Data.csv": 0.06687555396880032, "Cluster2_Data.csv": 0.06671795137982556, "Cluster8_Data.csv": 0.07255698972011516, "Cluster1_Data.csv": 0.06808560373535624}, "timestamp": 1541605904.8221374}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 0, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.06635528958193002, "Cluster6_Data.csv": 0.06552746767238134, "Cluster7_Data.csv": 0.06936446739439123, "Cluster4_Data.csv": 0.06515130697581721, "Cluster5_Data.csv": 0.06696647522773332, "Cluster2_Data.csv": 0.06687986002083597, "Cluster8_Data.csv": 0.07217000022394107, "Cluster1_Data.csv": 0.06651908424387075}, "timestamp": 1541605940.7288008}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 1, "Runtime": 212.70606227299868, "Process time": 61.503350344999994, "Memory Usage": 1.6738881352807151, "Accuracy": {"Cluster3_Data.csv": 0.06002206403446844, "Cluster6_Data.csv": 0.06005800220882051, "Cluster7_Data.csv": 0.06387193050698939, "Cluster4_Data.csv": 0.058570753734680465, "Cluster5_Data.csv": 0.06039916334735701, "Cluster2_Data.csv": 0.0599088512427783, "Cluster8_Data.csv": 0.06630451182706638, "Cluster1_Data.csv": 0.0618767171939628}, "timestamp": 1541606142.9208462}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 2, "type": "CONN", "payload": "Sending message to node 1, msg: disconnected"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: disconnected"}
+{"node_id": 2, "type": "DONE", "payload": ""}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 1, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.058412443468617355, "Cluster6_Data.csv": 0.060300794667375236, "Cluster7_Data.csv": 0.06428592160035389, "Cluster4_Data.csv": 0.05914058454063614, "Cluster5_Data.csv": 0.06022647467199345, "Cluster2_Data.csv": 0.06026209846421002, "Cluster8_Data.csv": 0.06553755110916248, "Cluster1_Data.csv": 0.06087020470891616}, "timestamp": 1541606173.822737}}
+{"node_id": 1, "type": "DONE", "payload": ""}
+{"node_id": 2, "type": "CONN", "payload": "Connected with the Kafka server"}
+{"node_id": 2, "type": "CONN", "payload": "Waiting for node 1 to connect"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: connected"}
+{"node_id": 2, "type": "CONN", "payload": "Connected with node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 0, "Runtime": 14.472407838002255, "Process time": 2.2491393779999997, "Memory Usage": 1.1686723675239565, "Accuracy": {"Cluster3_Data.csv": 0.06615480619570693, "Cluster6_Data.csv": 0.0670197051636197, "Cluster7_Data.csv": 0.0698094885176616, "Cluster4_Data.csv": 0.06723016006753796, "Cluster5_Data.csv": 0.06556055347554161, "Cluster2_Data.csv": 0.06624713576172621, "Cluster8_Data.csv": 0.07211808100143374, "Cluster1_Data.csv": 0.06686431410873189}, "timestamp": 1541623685.9956295}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 0, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.06577034870154849, "Cluster6_Data.csv": 0.06665642624078251, "Cluster7_Data.csv": 0.07051922641850833, "Cluster4_Data.csv": 0.06670301465392874, "Cluster5_Data.csv": 0.06682067841009662, "Cluster2_Data.csv": 0.06752232359687504, "Cluster8_Data.csv": 0.07182822845548874, "Cluster1_Data.csv": 0.06857937530216467}, "timestamp": 1541623733.0030198}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 1, "Runtime": 26.296390442999837, "Process time": 7.74093337, "Memory Usage": 1.413834219934495, "Accuracy": {"Cluster3_Data.csv": 0.06472763371246926, "Cluster6_Data.csv": 0.06676355456538553, "Cluster7_Data.csv": 0.06910737079648033, "Cluster4_Data.csv": 0.06555052201900088, "Cluster5_Data.csv": 0.06589847923141112, "Cluster2_Data.csv": 0.06650490322301528, "Cluster8_Data.csv": 0.07116176374302297, "Cluster1_Data.csv": 0.06715857122315247}, "timestamp": 1541623762.492433}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 2, "type": "CONN", "payload": "Sending message to node 1, msg: disconnected"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: disconnected"}
+{"node_id": 2, "type": "DONE", "payload": ""}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 1, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.06488811865753301, "Cluster6_Data.csv": 0.06796023000077066, "Cluster7_Data.csv": 0.0694665874068607, "Cluster4_Data.csv": 0.06514874864494452, "Cluster5_Data.csv": 0.06545959031232466, "Cluster2_Data.csv": 0.06467158174505266, "Cluster8_Data.csv": 0.0707061638601002, "Cluster1_Data.csv": 0.06614436146693753}, "timestamp": 1541623788.285033}}
+{"node_id": 1, "type": "DONE", "payload": ""}
+{"node_id": 2, "type": "CONN", "payload": "Connected with the Kafka server"}
+{"node_id": 2, "type": "CONN", "payload": "Waiting for node 1 to connect"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: connected"}
+{"node_id": 2, "type": "CONN", "payload": "Connected with node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 0, "Runtime": 31.94450642800075, "Process time": 9.759550155, "Memory Usage": 1.3620665725866499, "Accuracy": {"Cluster3_Data.csv": 0.06483491546159306, "Cluster6_Data.csv": 0.06658129076758688, "Cluster7_Data.csv": 0.06882349624467644, "Cluster4_Data.csv": 0.06583892653057523, "Cluster5_Data.csv": 0.06598973113181214, "Cluster2_Data.csv": 0.06531879459029877, "Cluster8_Data.csv": 0.07118766095653765, "Cluster1_Data.csv": 0.06655016639192411}, "timestamp": 1541624619.690849}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 0, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.0655168271264397, "Cluster6_Data.csv": 0.06651070530049912, "Cluster7_Data.csv": 0.06837945857590308, "Cluster4_Data.csv": 0.06635252667817296, "Cluster5_Data.csv": 0.06528791892854595, "Cluster2_Data.csv": 0.0656921984527427, "Cluster8_Data.csv": 0.07083314454750325, "Cluster1_Data.csv": 0.06675579625274489}, "timestamp": 1541624650.3073812}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 1, "Runtime": 37.49784745500074, "Process time": 13.978546460999999, "Memory Usage": 1.4754286026888785, "Accuracy": {"Cluster3_Data.csv": 0.06363949519979728, "Cluster6_Data.csv": 0.0651725720993449, "Cluster7_Data.csv": 0.06686138723422735, "Cluster4_Data.csv": 0.063641444624722, "Cluster5_Data.csv": 0.06431696666189345, "Cluster2_Data.csv": 0.0635895756143689, "Cluster8_Data.csv": 0.06917148898374888, "Cluster1_Data.csv": 0.06526389015157667}, "timestamp": 1541624672.9955525}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 2, "type": "CONN", "payload": "Sending message to node 1, msg: disconnected"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: disconnected"}
+{"node_id": 2, "type": "DONE", "payload": ""}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 1, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.06288976812533092, "Cluster6_Data.csv": 0.06416842769379509, "Cluster7_Data.csv": 0.06744443857814612, "Cluster4_Data.csv": 0.06319083611806357, "Cluster5_Data.csv": 0.06443569987682392, "Cluster2_Data.csv": 0.06395468866866602, "Cluster8_Data.csv": 0.06874154570166649, "Cluster1_Data.csv": 0.06541243854911058}, "timestamp": 1541624693.0871687}}
+{"node_id": 1, "type": "DONE", "payload": ""}
+{"node_id": 2, "type": "CONN", "payload": "Connected with the Kafka server"}
+{"node_id": 2, "type": "CONN", "payload": "Waiting for node 1 to connect"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: connected"}
+{"node_id": 2, "type": "CONN", "payload": "Connected with node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 0, "Runtime": 16.167083797998202, "Process time": 2.355881541, "Memory Usage": 1.146081006743977, "Accuracy": {"Cluster3_Data.csv": 0.06613601561465234, "Cluster6_Data.csv": 0.06722414146231671, "Cluster7_Data.csv": 0.07057126783083292, "Cluster4_Data.csv": 0.06574736832690324, "Cluster5_Data.csv": 0.06539655664257696, "Cluster2_Data.csv": 0.06651002208314488, "Cluster8_Data.csv": 0.07176745573869152, "Cluster1_Data.csv": 0.06663815491270186}, "timestamp": 1541624936.8877482}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 0, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.06589832360491242, "Cluster6_Data.csv": 0.06597659962693711, "Cluster7_Data.csv": 0.07077409303944038, "Cluster4_Data.csv": 0.06593206118180248, "Cluster5_Data.csv": 0.06637206117837051, "Cluster2_Data.csv": 0.06863536444959975, "Cluster8_Data.csv": 0.07201711462184571, "Cluster1_Data.csv": 0.06677126909753665}, "timestamp": 1541624978.9939082}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 1, "Runtime": 12.100383575001615, "Process time": 1.9422266940000004, "Memory Usage": 1.396308186683659, "Accuracy": {"Cluster3_Data.csv": 0.0658321439836002, "Cluster6_Data.csv": 0.0665522261173995, "Cluster7_Data.csv": 0.06912689656809025, "Cluster4_Data.csv": 0.06662384837217013, "Cluster5_Data.csv": 0.06619636179890868, "Cluster2_Data.csv": 0.0663316603093298, "Cluster8_Data.csv": 0.07163097205663796, "Cluster1_Data.csv": 0.06744772060424527}, "timestamp": 1541624981.5000672}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 2, "type": "CONN", "payload": "Sending message to node 1, msg: disconnected"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: disconnected"}
+{"node_id": 2, "type": "DONE", "payload": ""}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 1, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.06595402419989034, "Cluster6_Data.csv": 0.06625137575912561, "Cluster7_Data.csv": 0.06943785633661745, "Cluster4_Data.csv": 0.06847983493283147, "Cluster5_Data.csv": 0.06751333381603342, "Cluster2_Data.csv": 0.06688638348166907, "Cluster8_Data.csv": 0.07168653635903754, "Cluster1_Data.csv": 0.06700079314876027}, "timestamp": 1541624997.799625}}
+{"node_id": 1, "type": "DONE", "payload": ""}
+{"node_id": 2, "type": "CONN", "payload": "Connected with the Kafka server"}
+{"node_id": 2, "type": "CONN", "payload": "Waiting for node 1 to connect"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: connected"}
+{"node_id": 2, "type": "CONN", "payload": "Connected with node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 0, "Runtime": 325.6655133150052, "Process time": 128.500725259, "Memory Usage": 1.3946872818743332, "Accuracy": {"Cluster3_Data.csv": 0.0516667076583001, "Cluster6_Data.csv": 0.05292652237553578, "Cluster7_Data.csv": 0.06276441669714136, "Cluster4_Data.csv": 0.05255075273230627, "Cluster5_Data.csv": 0.05287682011795264, "Cluster2_Data.csv": 0.055367146620714236, "Cluster8_Data.csv": 0.0627323153319729, "Cluster1_Data.csv": 0.057208339628472944}, "timestamp": 1541625674.7909536}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2"}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 48}}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 0, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.05250235109372278, "Cluster6_Data.csv": 0.05225952677064913, "Cluster7_Data.csv": 0.060492065410514516, "Cluster4_Data.csv": 0.05120559480479201, "Cluster5_Data.csv": 0.05236814092038123, "Cluster2_Data.csv": 0.05554098289688036, "Cluster8_Data.csv": 0.06318809081792155, "Cluster1_Data.csv": 0.05632853781573426}, "timestamp": 1541625728.0044057}}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 1, "Runtime": 14.11619368600077, "Process time": 4.482905299000009, "Memory Usage": 1.7525020185330205, "Accuracy": {"Cluster3_Data.csv": 0.05363875289636008, "Cluster6_Data.csv": 0.051661390028514845, "Cluster7_Data.csv": 0.06234857127607153, "Cluster4_Data.csv": 0.051939865237812646, "Cluster5_Data.csv": 0.05434994047387175, "Cluster2_Data.csv": 0.05485513433313577, "Cluster8_Data.csv": 0.06348760310884725, "Cluster1_Data.csv": 0.05422677948772807}, "timestamp": 1541625745.3966584}}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1"}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2"}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1"}
+{"node_id": 2, "type": "CONN", "payload": "Sending message to node 1, msg: disconnected"}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: disconnected"}
+{"node_id": 2, "type": "DONE", "payload": ""}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 1, "Post Merge Accuracy": {"Cluster3_Data.csv": 0.053868975328248574, "Cluster6_Data.csv": 0.049080496858769654, "Cluster7_Data.csv": 0.059088431755547254, "Cluster4_Data.csv": 0.051890524348554595, "Cluster5_Data.csv": 0.051181407886107644, "Cluster2_Data.csv": 0.05407177306394377, "Cluster8_Data.csv": 0.0626771642207146, "Cluster1_Data.csv": 0.05595864990628228}, "timestamp": 1541625781.1921692}}
+{"node_id": 1, "type": "DONE", "payload": ""}

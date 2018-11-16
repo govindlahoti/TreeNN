@@ -1,1 +1,1 @@
-python3 aqi_sensor.py --sensor_id 1 --topic 2 --source ../data/Cluster7_Data.csv
+python3 aqi_sensor.py --sensor-id 1 --source ../data/Cluster7_Data.csv -k $1 

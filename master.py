@@ -79,10 +79,10 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 
 	own_address = (get_ip(),MASTER_RPC_SERVER_PORT)
-	data = read_yaml(own_address,args.config)
+	data = read_yaml(own_address,args.config,args.docker)
 	nodes = set(list(data.keys()))
 	
-	globals()["log_file"] = open('logs/master_%s.log'%args.expname,'a') if args.log == 1 else sys.stdout
+	globals()["log_file"] = open('logs/%s.log'%args.expname,'a') if args.log == 1 else sys.stdout
 
 	server_thread = threading.Thread(target=start_server,args=(own_address,))
 	server_thread.start()

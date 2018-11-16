@@ -62,7 +62,7 @@ class ssh:
 		if(self.client):
 			self.client.close()
 
-def read_yaml(master_address,config_file):
+def read_yaml(master_address,config_file,is_docker):
 	"""
 	Read yaml from config file
 	master_address is sent to slaves so that they can report back the logs
@@ -81,7 +81,10 @@ def read_yaml(master_address,config_file):
 			data[x['id']]['is_worker'] = True
 			data[x['id']]['own_address'] = (x['ip'], x['port'])
 
-			default_fields = ['mini_batch_size','window_interval','window_limit','epochs_per_window','kafka_server','cpus','memory','host_test_directory','docker_image']
+			default_fields = ['mini_batch_size','window_interval','window_limit','epochs_per_window','kafka_server']
+			if is_docker==1:
+				default_fields.extend(['cpus','memory','host_test_directory','docker_image'])
+
 			for field in default_fields:
 				x[field] = raw_data['default_'+field] if field not in x else x[field]
 			

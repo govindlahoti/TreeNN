@@ -35,11 +35,10 @@ def send_data(topic, source, data_rate, kafka_server):
 if __name__ == '__main__':
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-sid","--sensor_id", type=str, help="Sensor ID")
-	parser.add_argument("-t","--topic", type=str, help="Topic on which the sensor will post, basically the node id of the worker", required=True)
+	parser.add_argument("-sid","--sensor-id", type=str, dest="sensor_id", help="Sensor ID and also the topic on which the sensor will post data", required=True)
 	parser.add_argument("-s","--source", type=str, help="Source file using which sensor dumps data", required=True)
-	parser.add_argument("-d","--data_rate", type=float, default=DATA_RATE, help="Time interval between sending two data measurements")
-	parser.add_argument("-k","--kafka_server", type=str, default=KAFKA_SERVER_ADDRESS, help="Kafka Server address")
+	parser.add_argument("-d","--data-rate", type=float, default=DATA_RATE, dest="data_rate", help="Time interval between sending two data measurements")
+	parser.add_argument("-k","--kafka-server", type=str, default=KAFKA_SERVER_ADDRESS, dest="kafka_server", help="Kafka Server address")
 	args = parser.parse_args()
 	
-	send_data(args.topic, args.source, args.data_rate, args.kafka_server)
+	send_data(args.sensor_id, args.source, args.data_rate, args.kafka_server)

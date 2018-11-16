@@ -3,10 +3,10 @@
 *.csv
 *.pickle
 trials/html/
-local.yaml
-container.yaml
+*test.yaml
 client.py 
 sampleText.txt
 example.py
 login.py
 *.tar
+*.zip

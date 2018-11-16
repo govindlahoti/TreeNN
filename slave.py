@@ -23,9 +23,9 @@ from node.worker import Worker
 def main():
 	
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-ni","--node_id", type=str, help="Node id", required=True)
-	parser.add_argument("-nd","--node_data", type=str, help="Node data", required=True)
-	parser.add_argument("-k","--kafka_server", type=str, help="Address of kafka server", default=KAFKA_SERVER_ADDRESS)
+	parser.add_argument("-ni","--node-id", type=str, dest="node_id", help="Node id", required=True)
+	parser.add_argument("-nd","--node-data", type=str, dest="node_data", help="Node data", required=True)
+	parser.add_argument("-k","--kafka-server", type=str, dest="kafka_server", help="Address of kafka server", default=KAFKA_SERVER_ADDRESS)
 	args = parser.parse_args()
 
 	print("Initiating node %s"%args.node_id)

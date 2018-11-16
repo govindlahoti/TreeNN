@@ -21,6 +21,8 @@ class Worker(Node):
 	def __init__(self, data, kafka_server_address):
 		super().__init__(data)
 		
+		self.sensors = [ str(x) for x in data['sensors'] ]
+
 		self.mini_batch_size = data['mini_batch_size'] 
 		self.window_interval = data['window_interval']
 		self.window_limit = data['window_limit']
@@ -29,7 +31,8 @@ class Worker(Node):
 		self.window_count = 0
 
 		try:
-			self.consumer = KafkaConsumer(str(self.id), bootstrap_servers=str(kafka_server_address), api_version=(0,10))
+			self.consumer = KafkaConsumer(bootstrap_servers=str(kafka_server_address), api_version=(0,10))
+			self.consumer.subscribe(self.sensors)	
 			self.log(self.create_log(CONNECTION,'Connected with the Kafka server'))
 		except NoBrokersAvailable:
 			print("No Brokers are Available. Please start the Kafka server")
@@ -97,8 +100,7 @@ class Worker(Node):
 				RUNTIME			: time.perf_counter() - epoch_start,
 				PROCESS_TIME	: time.process_time() - epoch_start_cpu,
 				MEMORY_USAGE	: py.memory_percent(),
-				ACCURACY		: self.get_accuracies(),
-				TIMESTAMP		: time.time()
+				ACCURACY		: self.get_accuracies()
 			})))
 
 			### Push model to parent

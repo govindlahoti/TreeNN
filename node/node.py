@@ -174,12 +174,14 @@ class Node(ABC):
 			return
 			
 		model = self.get_parent().pull_from_child(self.id)
+		model_size = get_size(model)
+
 		model[0] = [np.array(x) for x in model[0]]
 		model[1] = [np.array(x) for x in model[1]]
-		
+
 		self.log(self.create_log(CONNECTION,'Got model from parent %d'%(self.parent_id)))
 		self.log(self.create_log(CONNECTION,{
-									NETWORK_COST : get_size(model)
+									NETWORK_COST : model_size
 								}))
 		
 		return model
@@ -226,7 +228,7 @@ class Node(ABC):
 		
 		for test_file in self.test_files:
 			test_data = self.get_test_data(test_file)
-			accuracies[test_file.name] = self.network.evaluate(test_data)
+			accuracies[test_file.name.split('/')[-1]] = self.network.evaluate(test_data)
 		
 		return accuracies
 
@@ -259,9 +261,10 @@ class Node(ABC):
 		"""
 
 		log = OrderedDict({
-				NODE_ID	: self.id,
-				TYPE	: log_type,
-				PAYLOAD	: payload
+				NODE_ID		: self.id,
+				TYPE		: log_type,
+				PAYLOAD		: payload,
+				TIMESTAMP	: time.time()
 			})
 		return json.dumps(log)
 
