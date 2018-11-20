@@ -14,7 +14,7 @@ default_memory: "125M"
 
 default_docker_image: "aniketshirke/distributedlearning:simulator"
 default_host_test_directory: "~/TrainingData"
-defaut_test_directory: "/TreeNN/data/"
+default_test_directory: "/TreeNN/data/"
 
 machine:
 -   ip: 10.129.2.26   
