@@ -14,13 +14,13 @@ default_cpus: 1
 default_memory: "125M"
 
 default_docker_image: "aniketshirke/distributedlearning:simulator"
-default_host_test_directory: "~/Simulator/TreeNN/data"
+default_host_test_directory: "~/TrainingData"
 default_test_directory: "/TreeNN/data/"
 
 machine:
--   ip: 10.152.50.10
-    username: "aniket"
-    password: "08081997ani"
+-   ip: 10.129.27.164
+    username: "giselab"
+    password: "giselab123"
 
 nodes:
 -   id: 1 

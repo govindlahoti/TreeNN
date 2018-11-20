@@ -14,8 +14,6 @@ from collections import OrderedDict
 
 from utility.const import *
 
-data = OrderedDict()
-
 class ssh:
 	"""
 	Class for ssh into the slave machine and trigger nodes
@@ -67,29 +65,27 @@ def read_yaml(master_address,config_file,is_docker):
 	Read yaml from config file
 	master_address is sent to slaves so that they can report back the logs
 	"""
-	global data
 
 	with open(config_file, 'r') as f:
 		
 		raw_data = yaml.load(f.read())
+		data = OrderedDict()
+		machine_info = raw_data['machine']
 
-		# Obtain the default values of properties
 		default_delay = raw_data['default_delay']
 
 		for x in raw_data['nodes']:
 			data[x['id']] = x
 			data[x['id']]['is_worker'] = True
-			data[x['id']]['own_address'] = (x['ip'], x['port'])
+			data[x['id']]['ip'] = machine_info[x['machine']]['ip']
+			data[x['id']]['own_address'] = (data[x['id']]['ip'], x['port'])
 
-			default_fields = ['mini_batch_size','window_interval','window_limit','epochs_per_window','kafka_server']
+			default_fields = ['mini_batch_size','window_interval','window_limit','epochs_per_window','kafka_server','test_directory']
 			if is_docker==1:
 				default_fields.extend(['cpus','memory','host_test_directory','docker_image'])
 
 			for field in default_fields:
 				x[field] = raw_data['default_'+field] if field not in x else x[field]
-			
-			if 'file_name' in x:
-				data[x['id']]['file_name'] = x['file_name']
 			
 		for x in raw_data['nodes']:
 			data[x['id']]['master_address'] = 'http://%s:%d'%master_address
@@ -112,9 +108,9 @@ def read_yaml(master_address,config_file,is_docker):
 		for x in raw_data['delays']:
 			data[x['src_id']]['delays'][x['dest_id']] = x['delay']
 
-	return data
+	return data,machine_info
 	
-def trigger_slaves(expname, use_docker):
+def trigger_slaves(expname, data, machine_info, use_docker):
 	"""
 	Log into machine and trigger node
 	"""
@@ -122,7 +118,8 @@ def trigger_slaves(expname, use_docker):
 	# Can do a group by to login into the machine once and trigger all the scripts
 	for node_id in data:
 		# Create a connection. Format: IP address, username, password
-		connection = ssh(data[node_id]['ip'],data[node_id]['username'],data[node_id]['password'])
+		machine = machine_info[data[node_id]['machine']]
+		connection = ssh(machine['ip'],machine['username'],machine['password'])
 		if use_docker == 1:
 			print("Container: %d"%node_id)
 			connection.trigger_container(expname,

@@ -1,7 +1,7 @@
 """
 Code which runs on the master machine.
 Logs into slave machines and triggers Nodes on the slave machines.
-Starts an RPC server to receive logs about the simulation form the slaves
+Starts an RPC server to receive logs about the simulation from the slaves
 
 Run this as:
 	python3 master.py -c network.yaml
@@ -71,15 +71,19 @@ if __name__ == '__main__':
 	parser.add_argument("-n","--expname", type=str, help="Experiment name", required=True)
 	parser.add_argument("-f","--config", type=str, help="Path to network config yaml file", required=True )
 	parser.add_argument("-d","--docker", type=int, help="Boolean indicating to run in container mode",
-								default=0, choices=[1, 0])
+								default=1, choices=[1, 0])
 	parser.add_argument("-t","--trigger", type=int, help="Boolean indicating to trigger scripts (for debugging purposes)", 
 								default=1, choices=[1, 0])
 	parser.add_argument("-l","--log", type=int, help="Boolean indicating to generate log", 
-								default=0, choices=[1,0])
+								default=1, choices=[1,0])
+	parser.add_argument("-i","--ip", type=str, help="IP address on which the Master RPC server should run",
+								default=get_ip())
+
 	args = parser.parse_args()
 
-	own_address = (get_ip(),MASTER_RPC_SERVER_PORT)
-	data = read_yaml(own_address,args.config,args.docker)
+	own_address = (args.ip,MASTER_RPC_SERVER_PORT)
+
+	data, machine_info = read_yaml(own_address,args.config,args.docker)
 	nodes = set(list(data.keys()))
 	
 	globals()["log_file"] = open('logs/%s.log'%args.expname,'a') if args.log == 1 else sys.stdout
@@ -88,4 +92,4 @@ if __name__ == '__main__':
 	server_thread.start()
 
 	if args.trigger==1:
-		trigger_slaves(args.expname, args.docker)
+		trigger_slaves(args.expname, data, machine_info, args.docker)

@@ -19,7 +19,7 @@ def send_data(topic, source, data_rate, kafka_server):
 
 	try:
 		producer = KafkaProducer(bootstrap_servers=kafka_server, api_version=(0,10))	
-		print("Connected to Kafka")
+		print("Sensor %s: Connected to Kafka"%topic)
 	except NoBrokersAvailable:
 		print("No Brokers are Available. Please start the Kafka server")
 		exit(0)

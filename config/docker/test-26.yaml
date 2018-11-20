@@ -18,9 +18,9 @@ default_host_test_directory: "~/Simulator/TreeNN/data"
 default_test_directory: "/TreeNN/data/"
 
 machine:
--   ip: 10.152.50.10
-    username: "aniket"
-    password: "08081997ani"
+-   ip: 10.129.2.26
+    username: "synerg"
+    password: "synerg"
 
 nodes:
 -   id: 1 

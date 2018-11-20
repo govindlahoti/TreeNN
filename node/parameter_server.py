@@ -61,11 +61,11 @@ class ParameterServer(Node):
 			if self.parent_address:
 				self.network.use_parent_model(*self.pull_from_parent())
 
-			### Log pre merge accuracy
-			# self.log(self.create_log(STATISTIC,OrderedDict({
-			# 		MERGE_ID 			: self.merge_id,
-			# 		PRE_MERGE_ACCURACY	: self.get_accuracies
-			# 		})))
+			## Log pre merge accuracy
+			self.log(self.create_log(STATISTIC,OrderedDict({
+					MERGE_ID 			: self.merge_id,
+					PRE_MERGE_ACCURACY	: self.get_accuracies()
+				})))
 
 			### Merge gradients
 			self.network.apply_kid_gradient(weight_gradient, bias_gradient)
@@ -76,8 +76,7 @@ class ParameterServer(Node):
 			### Log post merge accuracy
 			self.log(self.create_log(STATISTIC, OrderedDict({
 					MERGE_ID			: self.merge_id,
-					POST_MERGE_ACCURACY	: self.get_accuracies(),
-					TIMESTAMP			: time.time()
+					POST_MERGE_ACCURACY	: self.get_accuracies()
 				})))	
 
 			### Push Gradient to parent
