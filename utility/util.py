@@ -119,11 +119,11 @@ def trigger_slaves(expname, data, machine_info, use_docker):
 	for node_id in data:
 		# Create a connection. Format: IP address, username, password
 		machine = machine_info[data[node_id]['machine']]
-		connection = ssh(machine['ip'],machine['username'],machine['password'])
 		if use_docker == 1:
 			print("\n\n################")
 			print("Container: %d"%node_id)
 			print("################")
+			connection = ssh(machine['ip'],machine['username'],machine['password'])
 			connection.trigger_container(expname,
 										 node_id, 
 										 json.dumps(data[node_id]).replace('\"','\''), 
@@ -138,6 +138,7 @@ def trigger_slaves(expname, data, machine_info, use_docker):
 			print("\n\n################")
 			print("Node: %d"%node_id)
 			print("################")
+			connection = ssh(machine['ip'],machine['username'],machine['password'])
 			connection.trigger_node(node_id, json.dumps(data[node_id]).replace('\"','\''), data[node_id]['kafka_server'])
 		connection.disconnect()
 		sleep(1)

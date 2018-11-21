@@ -228,7 +228,7 @@ class Node(ABC):
 		
 		for test_file in self.test_files:
 			test_data = self.get_test_data(test_file)
-			accuracies[test_file.name.split('/')[-1]] = self.network.evaluate(test_data)
+			accuracies[test_file.name.split('/')[-1]] = self.network.evaluate(test_data)*100
 		
 		return accuracies
 

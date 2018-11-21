@@ -8,233 +8,140 @@ default_mini_batch_size: 100
 default_window_interval: 5
 default_window_limit: 2
 default_epochs_per_window: 1
-default_kafka_server: "192.168.43.18:9092"
-default_cpus: 0.25
-default_memory: "100M"
+default_kafka_server: "10.129.2.26:9092"
+default_cpus: 0.5
+default_memory: "125M"
 
 default_docker_image: "aniketshirke/distributedlearning:simulator"
-default_host_test_directory: "~/Simulator/TreeNN/data"
+default_host_test_directory: "~/TrainingData"
+default_test_directory: "/TreeNN/data/"
+
+machine:
+-   ip: 10.129.2.26   
+    username: "synerg"
+    password: "synerg"
+-   ip: 10.129.26.154
+    username: "gise"
+    password: "gise123"
+-   ip: 10.129.27.164
+    username: "giselab"
+    password: "giselab123"
 
 nodes:
 -   id: 1 
-    ip: 192.168.43.18
+    machine: 0
     port: 8000 
-    test_directory: "/TreeNN/data/"
-    username: "aniket"
-    password: "08081997ani"
 -   id: 2
-    ip: 192.168.43.18
+    machine: 0
     port: 8006
     parent_id: 1
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
 -   id: 3
-    ip: 192.168.43.18
+    machine: 0
     port: 8007
     parent_id: 1
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
 -   id: 4
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 1
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
 -   id: 5
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 1
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
 -   id: 6
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 1
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
 -   id: 7
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 1
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
 -   id: 8
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 2
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 9
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 2
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 10
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 2
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 11
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 3
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 12
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 3
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 13
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 3
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"  
+    sensors: []
 -   id: 14
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 4
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 15
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 4
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 16
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 4
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 17
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 5
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 18
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 5
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 19
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 5
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 20
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 6
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 21
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 6
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 22
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 6
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 23
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 7
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 24
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 7
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []
 -   id: 25
-    ip: 192.168.43.18
+    machine: 0
     port: 8008
     parent_id: 7
-    test_directory: "/TreeNN/data/"
-    mini_batch_size: 10
-    username: "aniket"
-    password: "08081997ani"
-    memory: "125M"
+    sensors: []

@@ -83,13 +83,13 @@ if __name__ == '__main__':
 
 	own_address = (args.ip,MASTER_RPC_SERVER_PORT)
 
-	data, machine_info = read_yaml(own_address,args.config,args.docker)
-	nodes = set(list(data.keys()))
-	
-	globals()["log_file"] = open('logs/%s.log'%args.expname,'a') if args.log == 1 else sys.stdout
-
 	server_thread = threading.Thread(target=start_server,args=(own_address,))
 	server_thread.start()
 
 	if args.trigger==1:
+		data, machine_info = read_yaml(own_address,args.config,args.docker)
+		nodes = set(list(data.keys()))
+		
+		globals()["log_file"] = open('logs/%s.log'%args.expname,'a') if args.log == 1 else sys.stdout
+
 		trigger_slaves(args.expname, data, machine_info, args.docker)
