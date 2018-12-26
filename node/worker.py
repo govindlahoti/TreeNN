@@ -100,7 +100,8 @@ class Worker(Node):
 				RUNTIME			: time.perf_counter() - epoch_start,
 				PROCESS_TIME	: time.process_time() - epoch_start_cpu,
 				MEMORY_USAGE	: py.memory_percent(),
-				ACCURACY		: self.get_accuracies()
+				ACCURACY		: self.get_accuracies(),
+				DATAPOINTS 		: len(data)
 			})))
 
 			### Push model to parent
