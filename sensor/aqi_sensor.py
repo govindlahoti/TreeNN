@@ -31,6 +31,7 @@ def send_data(topic, source, data_rate, kafka_server):
 			counter+=1
 			# if counter%100 == 0: print(counter)
 			sleep(data_rate)
+	print("Sensor %s: Done"%topic)
 			
 if __name__ == '__main__':
 
