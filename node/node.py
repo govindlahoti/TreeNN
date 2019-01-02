@@ -232,7 +232,7 @@ class Node(ABC):
 		
 		return accuracies
 
-	def get_test_data(self, test_file, size=50):
+	def get_test_data(self, test_file, size=10000):
 		"""
 			Get test data from file. 
 			Using random-seeking in file to limit RAM usage
