@@ -10,3 +10,4 @@ example.py
 login.py
 *.tar
 *.zip
+*.tgz
