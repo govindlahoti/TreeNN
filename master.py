@@ -54,12 +54,16 @@ def start_server(own_address):
 	"""
 	global server
 	
-	print('RPC server started at http://%s:%d'%own_address)
-	server = SimpleXMLRPCServer(own_address, allow_none=True)
-	server.register_function(log_report)
-	server.register_function(remote_shutdown)
-	server.serve_forever()
-
+	try:
+		print('RPC server started at http://%s:%d'%own_address)
+		server = SimpleXMLRPCServer(own_address, allow_none=True)
+		server.register_function(log_report)
+		server.register_function(remote_shutdown)
+		server.serve_forever()
+	except:
+		print("Address already in use")
+		exit(0)
+		
 if __name__ == '__main__':
 	"""
 	1. Fetch own ip address, port for running the RPC server is set to 9000

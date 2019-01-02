@@ -44,6 +44,7 @@ RUNTIME = 'Runtime'
 PROCESS_TIME = 'Process time'
 MEMORY_USAGE = 'Memory Usage'
 ACCURACY = 'Accuracy'	
+DATAPOINTS = 'Datapoints'
 
 NETWORK_COST = 'Network Cost'
 

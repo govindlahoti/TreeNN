@@ -1,0 +1,49 @@
+{"node_id": 2, "type": "CONN", "payload": "Connected with the Kafka server", "timestamp": 1543145937.4559493}
+{"node_id": 2, "type": "CONN", "payload": "Waiting for node 1 to connect", "timestamp": 1543145947.255573}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: connected", "timestamp": 1543145947.5621161}
+{"node_id": 2, "type": "CONN", "payload": "Connected with node 1", "timestamp": 1543145947.9335938}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1543145948.336025}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1543145952.5473812}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1543145952.8208075}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 0, "Runtime": 16.207750625908375, "Process time": 3.826419981, "Memory Usage": 0.22634486275451843, "Accuracy": {"001013_Data.csv": 0.04477673917451628, "001024_Data.csv": 0.052823469960355, "001031_Data.csv": 0.051214841647216264, "001022_Data.csv": 0.04454316091216756, "001004_Data.csv": 0.04538568043090126, "001033_Data.csv": 0.051216997719860914}}, "timestamp": 1543145960.1109142}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1543145960.8855517}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1543145961.477225}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1543145965.3578737}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1543145965.6266923}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 38, "Post Merge Accuracy": {"001013_Data.csv": 0.04147311211685066, "001024_Data.csv": 0.05098384592338033, "001031_Data.csv": 0.051959935208887406, "001022_Data.csv": 0.042270789219429214, "001004_Data.csv": 0.04664701943479115, "001033_Data.csv": 0.04996469306540571}, "timestamp": 1543145976.4093404}, "timestamp": 1543145976.4093542}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1543145977.5715897}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1543145983.7086463}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1543145984.251602}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 1, "Runtime": 577.5926642492414, "Process time": 562.893317503, "Memory Usage": 0.27852218395236966, "Accuracy": {"001013_Data.csv": 0.04580133847860118, "001024_Data.csv": 0.049253928786629875, "001031_Data.csv": 0.054025962768855795, "001022_Data.csv": 0.044221201443858396, "001004_Data.csv": 0.047867506050913416, "001033_Data.csv": 0.05284655400361937}}, "timestamp": 1543146547.31417}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1543146547.6351829}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1543146548.1103778}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1543146551.9560032}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1543146553.1476452}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 39, "Post Merge Accuracy": {"001013_Data.csv": 0.03975677653765753, "001024_Data.csv": 0.0546400671625279, "001031_Data.csv": 0.05644834199826621, "001022_Data.csv": 0.043447318440114964, "001004_Data.csv": 0.04653639607225116, "001033_Data.csv": 0.05329874974563786}, "timestamp": 1543146559.309913}, "timestamp": 1543146559.3099306}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1543146564.3392968}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1543146569.3131537}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1543146570.5872455}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 2, "Runtime": 510.18252970837057, "Process time": 495.35039762099996, "Memory Usage": 0.3259988455828469, "Accuracy": {"001013_Data.csv": 0.044445143923655825, "001024_Data.csv": 0.052965471958321686, "001031_Data.csv": 0.05161750373117245, "001022_Data.csv": 0.0442614615875528, "001004_Data.csv": 0.050504801276935886, "001033_Data.csv": 0.05118070543730912}}, "timestamp": 1543147066.9189801}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1543147067.4295735}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1543147068.1706116}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1543147072.5074148}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1543147073.1142974}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 40, "Post Merge Accuracy": {"001013_Data.csv": 0.04379719953093768, "001024_Data.csv": 0.05270067483258572, "001031_Data.csv": 0.05337027495139947, "001022_Data.csv": 0.04538407586311991, "001004_Data.csv": 0.04750922652028594, "001033_Data.csv": 0.05477071634495794}, "timestamp": 1543147079.910011}, "timestamp": 1543147079.9100242}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1543147081.8831372}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1543147086.4783404}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1543147087.214326}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 3, "Runtime": 507.7011439371854, "Process time": 496.446753619, "Memory Usage": 0.33505977212823335, "Accuracy": {"001013_Data.csv": 0.04161958214091089, "001024_Data.csv": 0.05145063228756189, "001031_Data.csv": 0.05724061978478733, "001022_Data.csv": 0.04469066694522311, "001004_Data.csv": 0.047301533330370675, "001033_Data.csv": 0.05369355937019187}}, "timestamp": 1543147584.5119882}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1543147584.849052}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1543147585.2825756}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1543147589.816394}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1543147590.3136868}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 41, "Post Merge Accuracy": {"001013_Data.csv": 0.04058962817567371, "001024_Data.csv": 0.05172159985379745, "001031_Data.csv": 0.05177098334164572, "001022_Data.csv": 0.04522041894616053, "001004_Data.csv": 0.0507766738338011, "001033_Data.csv": 0.05009589937025532}, "timestamp": 1543147596.5098825}, "timestamp": 1543147596.5098963}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1543147602.0763445}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1543147606.7380702}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1543147607.2071056}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 4, "Runtime": 595.0074343010783, "Process time": 581.0085382349998, "Memory Usage": 0.30980588383178964, "Accuracy": {"001013_Data.csv": 0.04357815356000771, "001024_Data.csv": 0.055823659036991956, "001031_Data.csv": 0.05330113094230264, "001022_Data.csv": 0.044557945353042944, "001004_Data.csv": 0.047050924381965314, "001033_Data.csv": 0.05141463094149889}}, "timestamp": 1543148189.4111006}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1543148190.3099978}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1543148190.8948867}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1543148195.015377}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1543148195.4225078}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 42, "Post Merge Accuracy": {"001013_Data.csv": 0.042886532019907546, "001024_Data.csv": 0.049945361075122666, "001031_Data.csv": 0.05670067770633677, "001022_Data.csv": 0.0438464549344127, "001004_Data.csv": 0.04729626787851105, "001033_Data.csv": 0.05315291431751652}, "timestamp": 1543148201.7077582}, "timestamp": 1543148201.7077773}
