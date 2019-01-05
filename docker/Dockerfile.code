@@ -3,7 +3,7 @@ FROM aniketshirke/distributedlearning:dependencies
 # Set the working directory to /TreeNN
 WORKDIR /TreeNN
 
-# Copy the current directory contents into the container at /TreeNN
+# Copy the outside directory contents into the container at /TreeNN
 COPY . /TreeNN
 
 # Define environment variable

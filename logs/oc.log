@@ -1,0 +1,69 @@
+{"node_id": 2, "type": "CONN", "payload": "Connected with the Kafka server", "timestamp": 1545746282.9377155}
+{"node_id": 2, "type": "CONN", "payload": "Waiting for node 1 to connect", "timestamp": 1545746875.79534}
+{"node_id": 1, "type": "CONN", "payload": "Received message from node id 2: connected", "timestamp": 1545746876.3789406}
+{"node_id": 2, "type": "CONN", "payload": "Connected with node 1", "timestamp": 1545746877.4466417}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1545746877.8896728}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1545746881.5694501}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545746882.1495833}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 0, "Runtime": 600.1529916580766, "Process time": 6.152159049, "Memory Usage": 0.19034429413680248, "Accuracy": {}}, "timestamp": 1545746883.7084186}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1545746884.691067}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545746885.890151}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1545746889.344512}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1545746889.6916196}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 0, "Post Merge Accuracy": {}, "timestamp": 1545746890.7664473}, "timestamp": 1545746890.7664607}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1545746895.229172}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1545746899.9515886}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545746906.6364923}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 1, "Runtime": 131.6231307350099, "Process time": 168.319713396, "Memory Usage": 0.2521498628623094, "Accuracy": {}}, "timestamp": 1545747021.31411}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1545747022.2521598}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545747022.8274896}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1545747025.6606545}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1545747026.4381702}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 1, "Post Merge Accuracy": {}, "timestamp": 1545747026.904119}, "timestamp": 1545747026.9041324}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1545747032.0880103}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1545747036.2481415}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545747036.646951}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 2, "Runtime": 276.1672596540302, "Process time": 401.22407154300004, "Memory Usage": 0.3297755824076681, "Accuracy": {}}, "timestamp": 1545747302.6063535}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1545747305.3574448}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545747305.864276}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1545747308.7514489}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1545747309.2354634}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 2, "Post Merge Accuracy": {}, "timestamp": 1545747309.6009653}, "timestamp": 1545747309.6009796}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1545747315.371343}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1545747319.0692563}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545747322.3797433}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 3, "Runtime": 473.4771553389728, "Process time": 693.2240669789999, "Memory Usage": 0.39389906257501806, "Accuracy": {}}, "timestamp": 1545747782.714807}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1545747783.8900497}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545747784.473417}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1545747787.399043}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1545747789.2240853}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 3, "Post Merge Accuracy": {}, "timestamp": 1545747789.61184}, "timestamp": 1545747789.6118526}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1545747794.9825265}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1545747799.6698558}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545747801.0918164}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 4, "Runtime": 332.7817723993212, "Process time": 483.70746968899994, "Memory Usage": 0.4278896939984086, "Accuracy": {}}, "timestamp": 1545748122.008706}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1545748125.511016}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545748126.647421}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1545748129.790332}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1545748133.3381622}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 4, "Post Merge Accuracy": {}, "timestamp": 1545748133.7996151}, "timestamp": 1545748133.799629}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1545748139.513773}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1545748145.2206063}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545748149.688445}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 5, "Runtime": 508.08432145789266, "Process time": 740.1334292720003, "Memory Usage": 0.5380958470969456, "Accuracy": {}}, "timestamp": 1545748641.423395}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1545748647.9345775}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545748652.45608}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1545748655.778385}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1545748656.490886}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 5, "Post Merge Accuracy": {}, "timestamp": 1545748656.9735568}, "timestamp": 1545748656.9735696}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1545748662.235739}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1545748670.4579966}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545748671.3292284}
+{"node_id": 2, "type": "STAT", "payload": {"Window ID": 6, "Runtime": 324.03444283641875, "Process time": 466.0367549059997, "Memory Usage": 0.5376581994820521, "Accuracy": {}}, "timestamp": 1545748980.5258074}
+{"node_id": 2, "type": "CONN", "payload": "Sending gradients to parent 1", "timestamp": 1545748981.1213565}
+{"node_id": 2, "type": "CONN", "payload": {"Network Cost": 1329600}, "timestamp": 1545748983.870976}
+{"node_id": 1, "type": "CONN", "payload": "Got gradients from child 2", "timestamp": 1545748990.001537}
+{"node_id": 1, "type": "CONN", "payload": "Merged gradients at node 1", "timestamp": 1545749005.6984706}
+{"node_id": 1, "type": "STAT", "payload": {"Merge ID": 6, "Post Merge Accuracy": {}, "timestamp": 1545749008.4719825}, "timestamp": 1545749008.4719954}
+{"node_id": 1, "type": "CONN", "payload": "Got pull request from child 2", "timestamp": 1545749011.4367516}
+{"node_id": 2, "type": "CONN", "payload": "Got model from parent 1", "timestamp": 1545749015.1650236}

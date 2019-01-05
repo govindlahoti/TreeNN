@@ -3,3 +3,5 @@ docs/
 config/
 trials/
 *.tar
+*.zip
+*.tgz

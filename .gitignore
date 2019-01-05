@@ -12,3 +12,8 @@ login.py
 *.zip
 *.out
 *.tgz
+config/docker/test-26.yaml
+config/docker/test.yaml
+config/docker/three-child.yaml
+sensor/test.sh
+logs/test.log
