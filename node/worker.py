@@ -20,7 +20,7 @@ class Worker(Node):
 
 	def __init__(self, data, kafka_server_address):
 		super().__init__(data)
-		
+
 		self.sensors = [ str(x) for x in data['sensors'] ]
 
 		self.mini_batch_size = data['mini_batch_size'] 
@@ -29,6 +29,8 @@ class Worker(Node):
 		self.epochs_per_window = data['epochs_per_window']
 
 		self.window_count = 0
+
+		self.skiptestdata = 0
 
 		try:
 			self.consumer = KafkaConsumer(bootstrap_servers=str(kafka_server_address), api_version=(0,10))
@@ -88,6 +90,8 @@ class Worker(Node):
 			epoch_start_cpu, epoch_start = time.process_time(), time.perf_counter()
 			data = self.get_data()
 			
+			self.skiptestdata += len(data)
+
 			### Pull model from parent			
 			self.network.use_parent_model(*self.pull_from_parent())
 
@@ -95,12 +99,14 @@ class Worker(Node):
 			self.network.train(data, epochs=self.epochs_per_window, mini_batch_size=self.mini_batch_size)
 
 			### Log Statistics for the epoch
+			self.log(self.create_log(STATISTIC,"Window %d processed"%self.window_count))
+
 			self.log(self.create_log(STATISTIC,OrderedDict({
 				WINDOW_ID		: self.window_count,
 				RUNTIME			: time.perf_counter() - epoch_start,
 				PROCESS_TIME	: time.process_time() - epoch_start_cpu,
 				MEMORY_USAGE	: py.memory_percent(),
-				ACCURACY		: self.get_accuracies(),
+				ACCURACY		: self.get_accuracies(skipdata=self.skiptestdata),
 				DATAPOINTS 		: len(data)
 			})))
 

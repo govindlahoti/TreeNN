@@ -68,9 +68,16 @@ class Node(ABC):
 			self.connection_objs[int(w)] = None
 		self.delays = { int(k):v for k,v in data['delays'].items() }
 
-		### Information about the learning model
-		test_files = os.listdir(data['test_directory'])
-		self.test_files = [open(data['test_directory']+f, 'r') for f in test_files]
+		### Information about the test data and learning model
+		self.test_files = os.listdir(data['test_directory'])
+		self.test_file_handlers = { f:open(data['test_directory']+f, 'r') for f in self.test_files}
+
+		def get_filesize(test_file):
+			test_file.seek(0, os.SEEK_END)
+			return test_file.tell()
+
+		self.filesizes = { f:get_filesize(self.test_file_handlers[f]) for f in self.test_files}
+
 		self.network = Network([276, 276, 276, 48])
 
 		### Meta
@@ -133,7 +140,7 @@ class Node(ABC):
 
 		else:
 			self.connection_objs[node_id] = ServerProxy(self.addresses[node_id], allow_none=True)
-			print(self.addresses[node_id],self.connection_objs[node_id])
+			# print(self.addresses[node_id],self.connection_objs[node_id])
 			while True:
 				self.log(self.create_log(CONNECTION,'Waiting for node %s to connect'%(node_id)))
 				try:
@@ -218,7 +225,7 @@ class Node(ABC):
 		self.log(self.create_log(CONNECTION,'Sending message to node %d, msg: %s'%(receiver_id, msg)))
 		self.get_node(receiver_id).receive_message(self.id, msg)
 
-	def get_accuracies(self):
+	def get_accuracies(self, skipdata=0):
 		"""
 			Calculate accuracies for each sensor prediction
 			Returns a dictionary of accuracies
@@ -227,29 +234,40 @@ class Node(ABC):
 		accuracies = {}
 		
 		for test_file in self.test_files:
-			test_data = self.get_test_data(test_file)
-			accuracies[test_file.name.split('/')[-1]] = self.network.evaluate(test_data)*100
+			test_data = self.get_test_data(test_file,skipdata)
+			accuracies[test_file.split('/')[-1]] = self.network.evaluate(test_data)*100
 		
 		return accuracies
 
-	def get_test_data(self, test_file, size=10000):
+	def get_test_data(self, test_file, skipdata, size=2000):
 		"""
 			Get test data from file. 
 			Using random-seeking in file to limit RAM usage
 		"""		
 
 		sample = []
-		test_file.seek(0, 2)
-		filesize = test_file.tell()
+		DATAPOINT_SIZE = 30*1024 ## 30kB
 
-		random_set = sorted(random.sample(range(filesize), size))
+		test_file_handler = self.test_file_handlers[test_file]
+		filesize = self.filesizes[test_file]
+		total_datapoints = int(filesize/DATAPOINT_SIZE)
+
+		### Prepare a dataset from future window, skipping data which has already been consumed by the worker
+		start = None
+		if total_datapoints - skipdata < size:
+			start = filesize - int(1.0 * size * filesize / total_datapoints)
+		else:
+			start = int(1.0 * skipdata * filesize / total_datapoints)
+
+		print(skipdata, start, total_datapoints, filesize)
+		random_set = sorted(random.sample(range(start,filesize), size))
 
 		for i in range(size):
-			test_file.seek(random_set[i])
+			test_file_handler.seek(random_set[i])
 			# Skip current line (because we might be in the middle of a line) 
-			test_file.readline()
+			test_file_handler.readline()
 			# Append the next line to the sample set 
-			sample.append(test_file.readline())
+			sample.append(test_file_handler.readline())
 
 		test_data = list(csv.reader(StringIO("".join(sample))))
 
