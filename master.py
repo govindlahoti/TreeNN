@@ -48,20 +48,26 @@ def log_report(log):
 		if len(nodes) == 0:
 			remote_shutdown()
 
-def start_server(own_address):
+def start_server(own_address,e):
 	"""
 	Start XML RPC server on the Master machine
 	"""
 	global server
 	
 	try:
-		print('RPC server started at http://%s:%d'%own_address)
 		server = SimpleXMLRPCServer(own_address, allow_none=True)
 		server.register_function(log_report)
 		server.register_function(remote_shutdown)
+		
+		globals()["server_status"] = 1
+		e.set()
+		print('RPC server started at http://%s:%d'%own_address)
+		
 		server.serve_forever()
 	except:
-		print("Address already in use")
+		globals()["server_status"] = -1
+		print("%s:%d already in use"%own_address)
+		e.set()
 		exit(0)
 		
 if __name__ == '__main__':
@@ -88,12 +94,25 @@ if __name__ == '__main__':
 	own_address = (args.ip,MASTER_RPC_SERVER_PORT)
 
 	globals()["log_file"] = open('logs/%s.log'%args.expname,'a') if args.log == 1 else sys.stdout
+	globals()["server_status"] = 0
 	
-	server_thread = threading.Thread(target=start_server,args=(own_address,))
+	e = threading.Event()
+	server_thread = threading.Thread(target=start_server,args=(own_address,e,))
 	server_thread.start()
 
+	while not e.isSet():
+		continue
+	if globals()["server_status"] < 0: 
+		exit(0)
+
+	print(globals()["server_status"], e.wait())
+
 	if args.trigger==1:
-		data, machine_info = read_yaml(own_address,args.config,args.docker)
+		try:
+			data, machine_info = read_yaml(own_address,args.config,args.docker)
+		except:
+			print("Error in parsing configuration")
+			exit(0)
+
 		nodes = set(list(data.keys()))
-		
 		trigger_slaves(args.expname, data, machine_info, args.docker)
