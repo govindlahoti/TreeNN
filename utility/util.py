@@ -45,12 +45,13 @@ class ssh:
 		if(self.client):	
 			print("Running command: %s"%command)
 			stdin, stdout, stderr = self.client.exec_command(command, get_pty=True)
-			while not stderr.channel.exit_status_ready():
-				if stderr.channel.recv_ready():
-					alldata = stderr.channel.recv(1024)
+			while not stdout.channel.exit_status_ready():
+				if stdout.channel.recv_ready():
+					alldata = stdout.channel.recv(1024)
 					prevdata = b"1"
 					while prevdata:
-						prevdata = stderr.channel.recv(1024)
+						print(prevdata)
+						prevdata = stdout.channel.recv(1024)
 						alldata += prevdata
 		else:
 			print("Connection not opened")
@@ -73,7 +74,7 @@ def read_yaml(master_address,config_file,is_docker):
 		machine_info = raw_data['machine']
 		application_arguments = raw_data['application_arguments']
 
-		default_delay = raw_data['default_delay']
+		default_bandwidth = raw_data['default_bandwidth']
 
 		for x in raw_data['nodes']:
 			data[x['id']] = x
@@ -101,14 +102,14 @@ def read_yaml(master_address,config_file,is_docker):
 
 		# Obtain the network latency information
 		for x in data:
-			data[x]['delays'] = {}
+			data[x]['bandwidths'] = {}
 			data[x]['addresses'] = {}
 			for y in data:
-				data[x]['delays'][y] = default_delay # y is node id
+				data[x]['bandwidths'][y] = default_bandwidth # y is node id
 				data[x]['addresses'][y] = 'http://%s:%d'%(data[y]['ip'], data[y]['port'])
 
-		for x in raw_data['delays']:
-			data[x['src_id']]['delays'][x['dest_id']] = x['delay']
+		for x in raw_data['bandwidths']:
+			data[x['src_id']]['bandwidths'][x['dest_id']] = x['bandwidth']
 
 	return data,machine_info
 	
@@ -122,9 +123,7 @@ def trigger_slaves(expname, data, machine_info, use_docker):
 		# Create a connection. Format: IP address, username, password
 		machine = machine_info[data[node_id]['machine']]
 		if use_docker == 1:
-			print("\n\n################")
-			print("Container: %d"%node_id)
-			print("################")
+			print(CONTAINERSTR%node_id)
 			connection = ssh(machine['ip'],machine['username'],machine['password'])
 			connection.trigger_container(expname,
 										 node_id, 
@@ -137,9 +136,7 @@ def trigger_slaves(expname, data, machine_info, use_docker):
 										 data[node_id]['host_test_directory'],
 										 data[node_id]['docker_image'])
 		else:
-			print("\n\n################")
-			print("Node: %d"%node_id)
-			print("################")
+			print(NODESTR%node_id)
 			connection = ssh(machine['ip'],machine['username'],machine['password'])
 			connection.trigger_node(node_id, json.dumps(data[node_id]).replace('\"','\''), data[node_id]['kafka_server'])
 		connection.disconnect()

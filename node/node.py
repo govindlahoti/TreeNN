@@ -22,20 +22,6 @@ from abc import ABC, abstractmethod
 from xmlrpc.client import ServerProxy
 from xmlrpc.server import SimpleXMLRPCServer
 
-def get_data(filename):
-	"""
-	read data of sensors from file
-	"""
-
-	with open(filename) as csv_file:
-		print("reading data")
-		csv_reader = csv.reader(csv_file)
-		train_data = list(csv_reader)
-		# print(train_data[0])
-		print("train data", len(train_data))
-	
-	return train_data
-
 def get_size(l):
 	"""
 	Returns the size of list/tuple (even if it is nested)
@@ -64,9 +50,9 @@ class Node(ABC):
 		### Information about connections 
 		self.connection_objs = {}
 		self.addresses = { int(k):v for k,v in data['addresses'].items() }
-		for w in data['delays']:
+		for w in data['bandwidths']:
 			self.connection_objs[int(w)] = None
-		self.delays = { int(k):v for k,v in data['delays'].items() }
+		self.bandwidths = { int(k):v for k,v in data['bandwidths'].items() }
 
 		### Information about the test data and learning model
 		self.test_files = os.listdir(data['test_directory'])
@@ -129,8 +115,6 @@ class Node(ABC):
 		Connect with the node's RPC server if not already connected. 
 		And then return the connection object
 		"""
-
-		time.sleep(self.delays[node_id] / 1000.)
 		
 		if self.connection_objs[node_id] is not None:
 			return self.connection_objs[node_id]
@@ -140,7 +124,7 @@ class Node(ABC):
 
 		else:
 			self.connection_objs[node_id] = ServerProxy(self.addresses[node_id], allow_none=True)
-			# print(self.addresses[node_id],self.connection_objs[node_id])
+
 			while True:
 				self.log(self.create_log(CONNECTION,'Waiting for node %s to connect'%(node_id)))
 				try:
@@ -165,11 +149,13 @@ class Node(ABC):
 		self.log(self.create_log(CONNECTION,'Sending gradients to parent %d'%(self.parent_id)))
 		weight_gradient = [x.tolist() for x in weight_gradient]
 		bias_gradient = [x.tolist() for x in bias_gradient]
+		data_size = get_size([weight_gradient, bias_gradient])
 
 		self.log(self.create_log(CONNECTION,{
-									NETWORK_COST : get_size([weight_gradient, bias_gradient])
+									NETWORK_COST : data_size
 								}))
 
+		self.simulate_delay(data_size, self.parent_id)
 		self.get_parent().push_from_child(weight_gradient, bias_gradient, self.id)
 
 	def pull_from_parent(self):
@@ -191,7 +177,12 @@ class Node(ABC):
 									NETWORK_COST : model_size
 								}))
 		
+		self.simulate_delay(model_size, self.parent_id)
 		return model
+
+	def simulate_delay(self, data_size, node_id):
+		print(8. * data_size / self.bandwidths[node_id])
+		time.sleep( 8. * data_size / self.bandwidths[node_id] )		
 
 	###-------------------------- RPC functions -----------------------------------------
 	def get_loss(self):

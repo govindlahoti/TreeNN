@@ -61,12 +61,12 @@ def start_server(own_address,e):
 		
 		globals()["server_status"] = 1
 		e.set()
-		print('RPC server started at http://%s:%d'%own_address)
+		print(GREENSTR%"RPC server started at http://%s:%d"%own_address)
 		
 		server.serve_forever()
 	except:
 		globals()["server_status"] = -1
-		print("%s:%d already in use"%own_address)
+		print(REDSTR%"%s:%d already in use"%own_address)
 		e.set()
 		exit(0)
 		
@@ -105,13 +105,13 @@ if __name__ == '__main__':
 	if globals()["server_status"] < 0: 
 		exit(0)
 
-	print(globals()["server_status"], e.wait())
-
 	if args.trigger==1:
 		try:
 			data, machine_info = read_yaml(own_address,args.config,args.docker)
-		except:
-			print("Error in parsing configuration")
+		except Exception as e:
+			print(REDSTR%"Error in parsing configuration")
+			print(e)
+			remote_shutdown()
 			exit(0)
 
 		nodes = set(list(data.keys()))
