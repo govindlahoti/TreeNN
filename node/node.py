@@ -254,7 +254,9 @@ class Node(ABC):
 
 		### Prepare a dataset from future window, skipping data which has already been consumed by the worker
 		start = None
-		if total_datapoints - skipdata < size:
+		if total_datapoints < size:
+			start = 0
+		elif total_datapoints - skipdata < size:
 			start = filesize - int(1.0 * size * filesize / total_datapoints)
 		else:
 			start = int(1.0 * skipdata * filesize / total_datapoints)

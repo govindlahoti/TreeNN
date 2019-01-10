@@ -23,12 +23,11 @@ class Worker(Node):
 
 		self.sensors = [ str(x) for x in data['sensors'] ]
 
-		self.mini_batch_size = data['mini_batch_size'] 
 		self.window_interval = data['window_interval']
 		self.window_limit = data['window_limit']
-		self.epochs_per_window = data['epochs_per_window']
-
 		self.window_count = 0
+
+		self.application_arguments = data['application_arguments']
 
 		self.skiptestdata = 0
 
@@ -96,7 +95,7 @@ class Worker(Node):
 			self.network.use_parent_model(*self.pull_from_parent())
 
 			### Run training algorithm
-			self.network.train(data, epochs=self.epochs_per_window, mini_batch_size=self.mini_batch_size)
+			self.network.train(data, **self.application_arguments)
 
 			### Log Statistics for the epoch
 			self.log(self.create_log(STATISTIC,"Window %d processed"%self.window_count))

@@ -71,6 +71,7 @@ def read_yaml(master_address,config_file,is_docker):
 		raw_data = yaml.load(f.read())
 		data = OrderedDict()
 		machine_info = raw_data['machine']
+		application_arguments = raw_data['application_arguments']
 
 		default_delay = raw_data['default_delay']
 
@@ -80,7 +81,7 @@ def read_yaml(master_address,config_file,is_docker):
 			data[x['id']]['ip'] = machine_info[x['machine']]['ip']
 			data[x['id']]['own_address'] = (data[x['id']]['ip'], x['port'])
 
-			default_fields = ['mini_batch_size','window_interval','window_limit','epochs_per_window','kafka_server','test_directory']
+			default_fields = ['window_interval','window_limit','kafka_server','test_directory']
 			if is_docker==1:
 				default_fields.extend(['cpus','memory','host_test_directory','docker_image'])
 
@@ -93,6 +94,7 @@ def read_yaml(master_address,config_file,is_docker):
 			if 'parent_id' in x:
 				data[x['id']]['parent_address'] = 'http://%s:%d'%(data[x['parent_id']]['ip'], data[x['parent_id']]['port'])
 				data[x['parent_id']]['is_worker'] = False				
+				data[x['id']]['application_arguments'] = application_arguments[data[x['id']]['args']]
 			else:
 				data[x['id']]['parent_id'] = -1
 				data[x['id']]['parent_address'] = None

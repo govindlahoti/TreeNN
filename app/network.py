@@ -147,7 +147,7 @@ class Network(Application):
         return zs, activations
     
 
-    def train(self, training_data, epochs=1, mini_batch_size=10, eta=0.1, lmbda = 2.5, alpha=10, beta=15):
+    def train(self, training_data, **kwargs):
         """Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
         ``(x, y)`` representing the training inputs and the desired
@@ -156,6 +156,14 @@ class Network(Application):
         network will be evaluated against the test data after each
         epoch, and partial progress printed out.  This is useful for
         tracking progress, but slows things down substantially."""
+
+        epochs = kwargs['epochs'] 
+        mini_batch_size = kwargs['mini_batch_size']
+        eta = kwargs['eta']
+        lmbda = kwargs['lmbda']
+        alpha = kwargs['alpha']
+        beta = kwargs['beta']
+
         n = len(training_data)
         print("length of training data", n)
         for j in range(epochs):
