@@ -57,30 +57,31 @@ class ParameterServer(Node):
 		while len(self.active_children) > 0 or not self.child_ever_connected or not self.acquired_gradients_from_kids.empty():
 			weight_gradient, bias_gradient = self.acquired_gradients_from_kids.get()
 			
-			### Pull from parent
-			if self.parent_address:
+			### Pull from parent after consulting the policy
+			if self.policy.pull_from_parent(self):
 				self.network.use_parent_model(*self.pull_from_parent())
 
-			## Log pre merge accuracy
-			self.log(self.create_log(STATISTIC,OrderedDict({
-					MERGE_ID 			: self.merge_id,
-					PRE_MERGE_ACCURACY	: self.get_accuracies()
-				})))
+			# ## Log pre merge accuracy
+			# self.log(self.create_log(STATISTIC,OrderedDict({
+			# 		MERGE_ID 			: self.merge_id,
+			# 		PRE_MERGE_ACCURACY	: self.get_accuracies()
+			# 	})))
 
 			### Merge gradients
 			self.network.apply_kid_gradient(weight_gradient, bias_gradient)
-
-			### Push to parent
-			self.log(self.create_log(CONNECTION, 'Merged gradients at node %d'%(self.id)))
+			self.policy.updates += 1
 			
 			### Log post merge accuracy
+			self.log(self.create_log(MERGED, 'Merged gradients at node %d'%(self.id)))
+
+			self.accuracies = self.get_accuracies()
 			self.log(self.create_log(STATISTIC, OrderedDict({
 					MERGE_ID			: self.merge_id,
-					POST_MERGE_ACCURACY	: self.get_accuracies()
+					POST_MERGE_ACCURACY	: self.accuracies
 				})))	
 
-			### Push Gradient to parent
-			if self.parent_address:
+			### Push Gradient to parent after consulting the policy
+			if self.policy.push_to_parent(self):
 				self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
 
 			self.merge_id += 1
@@ -104,6 +105,7 @@ class ParameterServer(Node):
 		self.server.register_function(self.get_loss, "get_loss")
 		self.server.register_function(self.receive_message, "receive_message")
 		self.server.register_function(self.remote_shutdown, "remote_shutdown")
+		self.server.register_function(self.get_update_count, "get_update_count")
 		# add functions for communication between workers
 		self.server.serve_forever()
 

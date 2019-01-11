@@ -73,6 +73,7 @@ def read_yaml(master_address,config_file,is_docker):
 		data = OrderedDict()
 		machine_info = raw_data['machine']
 		application_arguments = raw_data['application_arguments']
+		policy = raw_data['policy']
 
 		default_bandwidth = raw_data['default_bandwidth']
 
@@ -82,13 +83,17 @@ def read_yaml(master_address,config_file,is_docker):
 			data[x['id']]['ip'] = machine_info[x['machine']]['ip']
 			data[x['id']]['own_address'] = (data[x['id']]['ip'], x['port'])
 
-			default_fields = ['window_interval','window_limit','kafka_server','test_directory']
+			default_fields = ['window_interval','window_limit','kafka_server','test_directory','policy']
 			if is_docker==1:
 				default_fields.extend(['cpus','memory','host_test_directory','docker_image'])
 
 			for field in default_fields:
-				x[field] = raw_data['default_'+field] if field not in x else x[field]
+				data[x['id']][field] = raw_data['default_'+field] if field not in x else x[field]
 			
+			data[x['id']]['policy'] = policy[data[x['id']]['policy']]
+			if data[x['id']]['policy']['args'] is None:
+				data[x['id']]['policy']['args'] = {} 
+
 		for x in raw_data['nodes']:
 			data[x['id']]['master_address'] = 'http://%s:%d'%master_address
 			
@@ -100,16 +105,17 @@ def read_yaml(master_address,config_file,is_docker):
 				data[x['id']]['parent_id'] = -1
 				data[x['id']]['parent_address'] = None
 
-		# Obtain the network latency information
+		### Obtain the network bandwidth information
 		for x in data:
 			data[x]['bandwidths'] = {}
 			data[x]['addresses'] = {}
 			for y in data:
-				data[x]['bandwidths'][y] = default_bandwidth # y is node id
+				data[x]['bandwidths'][y] = default_bandwidth 
 				data[x]['addresses'][y] = 'http://%s:%d'%(data[y]['ip'], data[y]['port'])
 
 		for x in raw_data['bandwidths']:
 			data[x['src_id']]['bandwidths'][x['dest_id']] = x['bandwidth']
+			data[x['dest_id']]['bandwidths'][x['src_id']] = x['bandwidth']
 
 	return data,machine_info
 	

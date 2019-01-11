@@ -66,6 +66,7 @@ class Worker(Node):
 		self.server.register_function(self.get_loss, "get_loss")
 		self.server.register_function(self.receive_message, "receive_message")
 		self.server.register_function(self.remote_shutdown, "remote_shutdown")
+		self.server.register_function(self.get_update_count, "get_update_count")
 		# add functions for communication between workers
 		self.server.serve_forever()
 
@@ -91,26 +92,33 @@ class Worker(Node):
 			
 			self.skiptestdata += len(data)
 
-			### Pull model from parent			
-			self.network.use_parent_model(*self.pull_from_parent())
+			### Pull model from parent after consulting the policy			
+			if self.policy.pull_from_parent(self):
+				self.network.use_parent_model(*self.pull_from_parent())
 
 			### Run training algorithm
 			self.network.train(data, **self.application_arguments)
 
 			### Log Statistics for the epoch
-			self.log(self.create_log(STATISTIC,"Window %d processed"%self.window_count))
+			self.log(self.create_log(PROCESSED, { 
+				WINDOW_ID		: self.window_count,
+				MEMORY_USAGE	: py.memory_percent(), 
+				}))
+
+			self.accuracies = self.get_accuracies(skipdata=self.skiptestdata)
 
 			self.log(self.create_log(STATISTIC,OrderedDict({
 				WINDOW_ID		: self.window_count,
 				RUNTIME			: time.perf_counter() - epoch_start,
 				PROCESS_TIME	: time.process_time() - epoch_start_cpu,
-				MEMORY_USAGE	: py.memory_percent(),
-				ACCURACY		: self.get_accuracies(skipdata=self.skiptestdata),
+				ACCURACY		: self.accuracies,
 				DATAPOINTS 		: len(data)
 			})))
 
-			### Push model to parent
-			self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
+			### Push model to parent after consulting the policy
+			if self.policy.push_to_parent(self):
+				self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
+
 			self.window_count += 1
 		
 		### Alert parent that training is done

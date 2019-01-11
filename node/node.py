@@ -14,8 +14,9 @@ from io import StringIO
 from collections import OrderedDict
 from distlib.util import CSVReader
 
-from utility.const import *
 from app.network import *
+from policy import *
+from utility.const import *
 
 from abc import ABC, abstractmethod
 
@@ -44,6 +45,7 @@ class Node(ABC):
 		self.id = data['id']
 		self.own_tuple_address = tuple(data['own_address'])
 		self.own_server_address = 'http://%s:%d'%self.own_tuple_address
+		self.policy = eval(data['policy']['type'])(**data['policy']['args'])
 		self.parent_id = data['parent_id']
 		self.parent_address = data['parent_address']
 		
@@ -146,12 +148,11 @@ class Node(ABC):
 		if not self.parent_address:
 			return
 
-		self.log(self.create_log(CONNECTION,'Sending gradients to parent %d'%(self.parent_id)))
 		weight_gradient = [x.tolist() for x in weight_gradient]
 		bias_gradient = [x.tolist() for x in bias_gradient]
 		data_size = get_size([weight_gradient, bias_gradient])
 
-		self.log(self.create_log(CONNECTION,{
+		self.log(self.create_log(PUSHED,{
 									NETWORK_COST : data_size
 								}))
 
@@ -172,8 +173,7 @@ class Node(ABC):
 		model[0] = [np.array(x) for x in model[0]]
 		model[1] = [np.array(x) for x in model[1]]
 
-		self.log(self.create_log(CONNECTION,'Got model from parent %d'%(self.parent_id)))
-		self.log(self.create_log(CONNECTION,{
+		self.log(self.create_log(PULLED,{
 									NETWORK_COST : model_size
 								}))
 		
@@ -181,11 +181,11 @@ class Node(ABC):
 		return model
 
 	def simulate_delay(self, data_size, node_id):
-		print(8. * data_size / self.bandwidths[node_id])
+		print("Delay: %f"%(8. * data_size / self.bandwidths[node_id]))
 		time.sleep( 8. * data_size / self.bandwidths[node_id] )		
 
 	###-------------------------- RPC functions -----------------------------------------
-	def get_loss(self):
+	def get_loss(self, data):
 		"""
 		RPC function. Return the loss of the present model at the node
 		"""
@@ -207,6 +207,12 @@ class Node(ABC):
 		"""
 		self.server.shutdown()
 
+	def get_update_count(self):
+		"""
+		Returns the number of updates made to the model
+		"""
+		return self.policy.updates
+
 	###-------------------------- Meta functions -----------------------------------------
 	def send_message(self, receiver_id, msg):
 		"""
@@ -216,10 +222,18 @@ class Node(ABC):
 		self.log(self.create_log(CONNECTION,'Sending message to node %d, msg: %s'%(receiver_id, msg)))
 		self.get_node(receiver_id).receive_message(self.id, msg)
 
+	def get_parent_update_count(self):
+		"""
+		Used by AccuracyPolicy
+		"""
+		count = self.get_parent().get_update_count()
+		self.log(self.create_log(CONNECTION,'Got parent update count: %d'%count)) 
+		return count
+
 	def get_accuracies(self, skipdata=0):
 		"""
-			Calculate accuracies for each sensor prediction
-			Returns a dictionary of accuracies
+		Calculate accuracies for each sensor prediction
+		Returns a dictionary of accuracies
 		"""
 
 		accuracies = {}
@@ -232,8 +246,8 @@ class Node(ABC):
 
 	def get_test_data(self, test_file, skipdata, size=2000):
 		"""
-			Get test data from file. 
-			Using random-seeking in file to limit RAM usage
+		Get test data from file. 
+		Using random-seeking in file to limit RAM usage
 		"""		
 
 		sample = []

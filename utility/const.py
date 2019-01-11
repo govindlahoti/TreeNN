@@ -10,7 +10,7 @@ DATA_RATE = 1e-3
 KAFKA_SERVER_ADDRESS = '192.168.43.18:9092'
 
 ### util.py
-TRIGGER_NODE_COMMAND = "cd Simulator/TreeNN && python3 slave.py -ni %d -nd \"%s\" -k %s "
+TRIGGER_NODE_COMMAND = "cd Simulator/TreeNN && python3 slave.py -ni %d -nd \"%s\" -k %s &"
 
 TRIGGER_CONTAINER_COMMAND = "docker run -it \
 -m %s --cpus=%f \
@@ -29,6 +29,10 @@ TRIGGER_CONTAINER_COMMAND = "docker run -it \
 CONNECTION 	= 'CONN'
 STATISTIC  	= 'STAT'
 DONE		= 'DONE'
+PROCESSED	= 'PROC'
+PULLED		= 'PULL'
+PUSHED		= 'PUSH'
+MERGED 		= 'MERG'
 
 NODE_ID	= 'node_id'
 TYPE 	= 'type'
