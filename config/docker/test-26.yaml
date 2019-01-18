@@ -1,26 +1,54 @@
-delays:
+## Bandwidth available to nodes
+bandwidths:
   - src_id: 1
     dest_id: 2
-    delay: 0
+    bandwidth: 100000000
 
-default_delay: 0
-default_mini_batch_size: 100
+default_bandwidth: 1000000
+
+## Data streaming info
 default_window_interval: 5
 default_window_limit: 2
-default_epochs_per_window: 1
 default_kafka_server: "10.152.50.10:9092"
-
-default_cpus: 1
-default_memory: "125M"
-
-default_docker_image: "aniketshirke/distributedlearning:simulator"
-default_host_test_directory: "~/Simulator/TreeNN/data"
 default_test_directory: "/TreeNN/data/"
 
+## Docker specific fields
+default_cpus: 1
+default_memory: "125M"
+default_docker_image: "aniketshirke/distributedlearning:simulator"
+default_host_test_directory: "~/Simulator/TreeNN/data"
+default_policy: 0
+
+## Machine info
 machine:
 -   ip: 10.129.2.26
     username: "synerg"
     password: "synerg"
+
+## arguments to be passed to the learning model
+application_arguments:
+-   epochs: 1
+    mini_batch_size: 10
+    eta: 0.1
+    lmbda: 2.5
+    alpha: 10
+    beta: 15
+
+## Policy for sharing models
+policy:
+-   type: 'SimplePolicy'
+    args: 
+-   type: 'TimePolicy'
+    args:
+        push_interval: 10
+        pull_interval: 10
+-   type: 'WindowPolicy'
+    args:
+        push_count: 3
+        pull_count: 3
+-   type: 'AccuracyPolicy'
+    args:
+        threshold: 2
 
 nodes:
 -   id: 1 
@@ -30,8 +58,8 @@ nodes:
     port: 8006
     machine: 0
     parent_id: 1
-    mini_batch_size: 10
     memory: "125M"
     sensors: [1,2]
+    args: 0
    
   

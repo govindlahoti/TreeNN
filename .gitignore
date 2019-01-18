@@ -13,7 +13,6 @@ login.py
 *.out
 *.tgz
 config/docker/test-26.yaml
-test.yaml
 three-child.yaml
 sensor/test.sh
 test.log

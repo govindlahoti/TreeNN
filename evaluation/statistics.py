@@ -12,6 +12,7 @@ import argparse
 import humanize
 
 from const import *
+from collections import OrderedDict
 
 def parse_logs(log_file, config):
 
@@ -20,36 +21,60 @@ def parse_logs(log_file, config):
 	stats = {}
 	link_stats = {}
 
-	accuracy_lag = {}
+	accuracy_lag = { node_id:OrderedDict() if not config[node_id]['is_worker'] else None for node_id in config }
+	window_lags_pointer = { node_id:0 for node_id in config }
 
 	for row in f:
 		data = json.loads(row)
-		node_id, payload = data[NODE_ID], data[PAYLOAD]
+		node_id, payload, timestamp = data[NODE_ID], data[PAYLOAD], data[TIMESTAMP]
+		parent_id = config[node_id]['parent_id']
 
 		if data[TYPE] == STATISTIC:
 
-			## Calculate Runtime and Process time
-			if config[node_id]['is_worker']:
-				if node_id in stats:
+			## Calculate Runtime, Process time, total datapoints
+			if config[node_id]['is_worker'] and isinstance(payload,dict):
+				if node_id in stats: 
 					stats[node_id][RUNTIME] += payload[RUNTIME]
 					stats[node_id][PROCESS_TIME] += payload[PROCESS_TIME] 
+					stats[node_id][DATAPOINTS] += payload[DATAPOINTS]
 				else:
 					stats[node_id] = {
 						RUNTIME 		: payload[RUNTIME],
 						PROCESS_TIME	: payload[PROCESS_TIME],
+						DATAPOINTS		: payload[DATAPOINTS]
 					}
 					
-			
+			## Calculate accuracy lag - Part 1 (Store window processing timestamp)
+			if config[node_id]['is_worker'] and not isinstance(payload,dict):
+				## Log which indicates window is processed
+				window_id = int(payload.split()[1])
+
+				if window_id not in accuracy_lag[parent_id]:
+					accuracy_lag[parent_id][window_id] = { 
+						node_id: timestamp 
+					}
+				else:
+					accuracy_lag[parent_id][window_id].update({node_id:timestamp})				
+
 		elif data[TYPE] == CONNECTION:
 
 			## Calculate network cost
 			if NETWORK_COST in payload:
-				parent_id = config[node_id]['parent_id']
 				
 				if (parent_id, node_id) in link_stats:
 					link_stats[(parent_id, node_id)] += payload[NETWORK_COST]
 				else:
 					link_stats[(parent_id, node_id)] = payload[NETWORK_COST]
+
+			## Calculate accuracy lag - Part 2 (Receive model from parent)
+			if config[node_id]['is_worker'] and "Got model from parent" in payload:
+				## Log which indicates model receival
+				lag_pointer = window_lags_pointer[node_id]
+				if lag_pointer in accuracy_lag[parent_id]:
+					while lag_pointer in accuracy_lag[parent_id] and len(accuracy_lag[parent_id][lag_pointer]) == config[parent_id]['children_count']:
+						accuracy_lag[parent_id][lag_pointer][node_id] = timestamp - accuracy_lag[parent_id][lag_pointer][node_id]
+						lag_pointer += 1
+					window_lags_pointer[node_id] = lag_pointer	
 
 
 	f.close()
@@ -57,9 +82,11 @@ def parse_logs(log_file, config):
 	for link in link_stats:
 		link_stats[link] = humanize.naturalsize(link_stats[link], gnu=True)
 
-	print(link_stats)
+	print(accuracy_lag)
+	# print(stats)
+	# print(link_stats)
 
-def read_yaml(config_file,is_docker=1):
+def read_learning_tree(config_file):
 	"""
 	Read yaml from config file
 	"""
@@ -67,45 +94,22 @@ def read_yaml(config_file,is_docker=1):
 	with open(config_file, 'r') as f:
 		
 		raw_data = yaml.load(f.read())
-		data = {}
-		machine_info = raw_data['machine']
-
-		default_delay = raw_data['default_delay']
+		tree = {}
 
 		for x in raw_data['nodes']:
-			data[x['id']] = x
-			data[x['id']]['is_worker'] = True
-			data[x['id']]['ip'] = machine_info[x['machine']]['ip']
-			data[x['id']]['own_address'] = (data[x['id']]['ip'], x['port'])
-
-			default_fields = ['mini_batch_size','window_interval','window_limit','epochs_per_window','kafka_server','test_directory']
-			if is_docker==1:
-				default_fields.extend(['cpus','memory','host_test_directory','docker_image'])
-
-			for field in default_fields:
-				x[field] = raw_data['default_'+field] if field not in x else x[field]
+			tree[x['id']] = x
+			tree[x['id']]['is_worker'] = True
+			tree[x['id']]['children_count'] = 0
 			
 		for x in raw_data['nodes']:
 			
 			if 'parent_id' in x:
-				data[x['id']]['parent_address'] = 'http://%s:%d'%(data[x['parent_id']]['ip'], data[x['parent_id']]['port'])
-				data[x['parent_id']]['is_worker'] = False				
+				tree[x['parent_id']]['is_worker'] = False
+				tree[x['parent_id']]['children_count'] += 1				
 			else:
-				data[x['id']]['parent_id'] = -1
-				data[x['id']]['parent_address'] = None
+				tree[x['id']]['parent_id'] = -1
 
-		# Obtain the network latency information
-		for x in data:
-			data[x]['delays'] = {}
-			data[x]['addresses'] = {}
-			for y in data:
-				data[x]['delays'][y] = default_delay # y is node id
-				data[x]['addresses'][y] = 'http://%s:%d'%(data[y]['ip'], data[y]['port'])
-
-		for x in raw_data['delays']:
-			data[x['src_id']]['delays'][x['dest_id']] = x['delay']
-
-	return data
+	return tree
 
 
 if __name__ == '__main__':
@@ -115,5 +119,5 @@ if __name__ == '__main__':
 	parser.add_argument("-c","--config_file", type=str, help="Path to the config file", required=True)
 	args = parser.parse_args()
 
-	config = read_yaml(args.config_file, 1)
+	config = read_learning_tree(args.config_file)
 	parse_logs(args.log_file, config)
