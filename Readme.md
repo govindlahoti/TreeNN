@@ -2,31 +2,33 @@
 
 ## Simulator Design:
 ![Simulator Design](docs/images/Simulator%20Design.png)
-## Dependencies for the Simulator:
-[Kafka](https://hevodata.com/blog/how-to-install-kafka-on-ubuntu/)
-
-[Kafka-python](https://pypi.org/project/kafka-python/)
 
 ## Instructions to use:
 
 Clone the repository.
 
-Specify the [configuration](config/network.yaml)
+Specify the [configuration](config/docker/test.yaml)
 
 Run the following commands:
 ```
-sudo /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
-python3 master.py --config config/network.yaml --log 1
-cd sensor && ./start_sensors.sh
+## Building the docker image
+cd docker; ./build.sh; cd ..
+
+## Triggering containers
+python3 master.py --expname test --config config/network.yaml --ip localhost 
 ```
 
 ## Directory Structure:
 
-- [application](application): Contains the code of the application simulated
-- [config](config): Contains yaml configurations for different experiments
-- [logs](logs): Logs stored for each node
+- [app](app): Code of the application to be simulated
+- [config](config): Yaml configurations for different experiments
+- [docker](docker): Docker build files
+- [docs](docs): Documentation, references and reports
+- [evaluation](evaluation): Scripts for analyzing logs
+- [logs](logs): Logs obtained from experiments
 - [node](node): Code for simulating edge nodes
+- [policy](policy): Code for model exchange policies
 - [sensor](sensor): Code for simulating sensors
-- [utility](utility): Contains utility bash scripts and python helpers
+- [utility](utility): Contains utility bash scripts and python helper functions
 
 
