@@ -29,8 +29,6 @@ class Worker(Node):
 
 		self.application_arguments = data['application_arguments']
 
-		self.skiptestdata = 0
-
 		try:
 			self.consumer = KafkaConsumer(bootstrap_servers=str(kafka_server_address), api_version=(0,10))
 			self.consumer.subscribe(self.sensors)	

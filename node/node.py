@@ -17,6 +17,7 @@ from distlib.util import CSVReader
 from app.network import *
 from policy import *
 from utility.const import *
+# from utility.util import get_size
 
 from abc import ABC, abstractmethod
 
@@ -26,12 +27,14 @@ from xmlrpc.server import SimpleXMLRPCServer
 def get_size(l):
 	"""
 	Returns the size of list/tuple (even if it is nested)
+	Used by node.py
 	"""
 
 	if type(l) == list or type(l) == tuple:
 		return sum(get_size(subl) for subl in l)
 	else:
 		return 8	### Float size = 8 bytes
+
 
 class Node(ABC):
 
@@ -57,6 +60,7 @@ class Node(ABC):
 		self.bandwidths = { int(k):v for k,v in data['bandwidths'].items() }
 
 		### Information about the test data and learning model
+		self.skiptestdata = 0
 		self.test_files = os.listdir(data['test_directory'])
 		self.test_file_handlers = { f:open(data['test_directory']+f, 'r') for f in self.test_files}
 
@@ -157,7 +161,7 @@ class Node(ABC):
 								}))
 
 		self.simulate_delay(data_size, self.parent_id)
-		self.get_parent().push_from_child(weight_gradient, bias_gradient, self.id)
+		self.get_parent().push_from_child(weight_gradient, bias_gradient, self.id, self.skiptestdata)
 
 	def pull_from_parent(self):
 		"""
@@ -244,7 +248,7 @@ class Node(ABC):
 		
 		return accuracies
 
-	def get_test_data(self, test_file, skipdata, size=2000):
+	def get_test_data(self, test_file, skipdata, size=200):
 		"""
 		Get test data from file. 
 		Using random-seeking in file to limit RAM usage
@@ -266,13 +270,14 @@ class Node(ABC):
 		else:
 			start = int(1.0 * skipdata * filesize / total_datapoints)
 
-		print(skipdata, start, total_datapoints, filesize)
-		random_set = sorted(random.sample(range(start,filesize), size))
+		# print(skipdata, start, total_datapoints, filesize)
+		# random_set = sorted(random.sample(range(start,filesize), size))
 
+		test_file_handler.seek(start)
+		# Skip current line (because we might be in the middle of a line) 
+		test_file_handler.readline()
+		
 		for i in range(size):
-			test_file_handler.seek(random_set[i])
-			# Skip current line (because we might be in the middle of a line) 
-			test_file_handler.readline()
 			# Append the next line to the sample set 
 			sample.append(test_file_handler.readline())
 

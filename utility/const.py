@@ -21,7 +21,6 @@ TRIGGER_CONTAINER_COMMAND = "docker run -it \
 --net=host \
 --volume %s:%s \
 --name %s_c%d \
---rm \
 --detach \
 %s"
 
@@ -38,7 +37,9 @@ NODE_ID	= 'node_id'
 TYPE 	= 'type'
 PAYLOAD = 'payload'
 
-MERGE_ID= 'Merge ID'
+MERGE_ID = 'Merge ID'
+CHILD_ID = 'Child ID' 
+SKIP_TEST_DATA = 'Skip Test data'
 PRE_MERGE_ACCURACY = 'Pre Merge Accuracy'
 POST_MERGE_ACCURACY = 'Post Merge Accuracy'
 

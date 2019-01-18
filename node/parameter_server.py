@@ -55,7 +55,7 @@ class ParameterServer(Node):
 		"""
 
 		while len(self.active_children) > 0 or not self.child_ever_connected or not self.acquired_gradients_from_kids.empty():
-			weight_gradient, bias_gradient = self.acquired_gradients_from_kids.get()
+			weight_gradient, bias_gradient, child_id, skipdata = self.acquired_gradients_from_kids.get()
 			
 			### Pull from parent after consulting the policy
 			if self.policy.pull_from_parent(self):
@@ -74,11 +74,14 @@ class ParameterServer(Node):
 			### Log post merge accuracy
 			self.log(self.create_log(MERGED, 'Merged gradients at node %d'%(self.id)))
 
-			self.accuracies = self.get_accuracies()
+			self.accuracies = self.get_accuracies(skipdata=skipdata)
 			self.log(self.create_log(STATISTIC, OrderedDict({
 					MERGE_ID			: self.merge_id,
+					CHILD_ID 			: child_id,
+					SKIP_TEST_DATA 		: skipdata,
 					POST_MERGE_ACCURACY	: self.accuracies
 				})))	
+			self.skiptestdata = max(self.skiptestdata,skipdata)
 
 			### Push Gradient to parent after consulting the policy
 			if self.policy.push_to_parent(self):
@@ -111,7 +114,7 @@ class ParameterServer(Node):
 
 	###-------------------------- Additional RPC functions ---------------------------------
 
-	def push_from_child(self, weight_gradient, bias_gradient, child_id):
+	def push_from_child(self, weight_gradient, bias_gradient, child_id, skipdata):
 		"""
 		RPC function. Add the gradients obtained from child node into the queue
 		"""
@@ -121,7 +124,8 @@ class ParameterServer(Node):
 		weight_gradient = [np.array(x)/len(self.active_children) for x in weight_gradient]
 		bias_gradient = [np.array(x)/len(self.active_children) for x in bias_gradient]
 
-		self.acquired_gradients_from_kids.put([weight_gradient, bias_gradient])
+		print(child_id, skipdata)
+		self.acquired_gradients_from_kids.put([weight_gradient, bias_gradient, child_id, skipdata])
 
 	def pull_from_child(self, child_id):
 		"""
