@@ -17,7 +17,9 @@ default_cpus: 1
 default_memory: "500M"
 default_docker_image: "aniketshirke/distributedlearning:simulator"
 default_host_test_directory: "~/Simulator/TrainingData"
+
 default_policy: 0
+default_args: 0
 
 ## Machine info
 machine:
@@ -74,62 +76,62 @@ nodes:
     parent_id: 1
     sensors: [6]
 -   id: 8
-    machine: 1
+    machine: 0
     port: 8007
     parent_id: 1
     sensors: [7]
 -   id: 9
-    machine: 1
+    machine: 0
     port: 8008
     parent_id: 1
     sensors: [8]
 -   id: 10
-    machine: 1
+    machine: 0
     port: 8009
     parent_id: 1
     sensors: [9]
 -   id: 11
-    machine: 1
+    machine: 0
     port: 8010
     parent_id: 1
     sensors: [10]
 -   id: 12
-    machine: 1
+    machine: 0
     port: 8011
     parent_id: 1
     sensors: [11]
 -   id: 13
-    machine: 1
+    machine: 0
     port: 8012
     parent_id: 1
     sensors: [12]
 -   id: 14
-    machine: 2
+    machine: 0
     port: 8013
     parent_id: 1
     sensors: [13]
 -   id: 15
-    machine: 2
+    machine: 0
     port: 8014
     parent_id: 1
     sensors: [14]
 -   id: 16
-    machine: 2
+    machine: 0
     port: 8015
     parent_id: 1
     sensors: [15]
 -   id: 17
-    machine: 2
+    machine: 0
     port: 8016
     parent_id: 1
     sensors: [16]
 -   id: 18
-    machine: 2
+    machine: 0
     port: 8017
     parent_id: 1
     sensors: [17]
 -   id: 19
-    machine: 2
+    machine: 0
     port: 8018
     parent_id: 1
     sensors: [18]
