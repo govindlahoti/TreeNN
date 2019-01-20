@@ -4,24 +4,34 @@
 
 ## Configuration fields
 ### Common fields for the hierarchy:
-- Delays between nodes pairwise
-- Default delay
-- Default mini batch size for training (Field depends on the algorithm used)
-- Default time interval (in seconds) for a window
-- Default window limit for training
-- Default epochs to be made on a window
+- Bandwidth between nodes pairwise
+- Default bandwidth
+- Time interval (in seconds) for a window
+- Window limit for training
+- Address of the kafka server
+- Test directory
+
+#### Machine info
+- IP address: address of the host on which the node will run as a container
+- Username of slave machine
+- Password of slave machine
+
+#### Docker specific fields:
+- CPU resources to be allocated to the container
+- Memory to be allocated to the container
+- Docker image to be used
+- Host test directory to be binded
+
+#### Application arguments
+#### Policy
+Simple policy, Time-based policy, Window-based policy and Accuracy policy
 
 ### Fields for configuring nodes:
 - Node id: Unique identification of a node
-- IP address: address of the host on which the node will run as a container
 - Port: Port for starting the RPC server
-- Username of slave machine
-- Password of slave machine
-- test_directory: Accuracies will be calculated against each test file present in the directory
-- Mini batch size (Optional)
+- test_directory: Accuracies will be calculated against each test file present in the directory (Optional)
 - Time interval for a window (Optional)
 - Window limit (Optional)
-- Epochs per window (Optional)
 
 ## Link delays
 Delays are sampled from a Gaussian distribution
