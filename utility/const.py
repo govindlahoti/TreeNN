@@ -21,6 +21,7 @@ TRIGGER_CONTAINER_COMMAND = "docker run -it \
 --net=host \
 --volume %s:%s \
 --name %s_c%d \
+--rm \
 --detach \
 %s"
 

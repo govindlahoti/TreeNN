@@ -83,7 +83,7 @@ def read_yaml(master_address,config_file,is_docker):
 			data[x['id']]['ip'] = machine_info[x['machine']]['ip']
 			data[x['id']]['own_address'] = (data[x['id']]['ip'], x['port'])
 
-			default_fields = ['window_interval','window_limit','kafka_server','test_directory','policy']
+			default_fields = ['window_interval','window_limit','kafka_server','test_directory','policy','args']
 			if is_docker==1:
 				default_fields.extend(['cpus','memory','host_test_directory','docker_image'])
 
