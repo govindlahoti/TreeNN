@@ -13,7 +13,7 @@ default_kafka_server: "10.129.2.26:9092"
 default_test_directory: "/TreeNN/data/"
 
 ## Docker specific fields
-default_cpus: 1
+default_cpus: 0.8
 default_memory: "500M"
 default_docker_image: "aniketshirke/distributedlearning:simulator"
 default_host_test_directory: "~/Simulator/TrainingData"
