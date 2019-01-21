@@ -12,12 +12,10 @@ import json
 import random
 from io import StringIO
 from collections import OrderedDict
-from distlib.util import CSVReader
 
 from app.network import *
 from policy import *
 from utility.const import *
-# from utility.util import get_size
 
 from abc import ABC, abstractmethod
 

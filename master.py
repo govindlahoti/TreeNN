@@ -92,9 +92,14 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 
 	own_address = (args.ip,MASTER_RPC_SERVER_PORT)
-
-	globals()["log_file"] = open('logs/%s.log'%args.expname,'a') if args.log == 1 else sys.stdout
+	
+	globals()["log_file"] = sys.stdout
 	globals()["server_status"] = 0
+	
+	if args.log == 1:
+		dir_path = create_log_directory(args.config)
+		globals()["log_file"] = open(dir_path+'/%s.log'%args.expname,'a')
+
 	
 	e = threading.Event()
 	server_thread = threading.Thread(target=start_server,args=(own_address,e,))
