@@ -8,7 +8,6 @@ Contains utility functions for master.py
 import yaml
 import json
 from time import sleep
-import netifaces as ni
 from paramiko import client
 from collections import OrderedDict
 
@@ -152,6 +151,7 @@ def get_ip():
 	"""
 	Get own IP address
 	"""
+	import netifaces as ni
 
 	ifaces = ni.interfaces()
 	ifaces.sort(reverse=True)
@@ -160,3 +160,20 @@ def get_ip():
 			return(ni.ifaddresses(iface)[ni.AF_INET][0]['addr'])
 		except:
 			continue
+
+def create_log_directory(config_file):
+	"""
+	Create logging directory and copy config yaml 
+	"""
+	import os
+	import shutil
+	import datetime
+
+	now = datetime.datetime.now()
+	dir_path = "logs/" + now.strftime("%Y%m%d-%H%M")
+
+	if not os.path.exists(dir_path):
+		os.makedirs(dir_path)
+	shutil.copy(config_file, dir_path)
+
+	return dir_path
