@@ -12,7 +12,7 @@ import sys
 import csv
 from copy import deepcopy
 
-random.seed(100)
+from app.application import Application
 
 # The class of DNN
 def dist(x,y):   
@@ -20,10 +20,18 @@ def dist(x,y):
     return np.exp(-z)
 
 def mapToFloat(x):
-    res = np.array([float(k.replace('\'','')) for k in x.replace('(','').replace(')','').split(',')])
+    res = [] 
+    for k in x.replace('(','').replace(')','').split(','):
+        k = k.replace('\'','')
+        try: 
+            res.append(float(k))
+        except:
+            res.append(0.0)
+
+    res = np.array(res)
     return res.reshape((len(res),1))
 
-class Network():
+class Network(Application):
 
     def __init__(self, sizes):
         """
@@ -140,8 +148,6 @@ class Network():
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
 
-            print("Epoch-%d, RMSE-%f"%(j,self.evaluate(training_data)))
-
     def update_mini_batch(self, mini_batch, eta, lmbda, alpha, beta, n):
         """Update the network's weights and biases by applying
         gradient descent using backpropagation to a single mini batch.
@@ -179,6 +185,8 @@ class Network():
 
         if(l_i>0): nabw = [w+(eta/l_i)*nw for w, nw in zip(nabw, nabla_wl)]
 
+        self.parent_update_lock.acquire()
+        
         self.weights = [w-nw for w, nw in zip(self.weights, nabw)]
         self.biases = [b-(eta/len(mini_batch))*nb for b, nb in zip(self.biases, nabla_b)]
 
@@ -188,7 +196,8 @@ class Network():
         self.acquired_biases = [b+(eta/len(mini_batch))*nb for b, nb in zip(self.acquired_biases, nabla_b)]
         
         if(l_i>0):  self.acquired_biases = [b+(eta/l_i)*nb for b, nb in zip(self.acquired_biases, nabla_bl)]        
-            
+        
+        self.parent_update_lock.release()    
     
     def compute_neighbourhood_delta(self, a11, a12, a21, a22, a31, a32):
         delta1 = a11 * sigmoid_prime(a12) 
@@ -251,7 +260,13 @@ class Network():
                 test_results = [(self.feedforward(mapToFloat(x),return_activations=False), 0.0)
                         for (x, xs1,xs2,xt1,xt2) in test_data]    
 
-        return sum([np.linalg.norm(x-y) if len(y)==48 else 0 for x,y in test_results])
+        r,n = 0,0
+        for x,y in test_results:
+            if len(y) == 48:
+                r += np.linalg.norm(x-y)**2
+                n += 1
+        return np.sqrt(1.*r/n)
+        # return sum([ if len(y)==48 else 0 for x,y in test_results])
 
     def derivative(self, l, output_activations=None, y=None, delta_n=None):
         """
