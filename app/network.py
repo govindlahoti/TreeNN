@@ -12,7 +12,7 @@ import sys
 import csv
 from copy import deepcopy
 
-from app import Application
+from app.application import Application
 
 # The class of DNN
 def dist(x,y):   
