@@ -1,0 +1,65 @@
+## Bandwidth available to nodes
+bandwidths:
+  - src_id: 1
+    dest_id: 2
+    bandwidth: 1000000
+
+default_bandwidth: 1000000
+
+## Data streaming info
+default_window_interval: 10
+default_window_limit: 500
+default_kafka_server: "10.129.2.26:9092"
+default_test_directory: "/TreeNN/data/"
+
+## Docker specific fields
+default_cpus: 4
+default_memory: "1000M"
+default_docker_image: "aniketshirke/distributedlearning:simulator"
+default_host_test_directory: "~/Simulator/TrainingData"
+default_policy: 0
+default_args: 0
+
+## Machine info
+machine:
+-   ip: 10.129.26.111
+    username: "ub"
+    password: "spark!sfun"
+
+## arguments to be passed to the learning model
+application_arguments:
+-   epochs: 5
+    mini_batch_size: 16
+    eta: 0.01
+    lmbda: 0.5
+    alpha: 25
+    beta: 25
+
+## Policy for sharing models
+policy:
+-   type: 'SimplePolicy'
+    args: 
+-   type: 'TimePolicy'
+    args:
+        push_interval: 10
+        pull_interval: 10
+-   type: 'WindowPolicy'
+    args:
+        push_count: 3
+        pull_count: 3
+-   type: 'AccuracyPolicy'
+    args:
+        threshold: 2
+
+nodes:
+-   id: 1 
+    port: 8000 
+    machine: 0 
+-   id: 2
+    port: 8006
+    machine: 0
+    parent_id: 1
+    sensors: [1,2]
+    args: 0
+   
+  
