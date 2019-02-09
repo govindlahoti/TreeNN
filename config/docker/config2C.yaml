@@ -1,31 +1,45 @@
-delays:
+## Bandwidth available to nodes
+bandwidths:
   - src_id: 1
     dest_id: 2
-    delay: 0
+    bandwidth: 1000000
 
-default_delay: 0
-default_mini_batch_size: 100
-default_window_interval: 5
-default_window_limit: 2
-default_epochs_per_window: 1
+default_bandwidth: 1000000
+
+## Data streaming info
+default_window_interval: 10
+default_window_limit: 500
 default_kafka_server: "10.129.2.26:9092"
-default_cpus: 0.5
-default_memory: "125M"
-
-default_docker_image: "aniketshirke/distributedlearning:simulator"
-default_host_test_directory: "~/TrainingData"
 default_test_directory: "/TreeNN/data/"
 
+## Docker specific fields
+default_cpus: 0.8
+default_memory: "500M"
+default_docker_image: "aniketshirke/distributedlearning:simulator"
+default_host_test_directory: "~/Simulator/TrainingData"
+
+default_policy: 0
+default_args: 0
+
+## Machine info
 machine:
--   ip: 10.129.2.26   
-    username: "synerg"
-    password: "synerg"
--   ip: 10.129.26.154
-    username: "gise"
-    password: "gise123"
--   ip: 10.129.27.164
-    username: "giselab"
-    password: "giselab123"
+-   ip: 10.129.26.111
+    username: "ub"
+    password: "spark!sfun"
+
+## arguments to be passed to the learning model
+application_arguments:
+-   epochs: 1
+    mini_batch_size: 10
+    eta: 0.1
+    lmbda: 2.5
+    alpha: 10
+    beta: 15
+
+## Policy for sharing models
+policy:
+-   type: 'SimplePolicy'
+    args: 
 
 nodes:
 -   id: 1 
@@ -45,115 +59,115 @@ nodes:
     parent_id: 1
 -   id: 5
     machine: 0
-    port: 8008
+    port: 8009
     parent_id: 1
 -   id: 6
     machine: 0
-    port: 8008
+    port: 8010
     parent_id: 1
 -   id: 7
     machine: 0
-    port: 8008
+    port: 8011
     parent_id: 1
 -   id: 8
     machine: 0
-    port: 8008
+    port: 8012
     parent_id: 1
 -   id: 9
     machine: 0
-    port: 8008
+    port: 8013
     parent_id: 1
 -   id: 10
     machine: 0
-    port: 8008
+    port: 8014
     parent_id: 1
 -   id: 11
     machine: 0
-    port: 8008
+    port: 8015
     parent_id: 2
-    sensors: []
+    sensors: [1]
 -   id: 12
     machine: 0
-    port: 8008
+    port: 8016
     parent_id: 2
-    sensors: []
+    sensors: [2]
 -   id: 13
     machine: 0
-    port: 8008
+    port: 8017
     parent_id: 3
-    sensors: []
+    sensors: [3]
 -   id: 14
     machine: 0
-    port: 8008
+    port: 8018
     parent_id: 3
-    sensors: []
+    sensors: [4]
 -   id: 15
     machine: 0
-    port: 8008
+    port: 8019
     parent_id: 4
-    sensors: []
+    sensors: [5]
 -   id: 16
     machine: 0
-    port: 8008
+    port: 8020
     parent_id: 4
-    sensors: []
+    sensors: [6]
 -   id: 17
     machine: 0
-    port: 8008
+    port: 8021
     parent_id: 5
-    sensors: []
+    sensors: [7]
 -   id: 18
     machine: 0
-    port: 8008
+    port: 8022
     parent_id: 5
-    sensors: []
+    sensors: [8]
 -   id: 19
     machine: 0
-    port: 8008
+    port: 8023
     parent_id: 6
-    sensors: []
+    sensors: [9]
 -   id: 20
     machine: 0
-    port: 8008
+    port: 8024
     parent_id: 6
-    sensors: []
+    sensors: [10]
 -   id: 21
     machine: 0
-    port: 8008
+    port: 8025
     parent_id: 7
-    sensors: []
+    sensors: [11]
 -   id: 22
     machine: 0
-    port: 8008
+    port: 8026
     parent_id: 7
-    sensors: []
+    sensors: [12]
 -   id: 23
     machine: 0
-    port: 8008
+    port: 8027
     parent_id: 8
-    sensors: []
+    sensors: [13]
 -   id: 24
     machine: 0
-    port: 8008
+    port: 8028
     parent_id: 8
-    sensors: []
+    sensors: [14]
 -   id: 25
     machine: 0
-    port: 8008
+    port: 8029
     parent_id: 9
-    sensors: []
+    sensors: [15]
 -   id: 26
     machine: 0
-    port: 8008
+    port: 8030
     parent_id: 9
-    sensors: []
+    sensors: [16]
 -   id: 27
     machine: 0
-    port: 8008
+    port: 8031
     parent_id: 10
-    sensors: []
+    sensors: [17]
 -   id: 28
     machine: 0
-    port: 8008
+    port: 8032
     parent_id: 10
-    sensors: []
+    sensors: [18]
