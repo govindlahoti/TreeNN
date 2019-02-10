@@ -136,6 +136,11 @@ class Network():
 		beta = kwargs['beta']
 
 		n = len(training_data)
+
+		self.beta = 0.9
+		self.V_b = [np.zeros(b.shape) for b in self.biases]
+		self.V_w = [np.zeros(w.shape) for w in self.weights]
+
 		for j in range(epochs):
 			random.shuffle(training_data)
 			mini_batches = [
@@ -197,11 +202,14 @@ class Network():
 
 		self.parent_update_lock.acquire()
 		
-		self.biases = 	[ b - eta*nb for b, nb in zip(self.biases, nab_b)]
-		self.weights = 	[ w - eta*nw for w, nw in zip(self.weights, nab_w)]
+		self.V_b = [ self.beta*vb + (1-self.beta)*eta*nb for vb, nb in zip(self.V_b, nab_b)]
+		self.V_w = [ self.beta*vw + (1-self.beta)*eta*nw for vw, nw in zip(self.V_w, nab_w)]
 
-		self.acquired_biases = 	[ b + eta*nb for b, nb in zip(self.acquired_biases, nab_b)]
-		self.acquired_weights = [ w + eta*nw for w, nw in zip(self.acquired_weights, nab_w)]
+		self.biases = 	[ b - vb for b, vb in zip(self.biases, self.V_b)]
+		self.weights = 	[ w - vw for w, vw in zip(self.weights, self.V_w)]
+
+		self.acquired_biases = 	[ b + vb for b, vb in zip(self.acquired_biases, self.V_b)]
+		self.acquired_weights = [ w + vw for w, vw in zip(self.acquired_weights, self.V_w)]
 				
 		self.parent_update_lock.release()    
 	
