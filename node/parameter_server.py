@@ -121,10 +121,9 @@ class ParameterServer(Node):
 
 		self.log(self.create_log(CONNECTION, 'Got gradients from child %d'%(child_id)))
 		
-		weight_gradient = [np.array(x)/len(self.active_children) for x in weight_gradient]
-		bias_gradient = [np.array(x)/len(self.active_children) for x in bias_gradient]
+		weight_gradient = [np.array(x)/(1.*len(self.active_children)) for x in weight_gradient]
+		bias_gradient = [np.array(x)/(1.*len(self.active_children)) for x in bias_gradient]
 
-		print(child_id, skipdata)
 		self.acquired_gradients_from_kids.put([weight_gradient, bias_gradient, child_id, skipdata])
 
 	def pull_from_child(self, child_id):
