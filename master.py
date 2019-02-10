@@ -88,10 +88,12 @@ if __name__ == '__main__':
 								default=1, choices=[1,0])
 	parser.add_argument("-i","--ip", type=str, help="IP address on which the Master RPC server should run",
 								default=get_ip())
+	parser.add_argument("-p","--port", type=int, help="Port on which the Master RPC server should run",
+								default=MASTER_RPC_SERVER_PORT)
 
 	args = parser.parse_args()
 
-	own_address = (args.ip,MASTER_RPC_SERVER_PORT)
+	own_address = (args.ip,args.port)
 	
 	globals()["log_file"] = sys.stdout
 	globals()["server_status"] = 0

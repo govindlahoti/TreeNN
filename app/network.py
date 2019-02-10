@@ -15,7 +15,7 @@ from copy import deepcopy
 from app.application import Application
 
 # The class of DNN
-def dist(x,y):   
+def dist(x,y):  
     z = np.sqrt(np.sum((x-y)**2))
     return np.exp(-z)
 
@@ -155,11 +155,13 @@ class Network(Application):
         is the learning rate. L2 regularization is added"""
         nabla_b = [np.zeros(b.shape) for b in self.biases] 
         nabla_w = [np.zeros(w.shape) for w in self.weights]
+
         nabla_bl = [np.zeros(b.shape) for b in self.biases]
         nabla_wl = [np.zeros(w.shape) for w in self.weights]
-        i=0
-        l_i = 0
-        
+
+        data_count = len(mini_batch)
+        labelled_count = 0
+
         for x, xs1, xs2, xt1, xt2, y, flag in mini_batch:
             x = mapToFloat(x)
             xs1 = mapToFloat(xs1)
@@ -168,43 +170,49 @@ class Network(Application):
             xt2 = mapToFloat(xt2)
             y = mapToFloat(y)
             size_bool = len(x) == 276 and len(xs1) == 276 and len(xs2) == 276 and len(xt1) == 276 and len(xt2) == 276
-
             flag = flag[1:-2]
+
+            delta_nabla_b, delta_nabla_w = None, None
+            ## Labelled data
             if(flag == "1" and len(y)==48 and size_bool):
-                l_i = l_i+1
-                delta_nabla_b, delta_nabla_w = self.backprop(x, xs1, xs2, xt1, xt2, alpha, beta, True, y)
-                nabla_bl = [nb+dnb for nb, dnb in zip(nabla_bl, delta_nabla_b)]
-                nabla_wl = [nw+dnw for nw, dnw in zip(nabla_wl, delta_nabla_w)]
+                delta_nabla_b, delta_nabla_w, delta_nabla_bl, delta_nabla_wl = self.backprop(x, xs1, xs2, xt1, xt2, alpha, beta, True, y)
+                nabla_bl = [nbl+dnbl for nbl, dnbl in zip(nabla_bl, delta_nabla_bl)]
+                nabla_wl = [nwl+dnwl for nwl, dnwl in zip(nabla_wl, delta_nabla_wl)]
+
+            ## Unlabelled data
+            elif(flag == "0" and size_bool):
+                delta_nabla_b, delta_nabla_w,_,_ = self.backprop(x, xs1, xs2, xt1, xt2, alpha, beta, False)
+                
             else:
-                if(flag == "0" and size_bool):
-                    delta_nabla_b, delta_nabla_w = self.backprop(x, xs1, xs2, xt1, xt2, alpha, beta, False)
-                    nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
-                    nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]        
+                print("Unknown Data format")
+                exit(0)
 
-        nabw = [eta*lmbda*w+(eta/len(mini_batch))*nw for w, nw in zip(self.weights, nabla_w)]
+            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
+            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]        
 
-        if(l_i>0): nabw = [w+(eta/l_i)*nw for w, nw in zip(nabw, nabla_wl)]
+        nab_b = [ nb/data_count for nb in nabla_b]
+        nab_w = [ lmbda*w + nw/data_count for w, nw in zip(self.weights, nabla_w)]
+
+        if(labelled_count>0): 
+            nab_b = [ b + nbl/labelled_count for b, nbl in zip(nab_b, nabla_bl)]
+            nab_w = [ w + nwl/labelled_count for w, nwl in zip(nab_w, nabla_wl)]
 
         self.parent_update_lock.acquire()
         
-        self.weights = [w-nw for w, nw in zip(self.weights, nabw)]
-        self.biases = [b-(eta/len(mini_batch))*nb for b, nb in zip(self.biases, nabla_b)]
+        self.biases =   [ b - eta*nb for b, nb in zip(self.biases, nab_b)]
+        self.weights =  [ w - eta*nw for w, nw in zip(self.weights, nab_w)]
 
-        if(l_i>0):  self.biases = [b-(eta/l_i)*nb for b, nb in zip(self.biases, nabla_bl)]
-
-        self.acquired_weights = [w+nw for w, nw in zip(self.acquired_weights, nabw)]
-        self.acquired_biases = [b+(eta/len(mini_batch))*nb for b, nb in zip(self.acquired_biases, nabla_b)]
-        
-        if(l_i>0):  self.acquired_biases = [b+(eta/l_i)*nb for b, nb in zip(self.acquired_biases, nabla_bl)]        
-        
+        self.acquired_biases =  [ b + eta*nb for b, nb in zip(self.acquired_biases, nab_b)]
+        self.acquired_weights = [ w + eta*nw for w, nw in zip(self.acquired_weights, nab_w)]
+                
         self.parent_update_lock.release()    
     
-    def compute_neighbourhood_delta(self, a11, a12, a21, a22, a31, a32):
-        delta1 = a11 * sigmoid_prime(a12) 
-        delta2 = a21 * sigmoid_prime(a22)
+    def compute_neighbourhood_delta(self, a11, z_n, a21, z, a_n, a):
+        delta1 = a11 * sigmoid_prime(z_n) 
+        delta2 = a21 * sigmoid_prime(z)
 
-        d1 = np.dot(delta1, a31.transpose())
-        d2 = np.dot(delta2, a32.transpose())
+        d1 = np.dot(delta1, a_n.transpose())
+        d2 = np.dot(delta2, a.transpose())
 
         return delta1, delta2, d2-d1
 
@@ -218,6 +226,8 @@ class Network(Application):
         
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
+        nabla_bl = [np.zeros(b.shape) for b in self.biases]
+        nabla_wl = [np.zeros(w.shape) for w in self.weights]
         
         zs,activations = self.feedforward(x)
 
@@ -232,15 +242,20 @@ class Network(Application):
         for l in range(1, self.num_layers):
             if is_labelled:
                 delta = self.derivative(l, output_activations=activations[-1], y=y, delta_n=delta) * sigmoid_prime(zs[-l])
+                # print(delta.shape)
             
             for i in range(4):
                 a11 = self.derivative(l, output_activations=activations[-1], y=a[i][-1], delta_n=delta_n[i][0])
                 a21 = self.derivative(l, output_activations=activations[-1], y=a[i][-1], delta_n=delta_n[i][1])
                 delta_n[i][0], delta_n[i][1],diff_delta[i] = self.compute_neighbourhood_delta(a11, zs_n[i][-l], a21, zs[-l], a[i][-l-1], activations[-l-1])
             
-            nabla_b[-l] = delta + alpha*(d[0]*(delta_n[0][1] - delta_n[0][0]) + d[1]*(delta_n[1][1] - delta_n[1][0])) + beta*(d[2]*(delta_n[2][1] - delta_n[2][0]) + d[3]*(delta_n[3][1] - delta_n[3][0]))
-            nabla_w[-l] = np.dot(delta, activations[-l-1].transpose()) + alpha*(d[0]*diff_delta[0] + d[1]*diff_delta[1]) + beta*(d[2]*diff_delta[2] + d[3]*diff_delta[3])
-        return (nabla_b, nabla_w)
+            nabla_b[-l] = alpha*(d[0]*(delta_n[0][1] - delta_n[0][0]) + d[1]*(delta_n[1][1] - delta_n[1][0])) + beta*(d[2]*(delta_n[2][1] - delta_n[2][0]) + d[3]*(delta_n[3][1] - delta_n[3][0]))
+            nabla_w[-l] = alpha*(d[0]*diff_delta[0] + d[1]*diff_delta[1]) + beta*(d[2]*diff_delta[2] + d[3]*diff_delta[3])
+            
+            nabla_bl[-l] = delta 
+            nabla_wl[-l] = np.dot(delta, activations[-l-1].transpose())
+
+        return (nabla_b, nabla_w, nabla_bl, nabla_wl)
     
     def evaluate(self, test_data):
         """
