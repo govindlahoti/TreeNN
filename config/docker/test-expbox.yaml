@@ -7,17 +7,18 @@ bandwidths:
 default_bandwidth: 1000000
 
 ## Data streaming info
-default_window_interval: 5
-default_window_limit: 2
+default_window_interval: 10
+default_window_limit: 400
 default_kafka_server: "10.129.2.26:9092"
 default_test_directory: "/TreeNN/data/"
 
 ## Docker specific fields
-default_cpus: 1
-default_memory: "500M"
+default_cpus: 4
+default_memory: "1000M"
 default_docker_image: "aniketshirke/distributedlearning:simulator"
-default_host_test_directory: "~/Simulator/TrainingData"
+default_host_test_directory: "~/Simulator/original_data"
 default_policy: 0
+default_args: 0
 
 ## Machine info
 machine:
@@ -27,12 +28,12 @@ machine:
 
 ## arguments to be passed to the learning model
 application_arguments:
--   epochs: 1
-    mini_batch_size: 10
-    eta: 0.1
-    lmbda: 2.5
-    alpha: 10
-    beta: 15
+-   epochs: 2
+    mini_batch_size: 16
+    eta: 0.01
+    lmbda: 0.5
+    alpha: 20
+    beta: 25
 
 ## Policy for sharing models
 policy:
