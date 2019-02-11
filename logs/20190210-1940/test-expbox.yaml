@@ -17,7 +17,7 @@ default_cpus: 4
 default_memory: "1000M"
 default_docker_image: "aniketshirke/distributedlearning:simulator"
 default_host_test_directory: "~/Simulator/original_data"
-default_policy: 2
+default_policy: 0
 default_args: 0
 
 ## Machine info
@@ -45,8 +45,8 @@ policy:
         pull_interval: 10
 -   type: 'WindowPolicy'
     args:
-        push_count: 1
-        pull_count: 400
+        push_count: 3
+        pull_count: 3
 -   type: 'AccuracyPolicy'
     args:
         threshold: 2
