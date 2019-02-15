@@ -7,7 +7,6 @@ import csv
 import time
 import psutil
 import threading
-from io import StringIO
 from collections import OrderedDict
 
 from node.node import *
@@ -26,8 +25,6 @@ class Worker(Node):
 		self.window_interval = data['window_interval']
 		self.window_limit = data['window_limit']
 		self.window_count = 0
-
-		self.application_arguments = data['application_arguments']
 
 		try:
 			self.consumer = KafkaConsumer(bootstrap_servers=str(kafka_server_address), api_version=(0,10))
@@ -86,16 +83,16 @@ class Worker(Node):
 		py = psutil.Process(os.getpid())
 		while self.window_count < self.window_limit:
 			epoch_start_cpu, epoch_start = time.process_time(), time.perf_counter()
-			data = self.get_data()
+			data = self.application.transform_sensor_data(self.get_data())
 			
 			self.skiptestdata += len(data)
 
 			### Pull model from parent after consulting the policy			
 			if self.policy.pull_from_parent(self):
-				self.network.use_parent_model(*self.pull_from_parent())
+				self.application.use_parent_model(*self.pull_from_parent())
 
 			### Run training algorithm
-			self.network.train(data, **self.application_arguments)
+			self.application.train(data)
 
 			### Log Statistics for the epoch
 			self.log(self.create_log(PROCESSED, { 
@@ -115,7 +112,7 @@ class Worker(Node):
 
 			### Push model to parent after consulting the policy
 			if self.policy.push_to_parent(self):
-				self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
+				self.push_to_parent(*self.application.get_and_reset_acquired_gradients())
 
 			self.window_count += 1
 		
@@ -142,9 +139,7 @@ class Worker(Node):
 			
 			if (time.time() - start) > self.window_interval: break
 		
-		train_data = list(csv.reader(StringIO(sensor_data_string)))
-
-		return train_data
+		return sensor_data_string
 
 	###-------------------------- Additional RPC functions ---------------------------------
 

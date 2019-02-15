@@ -3,6 +3,7 @@ An implementation of abstract class Node for simulating parameter servers
 """
 
 import threading
+import numpy as np
 from queue import Queue
 
 from node.node import *
@@ -59,7 +60,7 @@ class ParameterServer(Node):
 			
 			### Pull from parent after consulting the policy
 			if self.policy.pull_from_parent(self):
-				self.network.use_parent_model(*self.pull_from_parent())
+				self.application.use_parent_model(*self.pull_from_parent())
 
 			# ## Log pre merge accuracy
 			# self.log(self.create_log(STATISTIC,OrderedDict({
@@ -68,7 +69,7 @@ class ParameterServer(Node):
 			# 	})))
 
 			### Merge gradients
-			self.network.apply_kid_gradient(weight_gradient, bias_gradient)
+			self.application.apply_kid_gradient(weight_gradient, bias_gradient)
 			self.policy.updates += 1
 			
 			### Log post merge accuracy
@@ -85,7 +86,7 @@ class ParameterServer(Node):
 
 			### Push Gradient to parent after consulting the policy
 			if self.policy.push_to_parent(self):
-				self.push_to_parent(*self.network.get_and_reset_acquired_gradients())
+				self.push_to_parent(*self.application.get_and_reset_acquired_gradients())
 
 			self.merge_id += 1
 
@@ -132,7 +133,7 @@ class ParameterServer(Node):
 		"""
 
 		self.log(self.create_log(CONNECTION,'Got pull request from child %d'%(child_id)))
-		model = self.network.get_model()
+		model = self.application.get_model()
 		model[0] = [x.tolist() for x in model[0]]
 		model[1] = [x.tolist() for x in model[1]]
 		return model

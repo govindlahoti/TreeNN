@@ -25,7 +25,7 @@ class Application(ABC):
 
 	#------------------ For Worker nodes ------------------------
 	@abstractmethod
-	def train(self,training_data, epochs, batch_size):
+	def train(self,training_data):
 		"""
 		Method which defines the training algorithm used by the application.
 		In case of AQI, the algorithm is Stochastic Gradient Descent 
@@ -52,5 +52,21 @@ class Application(ABC):
 		"""
 		Evaluate the current model using test_data
 		"""
+		print("Method not implemented!")
+
+	#----------------- For Sensor Data Processing ------------
+	@abstractmethod
+	def transform_sensor_data(data):
+		"""
+		Transforms sensor data so that it can be trained for learning the model
+		"""
+		print("Method not implemented!")
+
+	@abstractmethod
+	def get_test_data(test_file_handler, filesize, skipdata, size):
+		"""
+		Get test data from file. 
+		Using random-seeking in file to limit RAM usage
+		"""	
 		print("Method not implemented!")
 

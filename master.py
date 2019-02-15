@@ -43,7 +43,7 @@ def log_report(log):
 	print(log, file=globals()["log_file"])
 	log = json.loads(log)
 	
-	if log[TYPE] == DONE:
+	if log[TYPE] == DONE and args.trigger == 1:
 		nodes.remove(log[NODE_ID])
 		if len(nodes) == 0:
 			remote_shutdown()

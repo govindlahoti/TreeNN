@@ -3,13 +3,14 @@
 #check the dataprep file and modify the code. Right now the file may contain null values for the spatial neigbhborhood and flag is associated at each row to know whether it labelled
 # or unlabelled data ..................we need to choose the function based on the input row.
 # a batch may contain labelled and unlabelled both type of rows  
-import random
-import numpy as np
-import threading
-import timeit
-import time
 import sys
 import csv
+import random
+import time
+import timeit
+import threading
+import numpy as np
+from io import StringIO
 from copy import deepcopy
 
 from app.application import Application
@@ -31,9 +32,9 @@ def mapToFloat(x):
 	res = np.array(res)
 	return res.reshape((len(res),1))
 
-class Network(Application):
+class AQI(Application):
 
-	def __init__(self, sizes):
+	def __init__(self, **kwargs):
 		"""
 		The list 'sizes' contains the number of neurons in the
 		respective layers of the network.  For example, if the list
@@ -45,14 +46,21 @@ class Network(Application):
 		layer is assumed to be an input layer, and by convention we
 		won't set any biases for those neurons, since biases are only
 		ever used in computing the outputs from later layers."""
-		self.num_layers = len(sizes)
-		self.sizes = sizes
+		self.sizes = kwargs['sizes']
+		self.num_layers = len(self.sizes)
+
+		self.epochs = kwargs['epochs'] 
+		self.mini_batch_size = kwargs['mini_batch_size']
+		self.eta = kwargs['eta']
+		self.lmbda = kwargs['lmbda']
+		self.alpha = kwargs['alpha']
+		self.beta = kwargs['beta']
 		
 		np.random.seed(42)
 		random.seed(42)
 
-		self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
-		self.weights = [np.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
+		self.biases = [np.random.randn(y, 1) for y in self.sizes[1:]]
+		self.weights = [np.random.randn(y, x) for x, y in zip(self.sizes[:-1], self.sizes[1:])]
 
 		self._reset_acquired_weights_and_biases()
 		self.parent_update_lock = threading.Lock()
@@ -118,7 +126,7 @@ class Network(Application):
 		else:
 			return activation
 		
-	def train(self, training_data, **kwargs):
+	def train(self, training_data):
 		"""
 		Train the neural network using mini-batch stochastic
 		gradient descent.  The ``training_data`` is a list of tuples
@@ -130,32 +138,27 @@ class Network(Application):
 		tracking progress, but slows things down substantially.
 		"""
 
-		epochs = kwargs['epochs'] 
-		mini_batch_size = kwargs['mini_batch_size']
-		eta = kwargs['eta']
-		lmbda = kwargs['lmbda']
-		alpha = kwargs['alpha']
-		beta = kwargs['beta']
+		
 
 		self.beta = 0.9
 		self.V_b = [np.zeros(b.shape) for b in self.biases]
 		self.V_w = [np.zeros(w.shape) for w in self.weights]
 		
 		n = len(training_data)
-		for j in range(epochs):
+		for j in range(self.epochs):
 			random.shuffle(training_data)
 			mini_batches = [
-				training_data[k:k+mini_batch_size]
-				for k in range(0, n, mini_batch_size)]
+				training_data[k:k+self.mini_batch_size]
+				for k in range(0, n, self.mini_batch_size)]
 			i = 0
 
 			for mini_batch in mini_batches:
-				self.update_mini_batch(mini_batch, eta, lmbda, alpha, beta, n)
+				self.update_mini_batch(mini_batch, n)
 
-	def update_mini_batch(self, mini_batch, eta, lmbda, alpha, beta, n):
+	def update_mini_batch(self, mini_batch, n):
 		"""Update the network's weights and biases by applying
 		gradient descent using backpropagation to a single mini batch.
-		The ``mini_batch`` is a list of tuples ``(x, y)``, and ``eta``
+		The ``mini_batch`` is a list of tuples ``(x, y)``, and ``self.eta``
 		is the learning rate. L2 regularization is added"""
 		nabla_b = [np.zeros(b.shape) for b in self.biases] 
 		nabla_w = [np.zeros(w.shape) for w in self.weights]
@@ -179,13 +182,13 @@ class Network(Application):
 			delta_nabla_b, delta_nabla_w = None, None
 			## Labelled data
 			if(flag == "1" and len(y)==48 and size_bool):
-				delta_nabla_b, delta_nabla_w, delta_nabla_bl, delta_nabla_wl = self.backprop(x, xs1, xs2, xt1, xt2, alpha, beta, True, y)
+				delta_nabla_b, delta_nabla_w, delta_nabla_bl, delta_nabla_wl = self.backprop(x, xs1, xs2, xt1, xt2, True, y)
 				nabla_bl = [nbl+dnbl for nbl, dnbl in zip(nabla_bl, delta_nabla_bl)]
 				nabla_wl = [nwl+dnwl for nwl, dnwl in zip(nabla_wl, delta_nabla_wl)]
 
 			## Unlabelled data
 			elif(flag == "0" and size_bool):
-				delta_nabla_b, delta_nabla_w,_,_ = self.backprop(x, xs1, xs2, xt1, xt2, alpha, beta, False)
+				delta_nabla_b, delta_nabla_w,_,_ = self.backprop(x, xs1, xs2, xt1, xt2, False)
 				
 			else:
 				print("Unknown Data format")
@@ -195,7 +198,7 @@ class Network(Application):
 			nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]        
 
 		nab_b = [ nb/data_count for nb in nabla_b]
-		nab_w = [ lmbda*w + nw/data_count for w, nw in zip(self.weights, nabla_w)]
+		nab_w = [ self.lmbda*w + nw/data_count for w, nw in zip(self.weights, nabla_w)]
 
 		if(labelled_count>0): 
 			nab_b = [ b + nbl/labelled_count for b, nbl in zip(nab_b, nabla_bl)]
@@ -203,8 +206,8 @@ class Network(Application):
 
 		self.parent_update_lock.acquire()
 		
-		self.V_b = [ self.beta*vb + (1-self.beta)*eta*nb for vb, nb in zip(self.V_b, nab_b)]
-		self.V_w = [ self.beta*vw + (1-self.beta)*eta*nw for vw, nw in zip(self.V_w, nab_w)]
+		self.V_b = [ self.beta*vb + (1-self.beta)*self.eta*nb for vb, nb in zip(self.V_b, nab_b)]
+		self.V_w = [ self.beta*vw + (1-self.beta)*self.eta*nw for vw, nw in zip(self.V_w, nab_w)]
 
 		self.biases =   [ b - vb for b, vb in zip(self.biases, self.V_b)]
 		self.weights =  [ w - vw for w, vw in zip(self.weights, self.V_w)]
@@ -223,7 +226,7 @@ class Network(Application):
 
 		return delta1, delta2, d2-d1
 
-	def backprop(self, x, xs1, xs2, xt1, xt2, alpha, beta, is_labelled, y=None):
+	def backprop(self, x, xs1, xs2, xt1, xt2, is_labelled, y=None):
 		"""
 		Return a tuple ``(nabla_b, nabla_w)`` representing the
 		gradient for the cost function C_x.  ``nabla_b`` and
@@ -256,8 +259,8 @@ class Network(Application):
 				a21 = self.derivative(l, output_activations=activations[-1], y=a[i][-1], delta_n=delta_n[i][1])
 				delta_n[i][0], delta_n[i][1],diff_delta[i] = self.compute_neighbourhood_delta(a11, zs_n[i][-l], a21, zs[-l], a[i][-l-1], activations[-l-1])
 			
-			nabla_b[-l] = alpha*(d[0]*(delta_n[0][1] - delta_n[0][0]) + d[1]*(delta_n[1][1] - delta_n[1][0])) + beta*(d[2]*(delta_n[2][1] - delta_n[2][0]) + d[3]*(delta_n[3][1] - delta_n[3][0]))
-			nabla_w[-l] = alpha*(d[0]*diff_delta[0] + d[1]*diff_delta[1]) + beta*(d[2]*diff_delta[2] + d[3]*diff_delta[3])
+			nabla_b[-l] = self.alpha*(d[0]*(delta_n[0][1] - delta_n[0][0]) + d[1]*(delta_n[1][1] - delta_n[1][0])) + self.beta*(d[2]*(delta_n[2][1] - delta_n[2][0]) + d[3]*(delta_n[3][1] - delta_n[3][0]))
+			nabla_w[-l] = self.alpha*(d[0]*diff_delta[0] + d[1]*diff_delta[1]) + self.beta*(d[2]*diff_delta[2] + d[3]*diff_delta[3])
 			
 			nabla_bl[-l] = delta 
 			nabla_wl[-l] = np.dot(delta, activations[-l-1].transpose())
@@ -299,6 +302,46 @@ class Network(Application):
 			return (output_activations-y)
 		else:
 			return np.dot(self.weights[-l+1].transpose(), delta_n)
+
+	@staticmethod
+	def transform_sensor_data(data):
+		return list(csv.reader(StringIO(data)))
+
+	@staticmethod
+	def get_test_data(test_file_handler, filesize, skipdata, size=200):
+		"""
+		Get test data from file. 
+		Using random-seeking in file to limit RAM usage
+		"""		
+
+		sample = []
+		DATAPOINT_SIZE = 30*1024 ## 30kB
+
+		total_datapoints = int(filesize/DATAPOINT_SIZE)
+
+		### Prepare a dataset from future window, skipping data which has already been consumed by the worker
+		start = None
+		if total_datapoints < size:
+			start = 0
+		elif total_datapoints - skipdata < size:
+			start = filesize - int(1.0 * size * filesize / total_datapoints)
+		else:
+			start = int(1.0 * skipdata * filesize / total_datapoints)
+
+		# print(skipdata, start, total_datapoints, filesize)
+		# random_set = sorted(random.sample(range(start,filesize), size))
+
+		test_file_handler.seek(start)
+		# Skip current line (because we might be in the middle of a line) 
+		test_file_handler.readline()
+		
+		for i in range(size):
+			# Append the next line to the sample set 
+			sample.append(test_file_handler.readline())
+
+		test_data = list(csv.reader(StringIO("".join(sample))))
+
+		return test_data
 
 
 def sigmoid(z):

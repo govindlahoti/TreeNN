@@ -5,7 +5,7 @@ Currently it is reading a file and dumping data into Kafka
 
 import sys
 import os
-sys.path.append(os.path.abspath('../utility'))
+sys.path.append(os.path.abspath('../../utility'))
 
 import argparse
 from time import sleep
@@ -27,6 +27,7 @@ def send_data(topic, source, data_rate, kafka_server):
 	with open(source, 'r') as f:
 		counter = 0
 		for data_point in f:
+			# print(data_point)
 			producer.send(topic, data_point.encode('utf-8'))
 			counter+=1
 			# if counter%100 == 0: print(counter)

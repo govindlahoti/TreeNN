@@ -96,10 +96,10 @@ def read_yaml(master_address,config_file,is_docker):
 		for x in raw_data['nodes']:
 			data[x['id']]['master_address'] = 'http://%s:%d'%master_address
 			
+			data[x['id']]['application_arguments'] = application_arguments[data[x['id']]['args']]
 			if 'parent_id' in x:
 				data[x['id']]['parent_address'] = 'http://%s:%d'%(data[x['parent_id']]['ip'], data[x['parent_id']]['port'])
 				data[x['parent_id']]['is_worker'] = False				
-				data[x['id']]['application_arguments'] = application_arguments[data[x['id']]['args']]
 			else:
 				data[x['id']]['parent_id'] = -1
 				data[x['id']]['parent_address'] = None

@@ -10,10 +10,10 @@ import os
 import csv
 import json
 import random
-from io import StringIO
+import numpy as np
 from collections import OrderedDict
 
-from app.network import *
+from app import *
 from policy import *
 from utility.const import *
 
@@ -68,7 +68,7 @@ class Node(ABC):
 
 		self.filesizes = { f:get_filesize(self.test_file_handlers[f]) for f in self.test_files}
 
-		self.network = Network([276, 276, 276, 48])
+		self.application = eval(data['application_arguments']['model'])(**data['application_arguments'])
 
 		### Meta
 		self.log_file = open('logs/%d.log'%self.id, 'a')
@@ -192,7 +192,7 @@ class Node(ABC):
 		RPC function. Return the loss of the present model at the node
 		"""
 
-		return float(self.network.evaluate(data))		
+		return float(self.application.evaluate(data))		
 	
 	def remote_shutdown(self):
 		"""
@@ -241,47 +241,10 @@ class Node(ABC):
 		accuracies = {}
 		
 		for test_file in self.test_files:
-			test_data = self.get_test_data(test_file,skipdata)
-			accuracies[test_file.split('/')[-1]] = self.network.evaluate(test_data)*100
+			test_data = self.application.get_test_data(self.test_file_handlers[test_file], self.filesizes[test_file], skipdata)
+			accuracies[test_file.split('/')[-1]] = self.application.evaluate(test_data)
 		
 		return accuracies
-
-	def get_test_data(self, test_file, skipdata, size=200):
-		"""
-		Get test data from file. 
-		Using random-seeking in file to limit RAM usage
-		"""		
-
-		sample = []
-		DATAPOINT_SIZE = 30*1024 ## 30kB
-
-		test_file_handler = self.test_file_handlers[test_file]
-		filesize = self.filesizes[test_file]
-		total_datapoints = int(filesize/DATAPOINT_SIZE)
-
-		### Prepare a dataset from future window, skipping data which has already been consumed by the worker
-		start = None
-		if total_datapoints < size:
-			start = 0
-		elif total_datapoints - skipdata < size:
-			start = filesize - int(1.0 * size * filesize / total_datapoints)
-		else:
-			start = int(1.0 * skipdata * filesize / total_datapoints)
-
-		# print(skipdata, start, total_datapoints, filesize)
-		# random_set = sorted(random.sample(range(start,filesize), size))
-
-		test_file_handler.seek(start)
-		# Skip current line (because we might be in the middle of a line) 
-		test_file_handler.readline()
-		
-		for i in range(size):
-			# Append the next line to the sample set 
-			sample.append(test_file_handler.readline())
-
-		test_data = list(csv.reader(StringIO("".join(sample))))
-
-		return test_data
 		
 	def create_log(self, log_type, payload):
 		"""
