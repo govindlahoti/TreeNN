@@ -213,14 +213,14 @@ class MNIST(Application):
 			else:
 				self.parent_update_lock.acquire()
 				self.biases[i-1] += self.alpha * np.sum(current_del,axis=0)
-				self.acquired_biases[i-1] += self.alpha * np.sum(current_del,axis=0)
+				self.acquired_biases[i-1] -= self.alpha * np.sum(current_del,axis=0)
 
 				delta_w = np.matmul(np.transpose(activations[i-1]),current_del)
 				target_delta = np.matmul(current_del,np.transpose(self.weights[i-1]))
 				current_del = activations[i-1] * (1 - activations[i-1]) * target_delta
 		
 				self.weights[i-1] += self.alpha * delta_w 
-				self.acquired_weights[i-1] += self.alpha * delta_w
+				self.acquired_weights[i-1] -= self.alpha * delta_w
 				self.parent_update_lock.release()
 
 	@staticmethod
