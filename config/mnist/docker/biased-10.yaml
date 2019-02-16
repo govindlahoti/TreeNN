@@ -8,13 +8,13 @@ default_bandwidth: 1000000
 
 ## Data streaming info
 default_window_interval: 20
-default_window_limit: 400
+default_window_limit: 200
 default_kafka_server: "10.129.2.26:9092"
 default_test_directory: "/TreeNN/data/"
 
 ## Docker specific fields
-default_cpus: 4
-default_memory: "1000M"
+default_cpus: 1
+default_memory: "400M"
 default_docker_image: "aniketshirke/distributedlearning:simulator"
 default_host_test_directory: "~/Simulator/mnist_data/test"
 default_policy: 0
@@ -61,7 +61,50 @@ nodes:
     port: 8006
     machine: 0
     parent_id: 1
+    sensors: [0]
+-   id: 3
+    port: 8007
+    machine: 0
+    parent_id: 1
     sensors: [1]
-    args: 0
-   
+-   id: 4
+    port: 8008
+    machine: 0
+    parent_id: 1
+    sensors: [2]
+-   id: 5
+    port: 8009
+    machine: 0
+    parent_id: 1
+    sensors: [3]
+-   id: 6
+    port: 8010
+    machine: 0
+    parent_id: 1
+    sensors: [4]
+-   id: 7
+    port: 8011
+    machine: 0
+    parent_id: 1
+    sensors: [5]
+-   id: 8
+    port: 8012
+    machine: 0
+    parent_id: 1
+    sensors: [6]
+-   id: 9
+    port: 8013
+    machine: 0
+    parent_id: 1
+    sensors: [7]
+-   id: 10
+    port: 8014
+    machine: 0
+    parent_id: 1
+    sensors: [8]
+-   id: 11
+    port: 8015
+    machine: 0
+    parent_id: 1
+    sensors: [9]
   
