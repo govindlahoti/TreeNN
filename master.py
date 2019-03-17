@@ -99,7 +99,7 @@ if __name__ == '__main__':
 	globals()["server_status"] = 0
 	
 	if args.log == 1:
-		dir_path = create_log_directory(args.config)
+		dir_path = create_log_directory(args.config,args.expname)
 		globals()["log_file"] = open(dir_path+'/%s.log'%args.expname,'a')
 
 	

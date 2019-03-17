@@ -161,7 +161,7 @@ def get_ip():
 		except:
 			continue
 
-def create_log_directory(config_file):
+def create_log_directory(config_file, expname):
 	"""
 	Create logging directory and copy config yaml 
 	"""
@@ -170,7 +170,7 @@ def create_log_directory(config_file):
 	import datetime
 
 	now = datetime.datetime.now()
-	dir_path = "logs/" + now.strftime("%Y%m%d-%H%M")
+	dir_path = "logs/%s-%s"%(now.strftime("%Y%m%d-%H%M"), expname)
 
 	if not os.path.exists(dir_path):
 		os.makedirs(dir_path)
