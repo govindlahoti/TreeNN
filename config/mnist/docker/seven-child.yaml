@@ -92,3 +92,9 @@ nodes:
     machine: 0
     parent_id: 1
     sensors: [36]
+
+cloud:
+    machine: 0
+    port: 9090
+    cpus: 2
+    memory: "500M" 
