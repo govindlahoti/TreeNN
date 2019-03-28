@@ -17,8 +17,7 @@ import argparse
 
 from utility.const import KAFKA_SERVER_ADDRESS
 
-from node.parameter_server import ParameterServer
-from node.worker import Worker
+from node import *
 
 def main():
 	
@@ -31,7 +30,14 @@ def main():
 	print("Initiating node %s"%args.node_id)
 	data = json.loads(args.node_data.replace('\'','\"'))
 
-	node = Worker(data, args.kafka_server) if data['is_worker'] else ParameterServer(data)
+	node = None
+	if data['is_worker'] is None:
+		node = Cloud(data, args.kafka_server)
+	else:
+		if data['is_worker']:
+			node = Worker(data, args.kafka_server)
+		else:
+			node = ParameterServer(data)
 	
 	threads = node.init_threads()
 

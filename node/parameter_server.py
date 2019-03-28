@@ -20,6 +20,7 @@ class ParameterServer(Node):
 		"""
 
 		super().__init__(data) 
+
 		self.acquired_gradients_from_kids = Queue() 
 
 		self.merge_id = 0
@@ -90,12 +91,7 @@ class ParameterServer(Node):
 
 			self.merge_id += 1
 
-		### Stop Server Thread
-		client = ServerProxy(self.own_server_address)
-		client.remote_shutdown()
-
-		### Send Done acknowledgement to Master
-		self.log(self.create_log(DONE, ''))
+		self.clean_up()
 
 	def run_rpc_server_thread(self):
 		"""
@@ -112,6 +108,17 @@ class ParameterServer(Node):
 		self.server.register_function(self.get_update_count, "get_update_count")
 		# add functions for communication between workers
 		self.server.serve_forever()
+
+	def cleanup(self):
+		### Stop Server Thread
+		client = ServerProxy(self.own_server_address)
+		client.remote_shutdown()
+
+		if self.cloud_exists:
+			self.ping_cloud(DISCONNECTED)
+
+		### Send Done acknowledgement to Master
+		self.log(self.create_log(DONE, ''))
 
 	###-------------------------- Additional RPC functions ---------------------------------
 

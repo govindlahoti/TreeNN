@@ -86,6 +86,8 @@ if __name__ == '__main__':
 								default=1, choices=[1, 0])
 	parser.add_argument("-l","--log", type=int, help="Boolean indicating to generate log", 
 								default=1, choices=[1,0])
+	parser.add_argument("-c","--cloud", type=int, help="Boolean to run simultaneous simulation of Cloud",
+								default=0, choices=[1,0])
 	parser.add_argument("-i","--ip", type=str, help="IP address on which the Master RPC server should run",
 								default=get_ip())
 	parser.add_argument("-p","--port", type=int, help="Port on which the Master RPC server should run",
@@ -114,7 +116,7 @@ if __name__ == '__main__':
 
 	if args.trigger==1:
 		try:
-			data, machine_info = read_yaml(own_address,args.config,args.docker)
+			data, machine_info = read_yaml(own_address,args.config,args.docker,args.cloud)
 		except Exception as e:
 			print(REDSTR%"Error in parsing configuration")
 			print(e)

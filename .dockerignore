@@ -3,6 +3,7 @@ data/*_Data.csv
 docs/
 config/
 trials/
+logs/
 *.tar
 *.zip
 *.tgz

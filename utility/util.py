@@ -60,7 +60,7 @@ class ssh:
 		if(self.client):
 			self.client.close()
 
-def read_yaml(master_address,config_file,is_docker):
+def read_yaml(master_address,config_file,is_docker, include_cloud):
 	"""
 	Read yaml from config file
 	master_address is sent to slaves so that they can report back the logs
@@ -75,6 +75,8 @@ def read_yaml(master_address,config_file,is_docker):
 		policy = raw_data['policy']
 
 		default_bandwidth = raw_data['default_bandwidth']
+
+		sensors = []
 
 		for x in raw_data['nodes']:
 			data[x['id']] = x
@@ -92,6 +94,7 @@ def read_yaml(master_address,config_file,is_docker):
 			data[x['id']]['policy'] = policy[data[x['id']]['policy']]
 			if data[x['id']]['policy']['args'] is None:
 				data[x['id']]['policy']['args'] = {} 
+			data[x['id']]['cloud_exists'] = False 
 
 		for x in raw_data['nodes']:
 			data[x['id']]['master_address'] = 'http://%s:%d'%master_address
@@ -99,7 +102,8 @@ def read_yaml(master_address,config_file,is_docker):
 			data[x['id']]['application_arguments'] = application_arguments[data[x['id']]['args']]
 			if 'parent_id' in x:
 				data[x['id']]['parent_address'] = 'http://%s:%d'%(data[x['parent_id']]['ip'], data[x['parent_id']]['port'])
-				data[x['parent_id']]['is_worker'] = False				
+				data[x['parent_id']]['is_worker'] = False	
+				sensors.extend(data[x['id']]['sensors'])			
 			else:
 				data[x['id']]['parent_id'] = -1
 				data[x['id']]['parent_address'] = None
@@ -116,6 +120,39 @@ def read_yaml(master_address,config_file,is_docker):
 			data[x['src_id']]['bandwidths'][x['dest_id']] = x['bandwidth']
 			data[x['dest_id']]['bandwidths'][x['src_id']] = x['bandwidth']
 
+		## Run a simulation of the cloud
+		if include_cloud == 1:
+			data[-1] = raw_data['cloud']
+			data[-1]['id'] = -1
+			data[-1]['ip'] = machine_info[raw_data['cloud']['machine']]['ip']
+			data[-1]['own_address'] = (data[-1]['ip'], raw_data['cloud']['port'])
+			data[-1]['is_worker'] = None
+
+			default_fields = ['window_interval','window_limit','kafka_server','test_directory','policy','args']
+			if is_docker==1:
+				default_fields.extend(['cpus','memory','host_test_directory','docker_image'])
+
+			for field in default_fields:
+				data[-1][field] = raw_data['default_'+field] if field not in x else x[field]
+
+			data[-1]['policy'] = NOEXCHANGE_POLICY
+			data[-1]['master_address'] = 'http://%s:%d'%master_address
+			data[-1]['application_arguments'] = application_arguments[data[-1]['args']]
+
+			data[-1]['parent_id'] = -1
+			data[-1]['parent_address'] = None
+
+			data[-1]['sensors'] = sensors
+			data[-1]['addresses'] = {}				
+			data[-1]['bandwidths'] = {}
+
+			for x in data:
+				data[x]['cloud_exists'] = True
+				data[x]['addresses'][-1] = 'http://%s:%d'%(data[-1]['ip'], data[-1]['port'])
+				data[x]['bandwidths'][-1] = 10e10
+
+			data[-1]['cloud_exists'] = False
+			
 	return data,machine_info
 	
 def trigger_slaves(expname, data, machine_info, use_docker):

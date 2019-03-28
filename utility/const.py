@@ -25,9 +25,12 @@ TRIGGER_CONTAINER_COMMAND = "docker run -it \
 --detach \
 %s"
 
+NOEXCHANGE_POLICY = {'type': 'NoExchangePolicy', 'args': {}}
+
 ### constants for Logging and Reporting
 CONNECTION 	= 'CONN'
 STATISTIC  	= 'STAT'
+CLSTATISTIC	= 'CLST'
 DONE		= 'DONE'
 PROCESSED	= 'PROC'
 PULLED		= 'PULL'

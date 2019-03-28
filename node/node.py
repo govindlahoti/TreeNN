@@ -74,6 +74,7 @@ class Node(ABC):
 		self.log_file = open('logs/%d.log'%self.id, 'a')
 		self.master_address = data['master_address']
 		self.master = None
+		self.cloud_exists = data['cloud_exists']
 	
 	###------------------------- Abstract Methods ---------------------------------------------
 	@abstractmethod
@@ -95,6 +96,13 @@ class Node(ABC):
 		"""
 		print("Method not implemented")
 
+	@abstractmethod
+	def cleanup(self):
+		"""
+		Shutdown RPC thread and inform others about node shutting down
+		"""
+		print("Method not implemented")		
+
 	###------------------------- Connection functions -----------------------------------------
 	def get_master(self):
 		"""
@@ -106,6 +114,12 @@ class Node(ABC):
 
 		self.master = ServerProxy(self.master_address, allow_none=True)
 		return self.master
+
+	def get_cloud(self):
+		"""
+		Connect with cloud's RPC server for logging accuracy
+		"""
+		return self.get_node(-1)
 
 	def get_parent(self):
 		"""
@@ -216,6 +230,9 @@ class Node(ABC):
 		return self.policy.updates
 
 	###-------------------------- Meta functions -----------------------------------------
+	def ping_cloud(self, msg):
+		self.send_message(-1,msg)
+
 	def send_message(self, receiver_id, msg):
 		"""
 		Use this function to send the data to whichever node you wish to
@@ -237,6 +254,9 @@ class Node(ABC):
 		Calculate accuracies for each sensor prediction
 		Returns a dictionary of accuracies
 		"""
+
+		if self.cloud_exists:
+			self.ping_cloud(str(skipdata))
 
 		accuracies = {}
 		

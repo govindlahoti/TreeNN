@@ -1,5 +1,5 @@
 """
-An implementation of abstract class Node for simulating worker nodes
+An implementation of abstract class Node for simulating the Cloud 
 """
 
 import os
@@ -15,16 +15,19 @@ from utility.const import *
 from kafka import KafkaConsumer
 from kafka.errors import NoBrokersAvailable
 
-class Worker(Node):
+class Cloud(Node):
 
 	def __init__(self, data, kafka_server_address):
 		super().__init__(data)
 
+		self.id = -1
 		self.sensors = [ str(x) for x in data['sensors'] ]
 
 		self.window_interval = data['window_interval']
 		self.window_limit = data['window_limit']
 		self.window_count = 0
+
+		self.active_connections = set()
 
 		try:
 			self.consumer = KafkaConsumer(bootstrap_servers=str(kafka_server_address), api_version=(0,10))
@@ -38,7 +41,7 @@ class Worker(Node):
 	def init_threads(self):
 		"""
 		Abstract Method Implementation
-		Worker spawns two threads - 
+		Cloud spawns two threads - 
 		1. To run the training thread
 		2. To run the RPC server
 		"""
@@ -62,7 +65,7 @@ class Worker(Node):
 		self.server.register_function(self.receive_message, "receive_message")
 		self.server.register_function(self.remote_shutdown, "remote_shutdown")
 		self.server.register_function(self.get_update_count, "get_update_count")
-		# add functions for communication between workers
+		# add functions for communication between Clouds
 		self.server.serve_forever()
 
 	def training_thread(self):
@@ -87,10 +90,6 @@ class Worker(Node):
 			
 			self.skiptestdata += len(data)
 
-			### Pull model from parent after consulting the policy			
-			if self.policy.pull_from_parent(self):
-				self.application.use_parent_model(*self.pull_from_parent())
-
 			### Run training algorithm
 			self.application.train(data)
 
@@ -110,14 +109,8 @@ class Worker(Node):
 				DATAPOINTS 		: len(data)
 			})))
 
-			### Push model to parent after consulting the policy
-			if self.policy.push_to_parent(self):
-				self.push_to_parent(*self.application.get_and_reset_acquired_gradients())
-
 			self.window_count += 1
 		
-		self.cleanup()
-
 	def get_data(self):
 		"""
 		Consumes data points received from Kafka in batches
@@ -134,18 +127,12 @@ class Worker(Node):
 		return sensor_data_string
 
 	def cleanup(self):
-		### Alert parent that training is done
-		self.send_message(self.parent_id,DISCONNECTED)
-
-		if self.cloud_exists:
-			self.ping_cloud(DISCONNECTED)
-
-		### Stop server thread
+		### Stop Server Thread
 		client = ServerProxy(self.own_server_address)
 		client.remote_shutdown()
 
 		### Send Done acknowledgement to Master
-		self.log(self.create_log(DONE,''))
+		self.log(self.create_log(DONE, ''))
 
 	###-------------------------- Additional RPC functions ---------------------------------
 
@@ -154,5 +141,22 @@ class Worker(Node):
 		Abstract Method Implementation
 		Receive message from other nodes
 		"""
+
+		if msg == CONNECTED: 
+			self.active_connections.add(sender_id)
+		elif msg == DISCONNECTED: 
+			self.active_connections.remove(sender_id)
+
+			if len(self.active_connections) == 0:
+				self.cleanup()
+
+		else:
+			## Test accuracy. Message = Skipdata
+			self.accuracies = self.get_accuracies(skipdata=int(msg))
+
+			self.log(self.create_log(CLSTATISTIC,OrderedDict({
+				NODE_ID			: sender_id,
+				ACCURACY		: self.accuracies,
+			})))
 
 		self.log(self.create_log(CONNECTION,'Received message from node id %d: %s'%(sender_id, msg)))   
