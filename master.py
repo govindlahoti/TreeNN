@@ -100,11 +100,6 @@ if __name__ == '__main__':
 	globals()["log_file"] = sys.stdout
 	globals()["server_status"] = 0
 	
-	if args.log == 1:
-		dir_path = create_log_directory(args.config,args.expname)
-		globals()["log_file"] = open(dir_path+'/%s.log'%args.expname,'a')
-
-	
 	e = threading.Event()
 	server_thread = threading.Thread(target=start_server,args=(own_address,e,))
 	server_thread.start()
@@ -122,6 +117,10 @@ if __name__ == '__main__':
 			print(e)
 			remote_shutdown()
 			exit(0)
+
+		if args.log == 1:
+			dir_path = create_log_directory(args.config,args.expname)
+			globals()["log_file"] = open(dir_path+'/%s.log'%args.expname,'a')
 
 		nodes = set(list(data.keys()))
 		trigger_slaves(args.expname, data, machine_info, args.docker)
