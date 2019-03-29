@@ -102,8 +102,7 @@ def read_yaml(master_address,config_file,is_docker, include_cloud):
 			data[x['id']]['application_arguments'] = application_arguments[data[x['id']]['args']]
 			if 'parent_id' in x:
 				data[x['id']]['parent_address'] = 'http://%s:%d'%(data[x['parent_id']]['ip'], data[x['parent_id']]['port'])
-				data[x['parent_id']]['is_worker'] = False	
-				sensors.extend(data[x['id']]['sensors'])			
+				data[x['parent_id']]['is_worker'] = False				
 			else:
 				data[x['id']]['parent_id'] = -1
 				data[x['id']]['parent_address'] = None
@@ -142,7 +141,6 @@ def read_yaml(master_address,config_file,is_docker, include_cloud):
 			data[-1]['parent_id'] = -1
 			data[-1]['parent_address'] = None
 
-			data[-1]['sensors'] = sensors
 			data[-1]['addresses'] = {}				
 			data[-1]['bandwidths'] = {}
 
@@ -150,8 +148,10 @@ def read_yaml(master_address,config_file,is_docker, include_cloud):
 				data[x]['cloud_exists'] = True
 				data[x]['addresses'][-1] = 'http://%s:%d'%(data[-1]['ip'], data[-1]['port'])
 				data[x]['bandwidths'][-1] = 10e10
-
+				if data[x]['is_worker']:
+                                        sensors.extend(data[x]['sensors'])
 			data[-1]['cloud_exists'] = False
+			data[-1]['sensors'] = sensors
 			
 	return data,machine_info
 	

@@ -17,7 +17,7 @@ default_cpus: 1
 default_memory: "400M"
 default_docker_image: "aniketshirke/distributedlearning:simulator"
 default_host_test_directory: "~/Simulator/mnist_data/test"
-default_policy: 4
+default_policy: 0
 default_args: 0
 
 ## Machine info
@@ -74,6 +74,6 @@ nodes:
 
 cloud:
     machine: 0
-    port: 9090
+    port: 9000
     cpus: 2
     memory: "500M"
