@@ -132,7 +132,7 @@ def read_yaml(master_address,config_file,is_docker, include_cloud):
 				default_fields.extend(['cpus','memory','host_test_directory','docker_image'])
 
 			for field in default_fields:
-				data[-1][field] = raw_data['default_'+field] if field not in x else x[field]
+				data[-1][field] = raw_data['default_'+field] if field not in data[-1] else data[-1][field]
 
 			data[-1]['policy'] = NOEXCHANGE_POLICY
 			data[-1]['master_address'] = 'http://%s:%d'%master_address
