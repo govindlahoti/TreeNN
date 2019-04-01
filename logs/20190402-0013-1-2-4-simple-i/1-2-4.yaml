@@ -7,7 +7,7 @@ bandwidths:
 default_bandwidth: 1000000
 
 ## Data streaming info
-default_window_interval: 20
+default_window_interval: 60
 default_window_limit: 100
 default_kafka_server: "10.129.2.26:9092"
 default_test_directory: "/TreeNN/data/"
@@ -33,7 +33,7 @@ application_arguments:
     output_size       : 10
     num_hidden_layers : 3
     hidden_layer_sizes: [20,10,10]
-    alpha             : 0.4
+    alpha             : 0.04
     batch_size        : 20
     epochs            : 10
 
@@ -41,43 +41,53 @@ application_arguments:
 policy:
 -   type: 'SimplePolicy'
     args: 
--   type: 'WaitPolicy'
-    args:
-        wait_interval: 120
 -   type: 'TimePolicy'
     args:
-        push_interval: 120
-        pull_interval: 120
+        push_interval: 10
+        pull_interval: 10
 -   type: 'WindowPolicy'
     args:
         push_count: 1
         pull_count: 400
 -   type: 'AccuracyPolicy'
     args:
-        threshold: 3
+        threshold: 2
 
 nodes:
 -   id: 1 
-    port: 8010
+    port: 8040
     machine: 0 
 -   id: 2
-    port: 8016
+    port: 8041
     machine: 0
     parent_id: 1
-    sensors: [10]
 -   id: 3
-    port: 8017
+    port: 8042
     machine: 0
     parent_id: 1
-    sensors: [11]
 -   id: 4
-    port: 8018
+    port: 8043
     machine: 0
-    parent_id: 1
-    sensors: [12]
+    parent_id: 2
+    sensors: [40]
+-   id: 5
+    port: 8044
+    machine: 0
+    parent_id: 2
+    sensors: [41]
+-   id: 6
+    port: 8045
+    machine: 0
+    parent_id: 3
+    sensors: [42]
+-   id: 7
+    port: 8046
+    machine: 0
+    parent_id: 3
+    sensors: [43]
 
 cloud:
     machine: 0
-    port: 9010
+    port: 9040
     cpus: 2
     memory: "500M" 
