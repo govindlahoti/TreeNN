@@ -7,6 +7,8 @@ Contains utility functions for master.py
 
 import yaml
 import json
+import threading
+
 from time import sleep
 from paramiko import client
 from collections import OrderedDict
@@ -18,28 +20,38 @@ class ssh:
 	Class for ssh into the slave machine and trigger nodes
 	"""
 
-	def __init__(self, address, username, password):
+	def __init__(self, address, username, password, is_thread):
 
 		print("Connecting to %s@%s ..."%(username,address))
 		try:
 			self.client = client.SSHClient()
 			self.client.set_missing_host_key_policy(client.AutoAddPolicy())
 			self.client.connect(address, username=username, password=password, look_for_keys=False)
+			self.is_thread = is_thread
 			print("Connected to %s@%s"%(username,address))
 		except Exception as e:
 			self.client = None
 			print("Authentication failed: %s"%e)
  	
-	def trigger_node(self, node_id, node_data, kafka_server):
+	def trigger_server_node(self, node_id, node_data, kafka_server):
+		command = None
 
-		command = TRIGGER_NODE_COMMAND%(node_id, node_data, kafka_server)
-		self.run_command(command)
+		if self.is_thread:
+			command = TRIGGER_THREAD_NODE_COMMAND%(node_id, node_data, kafka_server)
+		else:
+			command = TRIGGER_NODE_COMMAND%(node_id, node_data, kafka_server)
+		self.run_command(command, node_id)
 
 	def trigger_container(self, expname, node_id, node_data, port, kafka_server, cpus, memory, test_directory, host_test_directory, docker_image):
-		command = TRIGGER_CONTAINER_COMMAND%(memory, cpus, node_id, node_data, kafka_server, port, port, host_test_directory, test_directory, expname, node_id, docker_image)
-		self.run_command(command)
+		command = None
+
+		if self.is_thread:
+			command = TRIGGER_THREAD_CONTAINER_COMMAND%(memory, cpus, node_id, node_data, kafka_server, port, port, host_test_directory, test_directory, expname, node_id, docker_image)	
+		else:
+			command = TRIGGER_CONTAINER_COMMAND%(memory, cpus, node_id, node_data, kafka_server, port, port, host_test_directory, test_directory, expname, node_id, docker_image)
+		self.run_command(command, node_id)
 		
-	def run_command(self, command):
+	def run_command(self, command, node_id=None):
 
 		if(self.client):	
 			print("Running command: %s"%command)
@@ -49,7 +61,7 @@ class ssh:
 					alldata = stdout.channel.recv(1024)
 					prevdata = b"1"
 					while prevdata:
-						print(prevdata)
+						print(node_id, prevdata.decode("utf-8"))
 						prevdata = stdout.channel.recv(1024)
 						alldata += prevdata
 		else:
@@ -154,7 +166,26 @@ def read_yaml(master_address,config_file,is_docker, include_cloud):
 			data[-1]['sensors'] = sensors
 			
 	return data,machine_info
-	
+
+def _trigger_docker(expname, data, machine, node_id, is_thread=False):
+	connection = ssh(machine['ip'],machine['username'],machine['password'], is_thread)
+	connection.trigger_container(expname,
+								 node_id, 
+								 json.dumps(data).replace('\"','\''), 
+								 data['port'],
+								 data['kafka_server'],
+								 data['cpus'],
+								 data['memory'],
+								 data['test_directory'],
+								 data['host_test_directory'],
+								 data['docker_image'])
+	return connection
+
+def _trigger_server(data, machine, node_id, is_thread=False):
+	connection = ssh(machine['ip'],machine['username'],machine['password'], is_thread)
+	connection.trigger_server_node(node_id, json.dumps(data).replace('\"','\''), data['kafka_server'])
+	return connection
+
 def trigger_slaves(expname, data, machine_info, use_docker):
 	"""
 	Log into machine and trigger node
@@ -166,22 +197,31 @@ def trigger_slaves(expname, data, machine_info, use_docker):
 		machine = machine_info[data[node_id]['machine']]
 		if use_docker == 1:
 			print(CONTAINERSTR%node_id)
-			connection = ssh(machine['ip'],machine['username'],machine['password'])
-			connection.trigger_container(expname,
-										 node_id, 
-										 json.dumps(data[node_id]).replace('\"','\''), 
-										 data[node_id]['port'],
-										 data[node_id]['kafka_server'],
-										 data[node_id]['cpus'],
-										 data[node_id]['memory'],
-										 data[node_id]['test_directory'],
-										 data[node_id]['host_test_directory'],
-										 data[node_id]['docker_image'])
+			connection = _trigger_docker(expname, data[node_id], machine, node_id)
+			
 		else:
 			print(NODESTR%node_id)
-			connection = ssh(machine['ip'],machine['username'],machine['password'])
-			connection.trigger_node(node_id, json.dumps(data[node_id]).replace('\"','\''), data[node_id]['kafka_server'])
+			connection = _trigger_server(data[node_id], machine, node_id)
 		connection.disconnect()
+		sleep(1)
+
+def trigger_threaded_slaves(expname, data, machine_info, use_docker):
+	"""
+	Log into machine and trigger node (handled by a separate thread)
+	"""
+
+	# Can do a group by to login into the machine once and trigger all the scripts
+	for node_id in data:
+		# Create a connection. Format: IP address, username, password
+		machine = machine_info[data[node_id]['machine']]
+		if use_docker == 1:
+			print(CONTAINERSTR%node_id)
+			t = threading.Thread(target=_trigger_docker,args=(expname, data[node_id], machine, node_id,True))
+			t.start()			
+		else:
+			print(NODESTR%node_id)
+			t = threading.Thread(target=_trigger_server,args=(data[node_id], machine, node_id, True))
+			t.start()
 		sleep(1)
 
 def get_ip():

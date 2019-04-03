@@ -81,9 +81,9 @@ if __name__ == '__main__':
 	parser.add_argument("-n","--expname", type=str, help="Experiment name", required=True)
 	parser.add_argument("-f","--config", type=str, help="Path to network config yaml file", required=True )
 	parser.add_argument("-d","--docker", type=int, help="Boolean indicating to run in container mode",
-								default=1, choices=[1, 0])
+								default=1, choices=[1,0])
 	parser.add_argument("-t","--trigger", type=int, help="Boolean indicating to trigger scripts (for debugging purposes)", 
-								default=1, choices=[1, 0])
+								default=1, choices=[1,0])
 	parser.add_argument("-l","--log", type=int, help="Boolean indicating to generate log", 
 								default=1, choices=[1,0])
 	parser.add_argument("-c","--cloud", type=int, help="Boolean to run simultaneous simulation of Cloud",
@@ -92,6 +92,8 @@ if __name__ == '__main__':
 								default=get_ip())
 	parser.add_argument("-p","--port", type=int, help="Port on which the Master RPC server should run",
 								default=MASTER_RPC_SERVER_PORT)
+	parser.add_argument("-s","--thread", type=int, help="Maintain a thread for each slave while triggering (for debugging purposes)",
+								default=0, choices=[1,0])
 
 	args = parser.parse_args()
 
@@ -123,4 +125,7 @@ if __name__ == '__main__':
 			globals()["log_file"] = open(dir_path+'/%s.log'%args.expname,'a')
 
 		nodes = set(list(data.keys()))
-		trigger_slaves(args.expname, data, machine_info, args.docker)
+		if args.thread == 1:
+			trigger_threaded_slaves(args.expname, data, machine_info, args.docker)
+		else:
+			trigger_slaves(args.expname, data, machine_info, args.docker)

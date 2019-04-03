@@ -25,6 +25,20 @@ TRIGGER_CONTAINER_COMMAND = "docker run -it \
 --detach \
 %s"
 
+TRIGGER_THREAD_NODE_COMMAND = "cd Simulator/TreeNN && python3 slave.py -ni %d -nd \"%s\" -k %s"
+
+TRIGGER_THREAD_CONTAINER_COMMAND = "docker run -it \
+-m %s --cpus=%f \
+-e NODE_ID='%d' \
+-e NODE_DATA=\"%s\" \
+-e KAFKA_SERVER='%s' \
+-p %d:%d \
+--net=host \
+--volume %s:%s \
+--name %s_c%d \
+--rm \
+%s"
+
 NOEXCHANGE_POLICY = {'type': 'NoExchangePolicy', 'args': {}}
 
 ### constants for Logging and Reporting
