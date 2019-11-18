@@ -1,0 +1,701 @@
+Initiating node 7
+I have started
+Called Get data
+Received 199
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.08225263351993972  Training Accuracy= 27.157894736842103
+Epoch  1  Training Loss= 0.07408472063850312  Training Accuracy= 30.236842105263158
+Epoch  2  Training Loss= 0.09463013824606717  Training Accuracy= 34.578947368421055
+Epoch  3  Training Loss= 0.0836050849421224  Training Accuracy= 33.60526315789473
+Epoch  4  Training Loss= 0.059279244818581246  Training Accuracy= 48.8421052631579
+Epoch  5  Training Loss= 0.072046813208768  Training Accuracy= 48.26315789473684
+Epoch  6  Training Loss= 0.08369027257788818  Training Accuracy= 54.73684210526316
+Epoch  7  Training Loss= 0.05504772481481736  Training Accuracy= 57.815789473684205
+Epoch  8  Training Loss= 0.07507286426028606  Training Accuracy= 59.26315789473684
+Epoch  9  Training Loss= 0.043305869818883874  Training Accuracy= 61.39473684210526
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 322
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.07405152473130758  Training Accuracy= 44.411764705882355
+Epoch  1  Training Loss= 0.019505500733655447  Training Accuracy= 54.705882352941174
+Epoch  2  Training Loss= 0.06115600589945238  Training Accuracy= 59.705882352941174
+Epoch  3  Training Loss= 0.1050304883950437  Training Accuracy= 55.588235294117645
+Epoch  4  Training Loss= 0.1241118077403461  Training Accuracy= 57.94117647058823
+Epoch  5  Training Loss= 0.011882552539562382  Training Accuracy= 64.70588235294117
+Epoch  6  Training Loss= 0.006747433565811397  Training Accuracy= 64.70588235294117
+Epoch  7  Training Loss= 0.01207902206141382  Training Accuracy= 65.0
+Epoch  8  Training Loss= 0.10946883406386498  Training Accuracy= 59.705882352941174
+Epoch  9  Training Loss= 0.013809068715676795  Training Accuracy= 65.29411764705883
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 338
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.08481387160587779  Training Accuracy= 29.54248366013072
+Epoch  1  Training Loss= 0.07909103142645799  Training Accuracy= 41.372549019607845
+Epoch  2  Training Loss= 0.06163023468717933  Training Accuracy= 57.64705882352941
+Epoch  3  Training Loss= 0.07120349469396578  Training Accuracy= 59.411764705882355
+Epoch  4  Training Loss= 0.05134499929571448  Training Accuracy= 60.09803921568627
+Epoch  5  Training Loss= 0.06389366133470552  Training Accuracy= 64.15032679738563
+Epoch  6  Training Loss= 0.04517167810654772  Training Accuracy= 67.74509803921569
+Epoch  7  Training Loss= 0.06480538615465649  Training Accuracy= 69.41176470588235
+Epoch  8  Training Loss= 0.02513145603769769  Training Accuracy= 68.75816993464052
+Epoch  9  Training Loss= 0.06496572381710482  Training Accuracy= 70.0326797385621
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 350
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.07668648195615463  Training Accuracy= 46.111111111111114
+Epoch  1  Training Loss= 0.08276131987523691  Training Accuracy= 55.27777777777778
+Epoch  2  Training Loss= 0.06542787589426868  Training Accuracy= 60.0
+Epoch  3  Training Loss= 0.038159060671622946  Training Accuracy= 62.5
+Epoch  4  Training Loss= 0.03944587377184127  Training Accuracy= 63.333333333333336
+Epoch  5  Training Loss= 0.05387184225798803  Training Accuracy= 64.44444444444444
+Epoch  6  Training Loss= 0.024335146061179844  Training Accuracy= 65.27777777777777
+Epoch  7  Training Loss= 0.02961044227227932  Training Accuracy= 66.11111111111111
+Epoch  8  Training Loss= 0.027442752580763768  Training Accuracy= 67.22222222222223
+Epoch  9  Training Loss= 0.04531013081455154  Training Accuracy= 71.66666666666667
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 385
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.06852224071025188  Training Accuracy= 58.25
+Epoch  1  Training Loss= 0.052316633111110164  Training Accuracy= 63.5
+Epoch  2  Training Loss= 0.05050062852285141  Training Accuracy= 65.5
+Epoch  3  Training Loss= 0.043205319738347535  Training Accuracy= 73.0
+Epoch  4  Training Loss= 0.027787963420786318  Training Accuracy= 70.0
+Epoch  5  Training Loss= 0.03548730305847814  Training Accuracy= 69.0
+Epoch  6  Training Loss= 0.01763648301452239  Training Accuracy= 73.25
+Epoch  7  Training Loss= 0.03315218745947461  Training Accuracy= 75.75
+Epoch  8  Training Loss= 0.0035828885282724334  Training Accuracy= 77.75
+Epoch  9  Training Loss= 0.012566017212743068  Training Accuracy= 79.0
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 378
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.027727426428062963  Training Accuracy= 64.91228070175438
+Epoch  1  Training Loss= 0.03359316416154145  Training Accuracy= 68.88888888888889
+Epoch  2  Training Loss= 0.057237733368443386  Training Accuracy= 72.69005847953217
+Epoch  3  Training Loss= 0.017013659476214315  Training Accuracy= 76.78362573099416
+Epoch  4  Training Loss= 0.016845588640570435  Training Accuracy= 80.2046783625731
+Epoch  5  Training Loss= 0.015616133717904416  Training Accuracy= 81.25730994152048
+Epoch  6  Training Loss= 0.0347288057615524  Training Accuracy= 84.03508771929825
+Epoch  7  Training Loss= 0.03451863415431737  Training Accuracy= 84.5906432748538
+Epoch  8  Training Loss= 0.02189319751482327  Training Accuracy= 85.17543859649122
+Epoch  9  Training Loss= 0.023112289418254054  Training Accuracy= 84.94152046783626
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 376
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.0435403135223299  Training Accuracy= 66.44736842105263
+Epoch  1  Training Loss= 0.03349767900814517  Training Accuracy= 73.75
+Epoch  2  Training Loss= 0.023766167887901667  Training Accuracy= 78.02631578947368
+Epoch  3  Training Loss= 0.031125534546268187  Training Accuracy= 78.42105263157895
+Epoch  4  Training Loss= 0.036174141548192026  Training Accuracy= 81.84210526315789
+Epoch  5  Training Loss= 0.02503551903997662  Training Accuracy= 79.86842105263158
+Epoch  6  Training Loss= 0.03968604099960717  Training Accuracy= 82.17105263157895
+Epoch  7  Training Loss= 0.025999812224220136  Training Accuracy= 83.75
+Epoch  8  Training Loss= 0.02497456026042668  Training Accuracy= 84.86842105263158
+Epoch  9  Training Loss= 0.02133166406141899  Training Accuracy= 85.46052631578948
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 361
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.0025599030990494463  Training Accuracy= 72.89473684210526
+Epoch  1  Training Loss= 0.07435990898686035  Training Accuracy= 76.57894736842105
+Epoch  2  Training Loss= 0.003465580153947212  Training Accuracy= 83.15789473684211
+Epoch  3  Training Loss= 0.10871229277312514  Training Accuracy= 80.0
+Epoch  4  Training Loss= 0.012606692720142951  Training Accuracy= 83.6842105263158
+Epoch  5  Training Loss= 0.04161055797144905  Training Accuracy= 86.57894736842105
+Epoch  6  Training Loss= 0.0012170499587260183  Training Accuracy= 86.57894736842105
+Epoch  7  Training Loss= 0.002171676240989338  Training Accuracy= 88.15789473684211
+Epoch  8  Training Loss= 0.0009182785123389946  Training Accuracy= 88.6842105263158
+Epoch  9  Training Loss= 0.0007615859785737472  Training Accuracy= 90.52631578947368
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 350
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.03163087321526749  Training Accuracy= 76.66666666666667
+Epoch  1  Training Loss= 0.03219159902009901  Training Accuracy= 77.5
+Epoch  2  Training Loss= 0.05226637150647696  Training Accuracy= 84.16666666666667
+Epoch  3  Training Loss= 0.011787783768903246  Training Accuracy= 86.94444444444444
+Epoch  4  Training Loss= 0.006399069364928032  Training Accuracy= 87.5
+Epoch  5  Training Loss= 0.05229441014672079  Training Accuracy= 85.55555555555556
+Epoch  6  Training Loss= 0.022558823681979  Training Accuracy= 88.33333333333333
+Epoch  7  Training Loss= 0.015993999498187684  Training Accuracy= 90.27777777777777
+Epoch  8  Training Loss= 0.0031792554222199064  Training Accuracy= 90.0
+Epoch  9  Training Loss= 0.014695262197783342  Training Accuracy= 92.22222222222223
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 339
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.019351113829337692  Training Accuracy= 80.24767801857584
+Epoch  1  Training Loss= 0.03482648771264271  Training Accuracy= 83.1733746130031
+Epoch  2  Training Loss= 0.033965773747138696  Training Accuracy= 84.93808049535605
+Epoch  3  Training Loss= 0.032664458845707386  Training Accuracy= 86.40866873065016
+Epoch  4  Training Loss= 0.03738028942951396  Training Accuracy= 88.1733746130031
+Epoch  5  Training Loss= 0.029009773209554973  Training Accuracy= 88.76160990712074
+Epoch  6  Training Loss= 0.010275323839131795  Training Accuracy= 88.82352941176471
+Epoch  7  Training Loss= 0.008537482201436151  Training Accuracy= 90.29411764705883
+Epoch  8  Training Loss= 0.016104430114566397  Training Accuracy= 88.79256965944272
+Epoch  9  Training Loss= 0.02703558650974734  Training Accuracy= 90.83591331269349
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 364
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.019831005333877272  Training Accuracy= 81.05263157894737
+Epoch  1  Training Loss= 0.032062346255916266  Training Accuracy= 82.10526315789474
+Epoch  2  Training Loss= 0.024611395879649035  Training Accuracy= 86.05263157894737
+Epoch  3  Training Loss= 0.014838437223336082  Training Accuracy= 90.0
+[Errno 110] Connection timed out
+Epoch  4  Training Loss= 0.0006319650752834176  Training Accuracy= 90.52631578947368
+Epoch  5  Training Loss= 0.012353987345167374  Training Accuracy= 93.15789473684211
+Epoch  6  Training Loss= 0.03405940672955389  Training Accuracy= 91.84210526315789
+Epoch  7  Training Loss= 0.026734170963854758  Training Accuracy= 92.89473684210526
+Epoch  8  Training Loss= 0.0115780140950773  Training Accuracy= 94.47368421052632
+Epoch  9  Training Loss= 0.007954499116254489  Training Accuracy= 95.0
+Exception in thread Thread-10:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Idle
+Received 378
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.009044820068521212  Training Accuracy= 82.63157894736842
+Epoch  1  Training Loss= 0.03099384821078763  Training Accuracy= 83.85964912280701
+Epoch  2  Training Loss= 0.00989086274699858  Training Accuracy= 85.26315789473684
+Epoch  3  Training Loss= 0.014907720917689929  Training Accuracy= 88.3625730994152
+Epoch  4  Training Loss= 0.020385139679943817  Training Accuracy= 89.64912280701753
+Epoch  5  Training Loss= 0.027225317618886274  Training Accuracy= 90.96491228070175
+Epoch  6  Training Loss= 0.009082582592792217  Training Accuracy= 91.3157894736842
+Epoch  7  Training Loss= 0.02121073920827391  Training Accuracy= 91.22807017543859
+Epoch  8  Training Loss= 0.018376255182038257  Training Accuracy= 91.25730994152048
+Epoch  9  Training Loss= 0.01377129381070534  Training Accuracy= 92.60233918128654
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 348
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.03964630513999219  Training Accuracy= 75.27777777777777
+Epoch  1  Training Loss= 0.044126199057587544  Training Accuracy= 81.25
+Epoch  2  Training Loss= 0.03491930943384141  Training Accuracy= 83.33333333333333
+Epoch  3  Training Loss= 0.0012401781187344363  Training Accuracy= 86.94444444444444
+Epoch  4  Training Loss= 0.04121018686390633  Training Accuracy= 86.11111111111111
+Epoch  5  Training Loss= 0.007024648970933851  Training Accuracy= 90.0
+Epoch  6  Training Loss= 0.0015085841294500885  Training Accuracy= 90.55555555555556
+Epoch  7  Training Loss= 0.020956786089538895  Training Accuracy= 91.25
+Epoch  8  Training Loss= 0.00606824329009874  Training Accuracy= 92.22222222222223
+Epoch  9  Training Loss= 0.00942750135538364  Training Accuracy= 93.88888888888889
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 352
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.06193972484536758  Training Accuracy= 78.88888888888889
+Epoch  1  Training Loss= 0.0045648373644437  Training Accuracy= 86.94444444444444
+Epoch  2  Training Loss= 0.021335834742324155  Training Accuracy= 87.96296296296296
+Epoch  3  Training Loss= 0.00649292355629765  Training Accuracy= 90.27777777777777
+Epoch  4  Training Loss= 0.022763859711667483  Training Accuracy= 91.48148148148148
+Epoch  5  Training Loss= 0.016757089210261165  Training Accuracy= 92.31481481481482
+Epoch  6  Training Loss= 0.012734051130190086  Training Accuracy= 92.31481481481482
+Epoch  7  Training Loss= 0.020790231202506195  Training Accuracy= 92.5925925925926
+Epoch  8  Training Loss= 0.03498763801532468  Training Accuracy= 92.5
+Epoch  9  Training Loss= 0.01580542067072749  Training Accuracy= 92.5925925925926
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 376
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.02379541574384916  Training Accuracy= 79.27631578947368
+Epoch  1  Training Loss= 0.03335338660125701  Training Accuracy= 84.47368421052632
+Epoch  2  Training Loss= 0.03999945871754165  Training Accuracy= 86.57894736842105
+Epoch  3  Training Loss= 0.019336395634839812  Training Accuracy= 88.61842105263158
+Epoch  4  Training Loss= 0.008815765018501037  Training Accuracy= 90.52631578947368
+Epoch  5  Training Loss= 0.009139970760323923  Training Accuracy= 90.72368421052632
+Epoch  6  Training Loss= 0.014029882027073943  Training Accuracy= 90.46052631578948
+Epoch  7  Training Loss= 0.007260713411127778  Training Accuracy= 90.72368421052632
+Epoch  8  Training Loss= 0.025352849068543848  Training Accuracy= 91.38157894736842
+Epoch  9  Training Loss= 0.009774355908657278  Training Accuracy= 92.36842105263158
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 372
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.016105897923682375  Training Accuracy= 78.42105263157895
+Epoch  1  Training Loss= 0.02302764520644178  Training Accuracy= 82.80701754385964
+[Errno 110] Connection timed out
+Epoch  2  Training Loss= 0.023539952635373694  Training Accuracy= 83.85964912280701
+Epoch  3  Training Loss= 0.015237645472260475  Training Accuracy= 86.66666666666667
+Epoch  4  Training Loss= 0.020699770193799056  Training Accuracy= 87.28070175438596
+Epoch  5  Training Loss= 0.03339339943305383  Training Accuracy= 88.42105263157895
+Epoch  6  Training Loss= 0.006057191048584846  Training Accuracy= 90.0
+Epoch  7  Training Loss= 0.014176749137024632  Training Accuracy= 90.08771929824562
+Epoch  8  Training Loss= 0.0006447802919040498  Training Accuracy= 91.57894736842105
+Epoch  9  Training Loss= 0.006991119171507512  Training Accuracy= 92.63157894736842
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 362
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.09189010557262574  Training Accuracy= 74.47368421052632
+Epoch  1  Training Loss= 0.0006313881760226812  Training Accuracy= 83.42105263157895
+Epoch  2  Training Loss= 0.007784785392241198  Training Accuracy= 89.21052631578948
+Epoch  3  Training Loss= 0.009477149494240451  Training Accuracy= 88.6842105263158
+Epoch  4  Training Loss= 0.0009945538272125572  Training Accuracy= 90.78947368421052
+Epoch  5  Training Loss= 0.002796176476459932  Training Accuracy= 91.57894736842105
+Epoch  6  Training Loss= 0.0023281931074827737  Training Accuracy= 92.63157894736842
+Epoch  7  Training Loss= 0.00521043148157057  Training Accuracy= 93.94736842105263
+Epoch  8  Training Loss= 0.00028244995650900004  Training Accuracy= 93.94736842105263
+Epoch  9  Training Loss= 0.00293695076428634  Training Accuracy= 93.94736842105263
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 344
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.00900379668829398  Training Accuracy= 85.55555555555556
+Epoch  1  Training Loss= 0.035193244600706185  Training Accuracy= 88.05555555555556
+Epoch  2  Training Loss= 0.00799962893349772  Training Accuracy= 90.0
+Epoch  3  Training Loss= 0.003338270642170539  Training Accuracy= 91.94444444444444
+Epoch  4  Training Loss= 0.0019253028734836219  Training Accuracy= 92.22222222222223
+Epoch  5  Training Loss= 0.02425686089076213  Training Accuracy= 91.11111111111111
+Epoch  6  Training Loss= 0.0016047631013367044  Training Accuracy= 92.5
+Epoch  7  Training Loss= 0.018994368267237275  Training Accuracy= 91.94444444444444
+Epoch  8  Training Loss= 0.009514572719649766  Training Accuracy= 94.44444444444444
+Epoch  9  Training Loss= 0.001936010579819495  Training Accuracy= 94.44444444444444
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 338
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.015744668306888917  Training Accuracy= 83.49673202614379
+Epoch  1  Training Loss= 0.019193249634414964  Training Accuracy= 87.58169934640523
+Epoch  2  Training Loss= 0.008317125421036296  Training Accuracy= 87.6470588235294
+Epoch  3  Training Loss= 0.020753650027648476  Training Accuracy= 89.6078431372549
+Epoch  4  Training Loss= 0.01518288837027443  Training Accuracy= 91.40522875816994
+Epoch  5  Training Loss= 0.012368155132065089  Training Accuracy= 91.40522875816994
+Epoch  6  Training Loss= 0.01541131052359053  Training Accuracy= 92.58169934640523
+Epoch  7  Training Loss= 0.005063938943933339  Training Accuracy= 92.3529411764706
+Epoch  8  Training Loss= 0.011184253517879121  Training Accuracy= 94.08496732026143
+Epoch  9  Training Loss= 0.002166704197194276  Training Accuracy= 94.11764705882354
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 326
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.022701951839214245  Training Accuracy= 79.90196078431372
+Epoch  1  Training Loss= 0.05254370415564485  Training Accuracy= 83.03921568627452
+Epoch  2  Training Loss= 0.021522732287413505  Training Accuracy= 89.01960784313725
+Epoch  3  Training Loss= 0.014478434881183484  Training Accuracy= 92.05882352941177
+Epoch  4  Training Loss= 0.014358632325341979  Training Accuracy= 90.58823529411765
+Epoch  5  Training Loss= 0.003411793886744813  Training Accuracy= 92.3529411764706
+Epoch  6  Training Loss= 0.032461195367056  Training Accuracy= 92.84313725490196
+Epoch  7  Training Loss= 0.0259010085124249  Training Accuracy= 93.13725490196077
+Epoch  8  Training Loss= 0.008307151475505762  Training Accuracy= 93.23529411764706
+Epoch  9  Training Loss= 0.003503955502759277  Training Accuracy= 93.82352941176471
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 338
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.04972278901474238  Training Accuracy= 77.41830065359477
+Epoch  1  Training Loss= 0.024679581113671103  Training Accuracy= 82.87581699346406
+Epoch  2  Training Loss= 0.03844396756605317  Training Accuracy= 87.22222222222223
+Epoch  3  Training Loss= 0.007501703265144032  Training Accuracy= 88.79084967320262
+Epoch  4  Training Loss= 0.004671226419652233  Training Accuracy= 90.0
+Epoch  5  Training Loss= 0.016961407855211115  Training Accuracy= 91.40522875816994
+Epoch  6  Training Loss= 0.02515818859921383  Training Accuracy= 91.96078431372548
+Epoch  7  Training Loss= 0.02008095124259833  Training Accuracy= 92.2875816993464
+Epoch  8  Training Loss= 0.012800671384075013  Training Accuracy= 92.61437908496731
+Epoch  9  Training Loss= 0.02720966698739464  Training Accuracy= 93.10457516339869
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 394
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.010672768885705272  Training Accuracy= 84.39285714285714
+Epoch  1  Training Loss= 0.008049511396012973  Training Accuracy= 90.14285714285714
+Epoch  2  Training Loss= 0.01133597026480277  Training Accuracy= 92.39285714285714
+Epoch  3  Training Loss= 0.009661503728972334  Training Accuracy= 93.39285714285714
+Epoch  4  Training Loss= 0.0031972637238999063  Training Accuracy= 94.5
+Epoch  5  Training Loss= 0.0012115239467705003  Training Accuracy= 95.75
+Epoch  6  Training Loss= 0.0032303162071956977  Training Accuracy= 95.25
+Epoch  7  Training Loss= 0.0015341914984420423  Training Accuracy= 95.75
+Epoch  8  Training Loss= 0.0022134360277741177  Training Accuracy= 95.75
+Epoch  9  Training Loss= 0.027967701141330358  Training Accuracy= 96.03571428571429
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 388
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.0040659409551727695  Training Accuracy= 80.75
+Epoch  1  Training Loss= 0.025525139096807214  Training Accuracy= 82.875
+Epoch  2  Training Loss= 0.033732010483324235  Training Accuracy= 85.75
+Epoch  3  Training Loss= 0.007131918541339527  Training Accuracy= 89.75
+Epoch  4  Training Loss= 0.0031975173453045484  Training Accuracy= 90.25
+Epoch  5  Training Loss= 0.004026120604423584  Training Accuracy= 91.0
+Epoch  6  Training Loss= 0.022200937636558095  Training Accuracy= 91.125
+Epoch  7  Training Loss= 0.024654928529730013  Training Accuracy= 91.875
+Epoch  8  Training Loss= 0.025281490096918657  Training Accuracy= 90.75
+Epoch  9  Training Loss= 0.03119921985523132  Training Accuracy= 92.0
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 344
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.0009425946396159309  Training Accuracy= 85.83333333333333
+Epoch  1  Training Loss= 0.030533337533772464  Training Accuracy= 89.44444444444444
+Epoch  2  Training Loss= 0.005671186133559411  Training Accuracy= 91.11111111111111
+[Errno 110] Connection timed out
+Epoch  3  Training Loss= 0.0016407438121743335  Training Accuracy= 90.27777777777777
+Epoch  4  Training Loss= 0.02858423426713379  Training Accuracy= 90.83333333333333
+Epoch  5  Training Loss= 0.037682951958722496  Training Accuracy= 91.94444444444444
+Epoch  6  Training Loss= 0.0007294065965424169  Training Accuracy= 93.33333333333333
+Epoch  7  Training Loss= 0.00307235561809389  Training Accuracy= 93.88888888888889
+Epoch  8  Training Loss= 0.002438356673670475  Training Accuracy= 93.88888888888889
+Epoch  9  Training Loss= 0.023415452808000725  Training Accuracy= 93.61111111111111
+Pushing model to parent
+Delay: 1.032320
+Exception in thread Thread-23:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+TOKEN PUSH
+Called Get data
+Idle
+Received 370
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.037711133464237497  Training Accuracy= 80.0
+Epoch  1  Training Loss= 0.0292277978803185  Training Accuracy= 90.78947368421052
+Epoch  2  Training Loss= 0.008430149393438242  Training Accuracy= 92.10526315789474
+Epoch  3  Training Loss= 0.0021398646412339444  Training Accuracy= 92.89473684210526
+Epoch  4  Training Loss= 0.0013133098718673757  Training Accuracy= 94.47368421052632
+Epoch  5  Training Loss= 0.0025051367093207625  Training Accuracy= 95.26315789473684
+Epoch  6  Training Loss= 0.0009896097942329216  Training Accuracy= 94.73684210526316
+Epoch  7  Training Loss= 0.001161092635995458  Training Accuracy= 94.21052631578948
+Epoch  8  Training Loss= 0.0016815966256663658  Training Accuracy= 95.0
+Epoch  9  Training Loss= 0.02194175496287511  Training Accuracy= 95.0
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 354
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.012595132065421009  Training Accuracy= 83.65079365079366
+Epoch  1  Training Loss= 0.005576862864777283  Training Accuracy= 88.88888888888889
+Epoch  2  Training Loss= 0.02046828256210255  Training Accuracy= 90.03968253968254
+Epoch  3  Training Loss= 0.012402871029156812  Training Accuracy= 90.71428571428572
+Epoch  4  Training Loss= 0.009204805029508191  Training Accuracy= 93.21428571428572
+Epoch  5  Training Loss= 0.01898958676598781  Training Accuracy= 92.53968253968254
+Epoch  6  Training Loss= 0.012125311454290189  Training Accuracy= 92.65873015873017
+Epoch  7  Training Loss= 0.005321496777828258  Training Accuracy= 93.33333333333333
+Epoch  8  Training Loss= 0.031092710340458105  Training Accuracy= 94.64285714285715
+Epoch  9  Training Loss= 0.006002086415289655  Training Accuracy= 95.27777777777777
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 362
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.019012951525383587  Training Accuracy= 85.78947368421052
+Epoch  1  Training Loss= 0.012597120352554916  Training Accuracy= 88.6842105263158
+Epoch  2  Training Loss= 0.0011200746652603485  Training Accuracy= 90.78947368421052
+Epoch  3  Training Loss= 0.00017674245496116604  Training Accuracy= 92.63157894736842
+Epoch  4  Training Loss= 0.0011902832273440675  Training Accuracy= 91.57894736842105
+Epoch  5  Training Loss= 0.0013695907701002598  Training Accuracy= 92.89473684210526
+Epoch  6  Training Loss= 0.0002260205491115973  Training Accuracy= 93.6842105263158
+Epoch  7  Training Loss= 0.08056177364953668  Training Accuracy= 91.3157894736842
+Epoch  8  Training Loss= 0.0003044241053777717  Training Accuracy= 93.6842105263158
+Epoch  9  Training Loss= 0.0006853075594837722  Training Accuracy= 93.94736842105263
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 332
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.009808783465471795  Training Accuracy= 83.62745098039215
+Epoch  1  Training Loss= 0.031480680923627366  Training Accuracy= 89.90196078431372
+Epoch  2  Training Loss= 0.01807046645862923  Training Accuracy= 92.15686274509804
+Epoch  3  Training Loss= 0.01563057849015225  Training Accuracy= 91.96078431372548
+Epoch  4  Training Loss= 0.0036417185340242722  Training Accuracy= 93.52941176470588
+Epoch  5  Training Loss= 0.0022320540807546168  Training Accuracy= 94.11764705882354
+Epoch  6  Training Loss= 0.01576959872636913  Training Accuracy= 94.2156862745098
+Epoch  7  Training Loss= 0.005890928841764452  Training Accuracy= 94.41176470588235
+Epoch  8  Training Loss= 0.019429365646936536  Training Accuracy= 94.2156862745098
+Epoch  9  Training Loss= 0.016054113224588985  Training Accuracy= 94.31372549019608
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 356
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.036681759001678485  Training Accuracy= 80.76388888888889
+Epoch  1  Training Loss= 0.01634669835375938  Training Accuracy= 87.08333333333333
+Epoch  2  Training Loss= 0.008684240538003816  Training Accuracy= 89.09722222222223
+Epoch  3  Training Loss= 0.010116074789540692  Training Accuracy= 89.93055555555556
+Epoch  4  Training Loss= 0.007667459089916541  Training Accuracy= 92.5
+Epoch  5  Training Loss= 0.01068192384916076  Training Accuracy= 92.70833333333333
+Epoch  6  Training Loss= 0.0015538607765038914  Training Accuracy= 93.33333333333333
+Epoch  7  Training Loss= 0.0015195065721796495  Training Accuracy= 94.16666666666667
+Epoch  8  Training Loss= 0.010155569635076014  Training Accuracy= 94.65277777777777
+Epoch  9  Training Loss= 0.004382634315215903  Training Accuracy= 94.72222222222223
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 340
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.01583453516653639  Training Accuracy= 82.94117647058823
+Epoch  1  Training Loss= 0.013004169100228042  Training Accuracy= 90.0
+Epoch  2  Training Loss= 0.012030310707115108  Training Accuracy= 90.58823529411765
+Epoch  3  Training Loss= 0.047733908282420606  Training Accuracy= 90.88235294117646
+Epoch  4  Training Loss= 0.023984167030367435  Training Accuracy= 92.3529411764706
+Epoch  5  Training Loss= 0.0019178580339420331  Training Accuracy= 92.94117647058823
+Epoch  6  Training Loss= 0.007036362491931336  Training Accuracy= 93.82352941176471
+Epoch  7  Training Loss= 0.010330855975780732  Training Accuracy= 94.11764705882354
+Epoch  8  Training Loss= 0.006727802123030626  Training Accuracy= 94.41176470588235
+Epoch  9  Training Loss= 0.012175678278041073  Training Accuracy= 94.70588235294117
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 360
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.025917352614152733  Training Accuracy= 89.72222222222223
+Epoch  1  Training Loss= 0.008229007940148332  Training Accuracy= 90.27777777777777
+Epoch  2  Training Loss= 0.0031001860409284997  Training Accuracy= 92.5
+Epoch  3  Training Loss= 0.020056261187154947  Training Accuracy= 92.77777777777777
+Epoch  4  Training Loss= 0.010252029634723487  Training Accuracy= 93.33333333333333
+Epoch  5  Training Loss= 0.0032290890895542925  Training Accuracy= 93.61111111111111
+Epoch  6  Training Loss= 0.019552850330685063  Training Accuracy= 93.61111111111111
+Epoch  7  Training Loss= 0.009893864954133509  Training Accuracy= 93.88888888888889
+Epoch  8  Training Loss= 0.021511454314838637  Training Accuracy= 94.16666666666667
+Epoch  9  Training Loss= 0.016861575948318896  Training Accuracy= 94.44444444444444
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Exception in thread Thread-32:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+Received 350
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.01241648163843663  Training Accuracy= 89.16666666666667
+Epoch  1  Training Loss= 0.017466654002928867  Training Accuracy= 92.5
+Epoch  2  Training Loss= 0.0013427287356223266  Training Accuracy= 93.88888888888889
+Epoch  3  Training Loss= 0.01145107699906517  Training Accuracy= 94.16666666666667
+Epoch  4  Training Loss= 0.020137375740752077  Training Accuracy= 95.0
+Epoch  5  Training Loss= 0.0007878971820874707  Training Accuracy= 95.55555555555556
+Epoch  6  Training Loss= 0.003795585305256385  Training Accuracy= 95.55555555555556
+Epoch  7  Training Loss= 0.012993592425149041  Training Accuracy= 95.55555555555556
+Epoch  8  Training Loss= 0.0008022909793899331  Training Accuracy= 96.11111111111111
+Epoch  9  Training Loss= 0.0015945385233390773  Training Accuracy= 96.11111111111111
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data
+Received 368
+Puling Model from parent
+Delay: 1.032320
+TOKEN PULL
+Performing training
+Epoch  0  Training Loss= 0.02298833226588592  Training Accuracy= 88.28947368421052
+Epoch  1  Training Loss= 0.035330976012602974  Training Accuracy= 91.05263157894737
+Epoch  2  Training Loss= 0.0027233166451009296  Training Accuracy= 91.84210526315789
+Epoch  3  Training Loss= 0.004057168131982173  Training Accuracy= 94.21052631578948
+Epoch  4  Training Loss= 0.0016561164115812346  Training Accuracy= 93.6842105263158
+Epoch  5  Training Loss= 0.02961308095051981  Training Accuracy= 94.21052631578948
+Epoch  6  Training Loss= 0.017970333987489477  Training Accuracy= 95.39473684210526
+Epoch  7  Training Loss= 0.016022796278613236  Training Accuracy= 95.65789473684211
+Epoch  8  Training Loss= 0.0012326269631101144  Training Accuracy= 96.3157894736842
+Epoch  9  Training Loss= 0.024647714645254646  Training Accuracy= 95.65789473684211
+Pushing model to parent
+Delay: 1.032320
+TOKEN PUSH
+Called Get data

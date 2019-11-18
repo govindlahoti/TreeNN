@@ -1,0 +1,109 @@
+## Bandwidth available to nodes
+bandwidths:
+  - src_id: 1
+    dest_id: 2
+    bandwidth: 1000000
+
+default_bandwidth: 1000000
+
+## Data streaming info
+default_window_interval: 25
+default_window_limit: 100
+default_kafka_server: "10.2.32.91:9092"
+default_test_directory: "/TreeNN/data/"
+
+## Docker specific fields
+default_cpus: 1
+default_memory: "400M"
+default_docker_image: "aniketshirke/distributedlearning:simulator"
+default_host_test_directory: "~/Simulator/mnist_data/test"
+default_policy: 0
+default_args: 0
+
+## Machine info
+machine:
+-   ip: 10.129.26.111
+    username: "ub"
+    password: "spark!sfun"
+
+## arguments to be passed to the learning model
+application_arguments:
+-   model             : 'MNIST'
+    input_size        : 784
+    output_size       : 10
+    num_hidden_layers : 3
+    hidden_layer_sizes: [20,10,10]
+    alpha             : 0.4
+    batch_size        : 20
+    epochs            : 10
+
+## Policy for sharing models
+policy:
+-   type: 'SimplePolicy'
+    args: 
+-   type: 'TimePolicy'
+    args:
+        push_interval: 10
+        pull_interval: 10
+-   type: 'WindowPolicy'
+    args:
+        push_count: 1
+        pull_count: 400
+-   type: 'AccuracyPolicy'
+    args:
+        threshold: 2
+
+nodes:
+-   id: 1 
+    port: 8040
+    machine: 0 
+    cpus: 2
+    memory: "1024M"
+-   id: 2
+    port: 8041
+    machine: 0
+    parent_id: 1
+-   id: 3
+    port: 8042
+    machine: 0
+    parent_id: 1
+-   id: 4
+    port: 8043
+    machine: 0
+    parent_id: 1
+-   id: 5
+    port: 8044
+    machine: 0
+    parent_id: 2
+    sensors: [40]
+-   id: 6
+    port: 8045
+    machine: 0
+    parent_id: 2
+    sensors: [41]
+-   id: 7
+    port: 8046
+    machine: 0
+    parent_id: 3
+    sensors: [42]
+-   id: 8
+    port: 8047
+    machine: 0
+    parent_id: 3
+    sensors: [43]
+-   id: 9
+    port: 8048
+    machine: 0
+    parent_id: 4
+    sensors: [44]
+-   id: 10
+    port: 8049
+    machine: 0
+    parent_id: 4
+    sensors: [45]
+
+cloud:
+    machine: 0
+    port: 9040
+    cpus: 12
+    memory: "4096M"

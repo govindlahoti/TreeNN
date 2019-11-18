@@ -9,7 +9,7 @@ default_bandwidth: 1000000
 ## Data streaming info
 default_window_interval: 20
 default_window_limit: 100
-default_kafka_server: "10.129.2.26:9092"
+default_kafka_server: "10.196.20.7:9092"
 default_test_directory: "/TreeNN/data/"
 
 ## Docker specific fields
@@ -57,14 +57,20 @@ nodes:
 -   id: 1 
     port: 8040
     machine: 0 
+    cpus: 2
+    memory: "1024M"
 -   id: 2
     port: 8041
     machine: 0
     parent_id: 1
+    cpus: 2
+    memory: "1024M"
 -   id: 3
     port: 8042
     machine: 0
     parent_id: 1
+    cpus: 2
+    memory: "1024M"
 -   id: 4
     port: 8043
     machine: 0
@@ -89,5 +95,5 @@ nodes:
 cloud:
     machine: 0
     port: 9040
-    cpus: 2
-    memory: "500M" 
+    cpus: 6
+    memory: "4096M" 

@@ -25,6 +25,8 @@ TRIGGER_CONTAINER_COMMAND = "docker run -it \
 --detach \
 %s"
 
+TRIGGER_KAFKA_SCRIPT = "./%s %f %s"
+
 NOEXCHANGE_POLICY = {'type': 'NoExchangePolicy', 'args': {}}
 
 ### constants for Logging and Reporting

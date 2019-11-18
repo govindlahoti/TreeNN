@@ -1,0 +1,10 @@
+python3 mnist_sensor.py --sensor-id 30 --source ~/Simulator/mnist_data/train/bigunbiased-0.csv -d $1 -k $2 & 
+python3 mnist_sensor.py --sensor-id 31 --source ~/Simulator/mnist_data/train/bigunbiased-1.csv -d $1 -k $2 & 
+python3 mnist_sensor.py --sensor-id 32 --source ~/Simulator/mnist_data/train/bigunbiased-2.csv -d $1 -k $2 & 
+python3 mnist_sensor.py --sensor-id 33 --source ~/Simulator/mnist_data/train/bigunbiased-3.csv -d $1 -k $2 & 
+python3 mnist_sensor.py --sensor-id 34 --source ~/Simulator/mnist_data/train/bigunbiased-4.csv -d $1 -k $2 & 
+python3 mnist_sensor.py --sensor-id 35 --source ~/Simulator/mnist_data/train/bigunbiased-5.csv -d $1 -k $2 & 
+python3 mnist_sensor.py --sensor-id 36 --source ~/Simulator/mnist_data/train/bigunbiased-6.csv -d $1 -k $2 & 
+python3 mnist_sensor.py --sensor-id 37 --source ~/Simulator/mnist_data/train/bigunbiased-7.csv -d $1 -k $2 & 
+python3 mnist_sensor.py --sensor-id 38 --source ~/Simulator/mnist_data/train/bigunbiased-8.csv -d $1 -k $2 & 
+python3 mnist_sensor.py --sensor-id 39 --source ~/Simulator/mnist_data/train/bigunbiased-9.csv -d $1 -k $2 & 

@@ -8,6 +8,7 @@ Run this as:
 """
 
 import sys
+import signal
 import argparse
 import threading
 
@@ -31,6 +32,9 @@ def remote_shutdown():
 	Cannot shut down the RPC server from the current thread
 	Hence we need to create a separate thread to shut it down
 	"""
+	global args
+	if args.trigger_kafka == 1:
+		os.system("./utility/kill_sensors.sh")
 	t = threading.Thread(target=shutdown_thread)
 	t.start()
 
@@ -48,6 +52,13 @@ def log_report(log):
 		if len(nodes) == 0:
 			remote_shutdown()
 
+	if log[TYPE] == TRAINING:
+		global start_condition
+		start_condition -= 1
+
+	if log[TYPE] == QUERY:	# Querying for condition to start training
+		return (start_condition == 0)
+
 def start_server(own_address,e):
 	"""
 	Start XML RPC server on the Master machine
@@ -61,7 +72,7 @@ def start_server(own_address,e):
 		
 		globals()["server_status"] = 1
 		e.set()
-		print(GREENSTR%"RPC server started at http://%s:%d"%own_address)
+		print("\n" + GREENSTR%"RPC server started at http://%s:%d"%own_address)
 		
 		server.serve_forever()
 	except:
@@ -81,9 +92,9 @@ if __name__ == '__main__':
 	parser.add_argument("-n","--expname", type=str, help="Experiment name", required=True)
 	parser.add_argument("-f","--config", type=str, help="Path to network config yaml file", required=True )
 	parser.add_argument("-d","--docker", type=int, help="Boolean indicating to run in container mode",
-								default=1, choices=[1,0])
+								default=1, choices=[1, 0])
 	parser.add_argument("-t","--trigger", type=int, help="Boolean indicating to trigger scripts (for debugging purposes)", 
-								default=1, choices=[1,0])
+								default=1, choices=[1, 0])
 	parser.add_argument("-l","--log", type=int, help="Boolean indicating to generate log", 
 								default=1, choices=[1,0])
 	parser.add_argument("-c","--cloud", type=int, help="Boolean to run simultaneous simulation of Cloud",
@@ -92,9 +103,10 @@ if __name__ == '__main__':
 								default=get_ip())
 	parser.add_argument("-p","--port", type=int, help="Port on which the Master RPC server should run",
 								default=MASTER_RPC_SERVER_PORT)
-	parser.add_argument("-s","--thread", type=int, help="Maintain a thread for each slave while triggering (for debugging purposes)",
-								default=0, choices=[1,0])
+	parser.add_argument("-k","--trigger_kafka", type=int, help="Boolean whether to trigger kafka script on master machine (Ease of use)",
+								default=0, choices=[1, 0])
 
+	global args
 	args = parser.parse_args()
 
 	own_address = (args.ip,args.port)
@@ -113,7 +125,10 @@ if __name__ == '__main__':
 
 	if args.trigger==1:
 		try:
-			data, machine_info = read_yaml(own_address,args.config,args.docker,args.cloud)
+			data, machine_info, kafka_info = read_yaml(own_address,args.config,args.docker,args.cloud)
+			# start_condition is being used as a semaphore, 
+			# which allows workers & cloud to start training only after hierarchy is ready
+			start_condition = sum(list(map(lambda x : data[x]['is_worker'] == True, data))) + args.cloud
 		except Exception as e:
 			print(REDSTR%"Error in parsing configuration")
 			print(e)
@@ -125,7 +140,14 @@ if __name__ == '__main__':
 			globals()["log_file"] = open(dir_path+'/%s.log'%args.expname,'a')
 
 		nodes = set(list(data.keys()))
-		if args.thread == 1:
-			trigger_threaded_slaves(args.expname, data, machine_info, args.docker)
-		else:
-			trigger_slaves(args.expname, data, machine_info, args.docker)
+		trigger_slaves(args.expname, data, machine_info, args.docker)
+
+		if args.trigger_kafka == 1:
+			if kafka_info == None:
+				print(REDSTR%"Please add parameters related to kafka in config file")
+			else:
+				script_name = kafka_info['script_name']
+				directory = kafka_info['directory']
+				interarrival_time = kafka_info['interarrival_time']
+				address = kafka_info['address']
+				start_kafka_production(script_name, directory, interarrival_time, address)

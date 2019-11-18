@@ -1,0 +1,79 @@
+## Bandwidth available to nodes
+bandwidths:
+  - src_id: 1
+    dest_id: 2
+    bandwidth: 1000000
+
+default_bandwidth: 1000000
+
+## Data streaming info
+default_window_interval: 20
+default_window_limit: 40
+default_kafka_server: "10.196.20.7:9092"
+default_test_directory: "/TreeNN/data/"
+
+## Docker specific fields
+default_cpus: 1
+default_memory: "400M"
+default_docker_image: "aniketshirke/distributedlearning:simulator"
+default_host_test_directory: "~/Simulator/mnist_data/test"
+default_policy: 0
+default_args: 0
+
+## Machine info
+machine:
+-   ip: 10.129.26.111
+    username: "ub"
+    password: "spark!sfun"
+
+## arguments to be passed to the learning model
+application_arguments:
+-   model             : 'MNIST'
+    input_size        : 784
+    output_size       : 10
+    num_hidden_layers : 1
+    hidden_layer_sizes: [12]
+    alpha             : 0.02
+    batch_size        : 5
+    epochs            : 15
+
+## Policy for sharing models
+policy:
+-   type: 'SimplePolicy'
+    args:
+-   type: 'WaitPolicy'
+    args:
+        wait_interval: 120 
+-   type: 'TimePolicy'
+    args:
+        push_interval: 120
+        pull_interval: 120
+-   type: 'WindowPolicy'
+    args:
+        push_count: 1
+        pull_count: 400
+-   type: 'AccuracyPolicy'
+    args:
+        threshold: 3
+
+nodes:
+-   id: 1 
+    port: 8000 
+    machine: 0 
+-   id: 2
+    port: 8006
+    machine: 0
+    parent_id: 1
+    sensors: [0]
+-   id: 3
+    port: 8007
+    machine: 0
+    parent_id: 1
+    sensors: [1]
+
+
+cloud:
+    machine: 0
+    port: 9000
+    cpus: 2
+    memory: "500M"

@@ -1,0 +1,1210 @@
+Initiating node 2
+Merging gradients from queue 0
+10.129.26.111 - - [06/Oct/2019 19:57:59] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 19:58:00] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 19:58:02] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 19:58:02] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 19:58:14] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 19:58:14] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 19:58:20] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 19:58:21] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 1
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 2
+10.129.26.111 - - [06/Oct/2019 19:58:39] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 19:58:40] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 19:58:46] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 19:58:46] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 19:58:55] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 19:58:55] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+10.129.26.111 - - [06/Oct/2019 19:59:03] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 19:59:03] "POST /RPC2 HTTP/1.1" 200 -
+TOKEN PUSH
+Merging gradients from queue 3
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 4
+10.129.26.111 - - [06/Oct/2019 19:59:20] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 19:59:20] "POST /RPC2 HTTP/1.1" 200 -
+Exception in thread Thread-5:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+10.129.26.111 - - [06/Oct/2019 19:59:28] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 19:59:28] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 19:59:38] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 19:59:38] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 19:59:44] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 19:59:45] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 5
+Delay: 1.032320
+TOKEN PULL
+Exception in thread Thread-7:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+Delay: 1.032320
+Idle
+TOKEN PUSH
+Merging gradients from queue 6
+10.129.26.111 - - [06/Oct/2019 20:00:03] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:00:03] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:00:10] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:00:10] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:00:22] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:00:22] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:00:25] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:00:27] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 7
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 8
+10.129.26.111 - - [06/Oct/2019 20:00:48] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:00:48] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:00:52] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:00:52] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:01:05] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:01:05] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:01:09] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:01:10] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 9
+Delay: 1.032320
+TOKEN PULL
+Exception in thread Thread-11:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 10
+10.129.26.111 - - [06/Oct/2019 20:01:31] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:01:31] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:01:35] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:01:35] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:01:54] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:01:54] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:01:58] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:01:59] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 11
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 12
+10.129.26.111 - - [06/Oct/2019 20:02:20] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:02:20] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:02:24] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:02:24] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:02:39] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:02:39] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+10.129.26.111 - - [06/Oct/2019 20:02:41] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:02:41] "POST /RPC2 HTTP/1.1" 200 -
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 13
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 14
+10.129.26.111 - - [06/Oct/2019 20:03:05] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:03:05] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:03:06] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:03:06] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:03:22] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:03:22] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:03:24] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:03:25] "POST /RPC2 HTTP/1.1" 200 -
+[Errno 110] Connection timed out
+Request-sent
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 15
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 16
+10.129.26.111 - - [06/Oct/2019 20:03:47] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:03:47] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:03:50] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:03:50] "POST /RPC2 HTTP/1.1" 200 -
+Exception in thread Thread-12:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+10.129.26.111 - - [06/Oct/2019 20:04:05] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:04:05] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:04:07] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:04:08] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 17
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 18
+Idle
+Request-sent
+10.129.26.111 - - [06/Oct/2019 20:04:31] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:04:31] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:04:34] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:04:34] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:04:50] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:04:50] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:04:54] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:04:55] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 19
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 20
+10.129.26.111 - - [06/Oct/2019 20:05:15] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:05:16] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:05:21] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:05:21] "POST /RPC2 HTTP/1.1" 200 -
+Exception in thread Thread-19:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+Idle
+10.129.26.111 - - [06/Oct/2019 20:05:35] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:05:35] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:05:42] "POST /RPC2 HTTP/1.1" 200 -
+Exception in thread Thread-23:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+Exception in thread Thread-22:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1167, in single_request
+    resp = http_conn.getresponse()
+  File "/usr/local/lib/python3.6/http/client.py", line 1321, in getresponse
+    raise ResponseNotReady(self.__state)
+http.client.ResponseNotReady: Idle
+
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:05:43] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 21
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 22
+10.129.26.111 - - [06/Oct/2019 20:06:01] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:06:01] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:06:08] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:06:08] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:06:22] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:06:22] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+10.129.26.111 - - [06/Oct/2019 20:06:30] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:06:30] "POST /RPC2 HTTP/1.1" 200 -
+TOKEN PUSH
+Merging gradients from queue 23
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 24
+Exception in thread Thread-25:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+10.129.26.111 - - [06/Oct/2019 20:06:48] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:06:48] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:06:56] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:06:56] "POST /RPC2 HTTP/1.1" 200 -
+[Errno 110] Connection timed out
+10.129.26.111 - - [06/Oct/2019 20:07:06] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:07:06] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+Exception in thread Thread-21:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+TOKEN PUSH
+Merging gradients from queue 25
+10.129.26.111 - - [06/Oct/2019 20:07:16] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:07:16] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 26
+10.129.26.111 - - [06/Oct/2019 20:07:32] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:07:32] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:07:42] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:07:42] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:07:50] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:07:50] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+10.129.26.111 - - [06/Oct/2019 20:07:58] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:07:58] "POST /RPC2 HTTP/1.1" 200 -
+TOKEN PUSH
+Merging gradients from queue 27
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 28
+10.129.26.111 - - [06/Oct/2019 20:08:15] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:08:15] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:08:23] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:08:23] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:08:35] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:08:35] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+10.129.26.111 - - [06/Oct/2019 20:08:43] "POST /RPC2 HTTP/1.1" 200 -
+TOKEN PUSH
+Merging gradients from queue 29
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:08:43] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Exception in thread Thread-31:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+Idle
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 30
+10.129.26.111 - - [06/Oct/2019 20:09:00] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:09:00] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:09:08] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:09:08] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:09:23] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:09:23] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:09:29] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:09:30] "POST /RPC2 HTTP/1.1" 200 -
+TOKEN PUSH
+Merging gradients from queue 31
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 32
+10.129.26.111 - - [06/Oct/2019 20:09:48] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:09:48] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:09:55] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:09:55] "POST /RPC2 HTTP/1.1" 200 -
+[Errno 110] Connection timed out
+Request-sent
+Idle
+10.129.26.111 - - [06/Oct/2019 20:10:06] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:10:06] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 33
+Exception in thread Thread-29:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+10.129.26.111 - - [06/Oct/2019 20:10:17] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:10:17] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 34
+10.129.26.111 - - [06/Oct/2019 20:10:31] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:10:31] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:10:43] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:10:43] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:10:49] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:10:50] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 35
+[Errno 110] Connection timed out
+Request-sent
+10.129.26.111 - - [06/Oct/2019 20:11:04] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:11:04] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+Exception in thread Thread-37:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 36
+10.129.26.111 - - [06/Oct/2019 20:11:15] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:11:15] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:11:29] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:11:30] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:11:30] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:11:30] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 37
+10.129.26.111 - - [06/Oct/2019 20:11:47] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:11:47] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Exception in thread Thread-39:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+Idle
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 38
+10.129.26.111 - - [06/Oct/2019 20:11:55] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:11:55] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:12:12] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:12:12] "POST /RPC2 HTTP/1.1" 200 -
+[Errno 110] Connection timed out
+10.129.26.111 - - [06/Oct/2019 20:12:15] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:12:16] "POST /RPC2 HTTP/1.1" 200 -
+Request-sent
+Delay: 1.032320
+Request-sent
+TOKEN PULL
+Request-sent
+[Errno 110] Connection timed out
+Request-sent
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 39
+10.129.26.111 - - [06/Oct/2019 20:12:29] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:12:29] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Exception in thread Thread-41:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 40
+Exception in thread Thread-42:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+10.129.26.111 - - [06/Oct/2019 20:12:41] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:12:41] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:12:54] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:12:54] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:12:59] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:12:59] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 41
+10.129.26.111 - - [06/Oct/2019 20:13:12] "POST /RPC2 HTTP/1.1" 200 -
+[Errno 110] Connection timed out
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:13:12] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+Request-sent
+TOKEN PULL
+Request-sent
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 42
+Exception in thread Thread-44:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+10.129.26.111 - - [06/Oct/2019 20:13:24] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:13:24] "POST /RPC2 HTTP/1.1" 200 -
+Idle
+Request-sent
+10.129.26.111 - - [06/Oct/2019 20:13:38] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:13:38] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:13:44] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:13:44] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 43
+10.129.26.111 - - [06/Oct/2019 20:13:58] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:13:58] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 44
+10.129.26.111 - - [06/Oct/2019 20:14:09] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:14:09] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:14:23] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:14:23] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:14:27] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:14:27] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 45
+Exception in thread Thread-47:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1170, in single_request
+    return self.parse_response(resp)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1342, in parse_response
+    return u.close()
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 656, in close
+    raise Fault(**self._stack[0])
+xmlrpc.client.Fault: <Fault 1: "<class 'ValueError'>:not enough values to unpack (expected 2, got 1)">
+
+10.129.26.111 - - [06/Oct/2019 20:14:43] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:14:43] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:14:52] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:14:52] "POST /RPC2 HTTP/1.1" 200 -
+TOKEN PUSH
+Merging gradients from queue 46
+10.129.26.111 - - [06/Oct/2019 20:15:09] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:15:09] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:15:15] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:15:15] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 47
+10.129.26.111 - - [06/Oct/2019 20:15:28] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:15:28] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 48
+10.129.26.111 - - [06/Oct/2019 20:15:40] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:15:40] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:15:54] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:15:54] "POST /RPC2 HTTP/1.1" 200 -
+[Errno 110] Connection timed out
+10.129.26.111 - - [06/Oct/2019 20:16:00] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:16:00] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Request-sent
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 49
+[Errno 110] Connection timed out
+Request-sent
+Exception in thread Thread-51:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+10.129.26.111 - - [06/Oct/2019 20:16:18] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:16:18] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+10.129.26.111 - - [06/Oct/2019 20:16:25] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:16:25] "POST /RPC2 HTTP/1.1" 200 -
+TOKEN PUSH
+Merging gradients from queue 50
+10.129.26.111 - - [06/Oct/2019 20:16:43] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:16:43] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:16:45] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:16:45] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 51
+10.129.26.111 - - [06/Oct/2019 20:17:02] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:17:02] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+10.129.26.111 - - [06/Oct/2019 20:17:10] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:17:10] "POST /RPC2 HTTP/1.1" 200 -
+TOKEN PUSH
+Merging gradients from queue 52
+10.129.26.111 - - [06/Oct/2019 20:17:27] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:17:28] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:17:32] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:17:32] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 53
+10.129.26.111 - - [06/Oct/2019 20:17:48] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:17:48] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 54
+10.129.26.111 - - [06/Oct/2019 20:17:58] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:17:58] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:18:13] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:18:13] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:18:16] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:18:16] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+[Errno 110] Connection timed out
+Request-sent
+TOKEN PUSH
+Merging gradients from queue 55
+Idle
+10.129.26.111 - - [06/Oct/2019 20:18:35] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:18:35] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:18:42] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:18:42] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 56
+Exception in thread Thread-57:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+Idle
+10.129.26.111 - - [06/Oct/2019 20:19:01] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:19:01] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:19:02] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:19:03] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 57
+10.129.26.111 - - [06/Oct/2019 20:19:22] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:19:22] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:19:28] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:19:28] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 58
+10.129.26.111 - - [06/Oct/2019 20:19:46] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:19:46] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:19:48] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:19:48] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 59
+10.129.26.111 - - [06/Oct/2019 20:20:08] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:20:08] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:20:12] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:20:12] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 60
+10.129.26.111 - - [06/Oct/2019 20:20:33] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:20:33] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+10.129.26.111 - - [06/Oct/2019 20:20:34] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:20:34] "POST /RPC2 HTTP/1.1" 200 -
+TOKEN PULL
+Exception in thread Thread-62:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/TreeNN/node/node.py", line 245, in send_message
+    self.get_node(receiver_id).receive_message(self.id, msg)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1112, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1452, in __request
+    verbose=self.__verbose
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1154, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1166, in single_request
+    http_conn = self.send_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.6/xmlrpc/client.py", line 1272, in send_request
+    connection.putrequest("POST", handler, skip_accept_encoding=True)
+  File "/usr/local/lib/python3.6/http/client.py", line 1108, in putrequest
+    raise CannotSendRequest(self.__state)
+http.client.CannotSendRequest: Request-sent
+
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 61
+10.129.26.111 - - [06/Oct/2019 20:20:56] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:20:57] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:20:59] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:20:59] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 62
+10.129.26.111 - - [06/Oct/2019 20:21:20] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:21:20] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+10.129.26.111 - - [06/Oct/2019 20:21:22] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:21:23] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 63
+10.129.26.111 - - [06/Oct/2019 20:21:45] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:21:45] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:21:46] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:21:47] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 64
+10.129.26.111 - - [06/Oct/2019 20:22:01] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:22:01] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 65
+10.129.26.111 - - [06/Oct/2019 20:22:12] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 6
+10.129.26.111 - - [06/Oct/2019 20:22:12] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:22:27] "POST /RPC2 HTTP/1.1" 200 -
+Received Pull request from child 5
+10.129.26.111 - - [06/Oct/2019 20:22:27] "POST /RPC2 HTTP/1.1" 200 -
+10.129.26.111 - - [06/Oct/2019 20:22:35] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 6
+10.129.26.111 - - [06/Oct/2019 20:22:35] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 66
+10.129.26.111 - - [06/Oct/2019 20:22:48] "POST /RPC2 HTTP/1.1" 200 -
+Received Push request from child 5
+10.129.26.111 - - [06/Oct/2019 20:22:48] "POST /RPC2 HTTP/1.1" 200 -
+Delay: 1.032320
+TOKEN PULL
+Delay: 1.032320
+TOKEN PUSH
+Merging gradients from queue 67

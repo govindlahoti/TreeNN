@@ -31,11 +31,11 @@ application_arguments:
 -   model             : 'MNIST'
     input_size        : 784
     output_size       : 10
-    num_hidden_layers : 3
-    hidden_layer_sizes: [20,10,10]
-    alpha             : 0.4
+    num_hidden_layers : 2
+    hidden_layer_sizes: [32,16]
+    alpha             : 0.2
     batch_size        : 20
-    epochs            : 10
+    epochs            : 20
 
 ## Policy for sharing models
 policy:
@@ -43,8 +43,8 @@ policy:
     args: 
 -   type: 'TimePolicy'
     args:
-        push_interval: 10
-        pull_interval: 10
+        push_interval: 120
+        pull_interval: 120
 -   type: 'WindowPolicy'
     args:
         push_count: 1

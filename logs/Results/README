@@ -1,0 +1,101 @@
+Best viewed in Sublime Text
+
+NOTES:	
+	Window interval for synchronous learning is the time t=interval between initiation of learnings by the root node
+	The reason why Parameter Servers (PS) are not able to keep up is because of collection of metrics (accuracy) after each push. If we reduce this count of collection (as is the case with real learning) then they are not the bottlenecks.
+	Avg. window size mentioned in visual.html is wrong and needs to be corrected
+	Sometimes, due to file read error the accuracy of cloud is shown as zero. It should just be ignored in the graphs.
+	Latency is not defined for synchronous learning.
+	"Cost Analysis.jpg" contains a rough comparison of 1-10 vs 1-2-10 communication costs when root is in USA and half of the workers are in each US & IN according to AWS network costs
+
+
+1-a-b	in folder name means as follows:
+	means 1 root node, a parameter servers in middle and b workers
+	syn means synchronous
+	asyn means asynchronous
+	q means 
+		queue is building (in asynchronous)
+		effective window interval is more than mentioned because of either more time taken by workers or PS(in synchronous)
+
+Noteworthy parameters and results for each experiment are as follows: For results open visual.html in corresponding folder.
+
+20191107-1819-1-2-10-syn
+	Data Rate			:	0.25
+	Window interval 	:	60
+	CPU @ worker 		:	0.8
+	CPU @ PS 			:	2
+	CPU @ cloud			:	10
+	Notes				:	Window Size of 240 is being maintained (No overwhelming)
+
+20191107-1858-1-10-syn
+	Data Rate			:	0.25
+	Window interval 	:	60
+	CPU @ worker 		:	0.8
+	CPU @ PS 			:	2
+	CPU @ cloud			:	10
+	Notes				:	Window Size of 240 is being maintained (No overwhelming)
+							
+							Worker Timeline:	26s(busy) + 34s (just collecting data)
+							4s(pulling model) + 6s(pre accuracy calculation (only if needed)) + 6s(training) +
+							6s (post accuracy calculation (must)) + 4s(pushing model)
+
+							Cloud Timeline:	3s for each accuracy calculation * (10 (acc. lag of 10 workers)+ 1 (acc. lag of PS) + 1(acc. of itself after training)) = 36s
+							20s for training
+
+20191108-0046-1-10-asyn
+	Data Rate			:	0.25
+	Window interval 	:	60
+	CPU @ worker 		:	0.8
+	CPU @ PS 			:	2
+	CPU @ cloud			:	10
+	Notes				:	Cloud is not able to keep up. No queue building at root
+
+20191108-0135-1-10-asyn
+	Data Rate			:	0.25
+	Window interval 	:	60
+	CPU @ worker 		:	0.6
+	CPU @ PS 			:	2
+	CPU @ cloud			:	NO CLOUD
+	Notes				:	No queue buildup
+
+20191108-0240-1-2-10-asyn
+	Data Rate			:	0.25
+	Window interval 	:	60
+	CPU @ worker 		:	0.6
+	CPU @ PS 			:	2
+	CPU @ cloud			:	NO CLOUD
+	Notes				:	No queue buildup
+
+20191108-0314-1-2-10-asyn-q
+	Data Rate			:	0.25
+	Window interval 	:	60
+	CPU @ worker 		:	0.6
+	CPU @ PS 			:	1
+	CPU @ cloud			:	NO CLOUD
+	Notes				:	Queue buildup @ PS & root
+
+20191108-1147-1-2-4-syn-q
+	Data Rate			:	0.25
+	Window interval 	:	60
+	CPU @ worker 		:	0.8
+	CPU @ PS 			:	2
+	CPU @ cloud			:	10
+	Notes				:	Workers are overwhelmed. Cloud is good. 
+							Window size @ workers is going from 840 -> 720 -> 840 (where expected is 240*3=720)
+
+20191108-1213-1-4-syn
+	Data Rate			:	0.25
+	Window interval 	:	60
+	CPU @ worker 		:	0.8
+	CPU @ PS 			:	2
+	CPU @ cloud			:	10
+	Notes				:	All is well as opposed to last one
+
+20191108-1423-1-2-4-syn-time
+	Data Rate			:	0.25
+	Window interval 	:	60
+	CPU @ worker 		:	0.8
+	CPU @ PS 			:	2
+	CPU @ cloud			:	10
+	Notes				:	Level based timing policy. 
+							Workers are pulling and pushing everytime but PS are doing it alternatively.

@@ -5,10 +5,9 @@ Contains utility functions for master.py
 3. get_ip(): Get own IP address
 """
 
+import os
 import yaml
 import json
-import threading
-
 from time import sleep
 from paramiko import client
 from collections import OrderedDict
@@ -20,38 +19,28 @@ class ssh:
 	Class for ssh into the slave machine and trigger nodes
 	"""
 
-	def __init__(self, address, username, password, is_thread):
+	def __init__(self, address, username, password):
 
 		print("Connecting to %s@%s ..."%(username,address))
 		try:
 			self.client = client.SSHClient()
 			self.client.set_missing_host_key_policy(client.AutoAddPolicy())
 			self.client.connect(address, username=username, password=password, look_for_keys=False)
-			self.is_thread = is_thread
 			print("Connected to %s@%s"%(username,address))
 		except Exception as e:
 			self.client = None
 			print("Authentication failed: %s"%e)
  	
-	def trigger_server_node(self, node_id, node_data, kafka_server):
-		command = None
+	def trigger_node(self, node_id, node_data, kafka_server):
 
-		if self.is_thread:
-			command = TRIGGER_THREAD_NODE_COMMAND%(node_id, node_data, kafka_server)
-		else:
-			command = TRIGGER_NODE_COMMAND%(node_id, node_data, kafka_server)
-		self.run_command(command, node_id)
+		command = TRIGGER_NODE_COMMAND%(node_id, node_data, kafka_server)
+		self.run_command(command)
 
 	def trigger_container(self, expname, node_id, node_data, port, kafka_server, cpus, memory, test_directory, host_test_directory, docker_image):
-		command = None
-
-		if self.is_thread:
-			command = TRIGGER_THREAD_CONTAINER_COMMAND%(memory, cpus, node_id, node_data, kafka_server, port, port, host_test_directory, test_directory, expname, node_id, docker_image)	
-		else:
-			command = TRIGGER_CONTAINER_COMMAND%(memory, cpus, node_id, node_data, kafka_server, port, port, host_test_directory, test_directory, expname, node_id, docker_image)
-		self.run_command(command, node_id)
+		command = TRIGGER_CONTAINER_COMMAND%(memory, cpus, node_id, node_data, kafka_server, port, port, host_test_directory, test_directory, expname, node_id, docker_image)
+		self.run_command(command)
 		
-	def run_command(self, command, node_id=None):
+	def run_command(self, command):
 
 		if(self.client):	
 			print("Running command: %s"%command)
@@ -61,7 +50,7 @@ class ssh:
 					alldata = stdout.channel.recv(1024)
 					prevdata = b"1"
 					while prevdata:
-						print(node_id, prevdata.decode("utf-8"))
+						print(prevdata)
 						prevdata = stdout.channel.recv(1024)
 						alldata += prevdata
 		else:
@@ -84,6 +73,7 @@ def read_yaml(master_address,config_file,is_docker, include_cloud):
 		data = OrderedDict()
 		machine_info = raw_data['machine']
 		application_arguments = raw_data['application_arguments']
+		learning = raw_data['learning']
 		policy = raw_data['policy']
 
 		default_bandwidth = raw_data['default_bandwidth']
@@ -95,6 +85,7 @@ def read_yaml(master_address,config_file,is_docker, include_cloud):
 			data[x['id']]['is_worker'] = True
 			data[x['id']]['ip'] = machine_info[x['machine']]['ip']
 			data[x['id']]['own_address'] = (data[x['id']]['ip'], x['port'])
+			data[x['id']]['children'] = []
 
 			default_fields = ['window_interval','window_limit','kafka_server','test_directory','policy','args']
 			if is_docker==1:
@@ -103,9 +94,12 @@ def read_yaml(master_address,config_file,is_docker, include_cloud):
 			for field in default_fields:
 				data[x['id']][field] = raw_data['default_'+field] if field not in x else x[field]
 			
+			data[x['id']]['learning'] = learning
 			data[x['id']]['policy'] = policy[data[x['id']]['policy']]
 			if data[x['id']]['policy']['args'] is None:
-				data[x['id']]['policy']['args'] = {} 
+				data[x['id']]['policy']['args'] = {}
+			if type(data[x['id']]['policy']['args']) == list:
+				data[x['id']]['policy']['args'] = dict(enumerate(data[x['id']]['policy']['args']))
 			data[x['id']]['cloud_exists'] = False 
 
 		for x in raw_data['nodes']:
@@ -115,9 +109,22 @@ def read_yaml(master_address,config_file,is_docker, include_cloud):
 			if 'parent_id' in x:
 				data[x['id']]['parent_address'] = 'http://%s:%d'%(data[x['parent_id']]['ip'], data[x['parent_id']]['port'])
 				data[x['parent_id']]['is_worker'] = False				
+				data[x['parent_id']]['children'].append(x['id'])
 			else:
 				data[x['id']]['parent_id'] = -1
 				data[x['id']]['parent_address'] = None
+
+		### Determining level of a node in the hierarchy
+		for x in raw_data['nodes']:
+			level = 0
+			y = x
+			while (y['parent_id'] != -1):
+				y = data[y['parent_id']]
+				level += 1
+			data[x['id']]['level'] = level
+
+		# for x in data:
+		# 	print(x, data[x]['level'], data[x]['policy'])
 
 		### Obtain the network bandwidth information
 		for x in data:
@@ -146,6 +153,7 @@ def read_yaml(master_address,config_file,is_docker, include_cloud):
 			for field in default_fields:
 				data[-1][field] = raw_data['default_'+field] if field not in data[-1] else data[-1][field]
 
+			data[-1]['learning'] = learning
 			data[-1]['policy'] = NOEXCHANGE_POLICY
 			data[-1]['master_address'] = 'http://%s:%d'%master_address
 			data[-1]['application_arguments'] = application_arguments[data[-1]['args']]
@@ -164,28 +172,9 @@ def read_yaml(master_address,config_file,is_docker, include_cloud):
                                         sensors.extend(data[x]['sensors'])
 			data[-1]['cloud_exists'] = False
 			data[-1]['sensors'] = sensors
-			
-	return data,machine_info
-
-def _trigger_docker(expname, data, machine, node_id, is_thread=False):
-	connection = ssh(machine['ip'],machine['username'],machine['password'], is_thread)
-	connection.trigger_container(expname,
-								 node_id, 
-								 json.dumps(data).replace('\"','\''), 
-								 data['port'],
-								 data['kafka_server'],
-								 data['cpus'],
-								 data['memory'],
-								 data['test_directory'],
-								 data['host_test_directory'],
-								 data['docker_image'])
-	return connection
-
-def _trigger_server(data, machine, node_id, is_thread=False):
-	connection = ssh(machine['ip'],machine['username'],machine['password'], is_thread)
-	connection.trigger_server_node(node_id, json.dumps(data).replace('\"','\''), data['kafka_server'])
-	return connection
-
+		kafka_info = raw_data.get('kafka')
+	return data,machine_info,kafka_info
+	
 def trigger_slaves(expname, data, machine_info, use_docker):
 	"""
 	Log into machine and trigger node
@@ -197,32 +186,28 @@ def trigger_slaves(expname, data, machine_info, use_docker):
 		machine = machine_info[data[node_id]['machine']]
 		if use_docker == 1:
 			print(CONTAINERSTR%node_id)
-			connection = _trigger_docker(expname, data[node_id], machine, node_id)
-			
+			connection = ssh(machine['ip'],machine['username'],machine['password'])
+			connection.trigger_container(expname,
+										 node_id, 
+										 json.dumps(data[node_id]).replace('\"','\''), 
+										 data[node_id]['port'],
+										 data[node_id]['kafka_server'],
+										 data[node_id]['cpus'],
+										 data[node_id]['memory'],
+										 data[node_id]['test_directory'],
+										 data[node_id]['host_test_directory'],
+										 data[node_id]['docker_image'])
 		else:
 			print(NODESTR%node_id)
-			connection = _trigger_server(data[node_id], machine, node_id)
+			connection = ssh(machine['ip'],machine['username'],machine['password'])
+			connection.trigger_node(node_id, json.dumps(data[node_id]).replace('\"','\''), data[node_id]['kafka_server'])
 		connection.disconnect()
 		sleep(1)
 
-def trigger_threaded_slaves(expname, data, machine_info, use_docker):
-	"""
-	Log into machine and trigger node (handled by a separate thread)
-	"""
-
-	# Can do a group by to login into the machine once and trigger all the scripts
-	for node_id in data:
-		# Create a connection. Format: IP address, username, password
-		machine = machine_info[data[node_id]['machine']]
-		if use_docker == 1:
-			print(CONTAINERSTR%node_id)
-			t = threading.Thread(target=_trigger_docker,args=(expname, data[node_id], machine, node_id,True))
-			t.start()			
-		else:
-			print(NODESTR%node_id)
-			t = threading.Thread(target=_trigger_server,args=(data[node_id], machine, node_id, True))
-			t.start()
-		sleep(1)
+def start_kafka_production(kafka_script, directory, interarrival_time, address):
+	os.chdir(directory)
+	os.system("chmod +x %s"%(kafka_script))
+	os.system(TRIGGER_KAFKA_SCRIPT%(kafka_script, interarrival_time, address))
 
 def get_ip():
 	"""
