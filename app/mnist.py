@@ -2,13 +2,14 @@ import csv
 import random
 import threading
 import numpy as np
+import math
 
 from io import StringIO
 from copy import deepcopy
 
-from app.application import Application
+# from app.application import Application
 
-class MNIST(Application):
+class MNIST():
 
 	def __init__(self, **kwargs):
 		# Method to initialize a Neural Network Object
@@ -35,16 +36,24 @@ class MNIST(Application):
 		# Initializes the Neural Network Weights and Biases using a Normal Distribution with Mean 0 and Standard Deviation 1
 		# weights - a list of matrices correspoding to the weights in various layers of the network
 		# biases - corresponding list of biases for each layer
+		# cache - Adagrad related history (sum of square of gradients)
 		self.weights = []
 		self.biases = []
+		self.cache_weights = []
+		self.cache_biases = []
+		self.eps = 10**-8
 
 		for i in range(self.num_layers-1):
 			size = self.layer_sizes[i], self.layer_sizes[i+1]
 			self.biases.append(np.random.normal(0, 1, self.layer_sizes[i+1]))
 			self.weights.append(np.random.normal(0,1,size))
+			self.cache_biases.append(np.zeros(self.layer_sizes[i+1]))
+			self.cache_weights.append(np.zeros(size))
 
 		self.weights = np.asarray(self.weights)
 		self.biases = np.asarray(self.biases)
+		self.cache_weights = np.asarray(self.cache_weights)
+		self.cache_biases = np.asarray(self.cache_biases)
 
 		self._reset_acquired_weights_and_biases()
 		self.parent_update_lock = threading.Lock()
@@ -170,7 +179,13 @@ class MNIST(Application):
 		# Returns the validation accuracy evaluated over the current neural network model
 		
 		test_data = np.asarray(test_data)
-		rows, cols = test_data.shape
+		rows = None
+		cols = None
+		# TODO Handle exception in a better way
+		try:
+			rows, cols = test_data.shape
+		except Exception as e:
+			return 0.0
 		X = test_data[:, range(cols-1)]
 		Y = np.array(one_hot_encode_y(test_data[:, cols-1], 10))
 
@@ -212,15 +227,17 @@ class MNIST(Application):
 				current_del = activations[i-1] * (1 - activations[i-1]) * target_delta
 			else:
 				self.parent_update_lock.acquire()
-				self.biases[i-1] += self.alpha * np.sum(current_del,axis=0)
-				self.acquired_biases[i-1] -= self.alpha * np.sum(current_del,axis=0)
+				self.cache_biases[i-1] += np.sum(current_del,axis=0)**2
+				self.biases[i-1] += self.alpha * np.sum(current_del,axis=0)/(np.sqrt(self.cache_biases[i-1]) + self.eps)
+				self.acquired_biases[i-1] -= self.alpha * np.sum(current_del,axis=0)/(np.sqrt(self.cache_biases[i-1]) + self.eps)
 
 				delta_w = np.matmul(np.transpose(activations[i-1]),current_del)
 				target_delta = np.matmul(current_del,np.transpose(self.weights[i-1]))
 				current_del = activations[i-1] * (1 - activations[i-1]) * target_delta
 		
-				self.weights[i-1] += self.alpha * delta_w 
-				self.acquired_weights[i-1] -= self.alpha * delta_w
+				self.cache_weights[i-1] += delta_w**2
+				self.weights[i-1] += self.alpha * delta_w/(np.sqrt(self.cache_weights[i-1]) + self.eps) 
+				self.acquired_weights[i-1] -= self.alpha * delta_w/(np.sqrt(self.cache_weights[i-1]) + self.eps)
 				self.parent_update_lock.release()
 
 	@staticmethod
@@ -232,9 +249,21 @@ class MNIST(Application):
 		"""
 		Get test data from file. 
 		Using random-seeking in file to limit RAM usage
-		"""		
+		"""	
+		# TODO Check for errors while reading file(Most likely stripping reader before doing for rec should work)
 		test_file_handler.seek(0)
-		return [list(map(int,rec)) for rec in csv.reader(test_file_handler, delimiter=',')]
+		rec = None
+		result = []
+		try:
+			for rec in csv.reader(test_file_handler, delimiter=','):
+				try:
+					x = list(map(int, rec))
+					result.append(x)
+				except Exception as e:
+					return result
+			return result
+		except Exception as e:
+			return []
 
 def one_hot_encode_y(Y, nb_classes):
 	# Calculates one-hot encoding for a given list of labels
@@ -246,4 +275,3 @@ def sigmoid(x):
 	# Calculates the sigmoid function
 	X = np.copy(x)
 	return 1 / (1 + np.exp(-X))
-		

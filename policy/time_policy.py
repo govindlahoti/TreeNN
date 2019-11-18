@@ -11,8 +11,8 @@ class TimePolicy(Policy):
 
 	def __init__(self,**kwargs):
 		super().__init__()
-		self.pull_interval = kwargs['pull_interval']
-		self.push_interval = kwargs['push_interval']
+		self.pull_interval = kwargs[str(kwargs['level']-1)]['pull_interval'] if (kwargs['level'] != 0) else None
+		self.push_interval = kwargs[str(kwargs['level']-1)]['push_interval'] if (kwargs['level'] != 0) else None
 
 		self.pull_timestamp = 0
 		self.push_timestamp = 0

@@ -41,14 +41,17 @@ class Node(ABC):
 		Constructor. Fill in all the required information from the 
 		metadata passed to it. 
 		"""
-
+		print(data)
 		### Information about self and parent
 		self.id = data['id']
 		self.own_tuple_address = tuple(data['own_address'])
 		self.own_server_address = 'http://%s:%d'%self.own_tuple_address
-		self.policy = eval(data['policy']['type'])(**data['policy']['args'])
 		self.parent_id = data['parent_id']
 		self.parent_address = data['parent_address']
+		self.children = data.get('children')
+		self.level = data.get('level')
+		self.learning = data['learning']
+		self.policy = eval(data['policy']['type'])(**dict(data['policy']['args'], level=self.level))
 		
 		### Information about connections 
 		self.connection_objs = {}
@@ -60,6 +63,9 @@ class Node(ABC):
 		### Information about the test data and learning model
 		self.skiptestdata = 0
 		self.test_files = os.listdir(data['test_directory'])
+		# print(data['test_directory'])
+		# print("Test_Files", self.test_files)
+		# print(list(os.walk('.')))
 		self.test_file_handlers = { f:open(data['test_directory']+f, 'r') for f in self.test_files}
 
 		def get_filesize(test_file):
@@ -109,8 +115,8 @@ class Node(ABC):
 		Connect with master's RPC server for sending logs
 		"""
 
-		if self.master is not None :
-			return self.master
+		# if self.master is not None :
+		# 	return self.master
 
 		self.master = ServerProxy(self.master_address, allow_none=True)
 		return self.master
@@ -134,26 +140,26 @@ class Node(ABC):
 		And then return the connection object
 		"""
 		
-		if self.connection_objs[node_id] is not None:
-			return self.connection_objs[node_id]
+		# if self.connection_objs[node_id] is not None:
+		# 	return self.connection_objs[node_id]
 
-		elif not self.addresses[node_id]:
+		if not self.addresses[node_id]:
 			return None
 
-		else:
-			self.connection_objs[node_id] = ServerProxy(self.addresses[node_id], allow_none=True)
+		# else:
+		self.connection_objs[node_id] = ServerProxy(self.addresses[node_id], allow_none=True)
 
-			while True:
-				self.log(self.create_log(CONNECTION,'Waiting for node %s to connect'%(node_id)))
-				try:
-					self.connection_objs[node_id].receive_message(self.id, CONNECTED)
-					self.log(self.create_log(CONNECTION,'Connected with node %s'%(node_id)))
-					break
-				except Exception as e:
-					print(e)
-					time.sleep(1)
+		while True:
+			self.log(self.create_log(CONNECTION,'Waiting for node %s to connect'%(node_id)))
+			try:
+				self.connection_objs[node_id].receive_message(self.id, CONNECTED)
+				self.log(self.create_log(CONNECTION,'Connected with node %s'%(node_id)))
+				break
+			except Exception as e:
+				print(e)
+				time.sleep(1)
 
-			return self.connection_objs[node_id]		
+		return self.connection_objs[node_id]
 	
 	### Communication with parent
 	def push_to_parent(self, weight_gradient, bias_gradient):
@@ -174,6 +180,7 @@ class Node(ABC):
 
 		self.simulate_delay(data_size, self.parent_id)
 		self.get_parent().push_from_child(weight_gradient, bias_gradient, self.id, self.skiptestdata)
+		print("TOKEN PUSH")
 
 	def pull_from_parent(self):
 		"""
@@ -194,6 +201,7 @@ class Node(ABC):
 								}))
 		
 		self.simulate_delay(model_size, self.parent_id)
+		print("TOKEN PULL")
 		return model
 
 	def simulate_delay(self, data_size, node_id):
@@ -231,7 +239,9 @@ class Node(ABC):
 
 	###-------------------------- Meta functions -----------------------------------------
 	def ping_cloud(self, msg):
-		self.send_message(-1,msg)
+		print(time.time(), "Pinging Cloud")
+		t = threading.Thread(target = self.send_message, args=(-1,msg))
+		t.start()
 
 	def send_message(self, receiver_id, msg):
 		"""
@@ -239,7 +249,8 @@ class Node(ABC):
 		"""
 
 		self.log(self.create_log(CONNECTION,'Sending message to node %d, msg: %s'%(receiver_id, msg)))
-		self.get_node(receiver_id).receive_message(self.id, msg)
+		obj = self.get_node(receiver_id)
+		obj.receive_message(self.id, msg)
 
 	def get_parent_update_count(self):
 		"""
@@ -249,21 +260,28 @@ class Node(ABC):
 		self.log(self.create_log(CONNECTION,'Got parent update count: %d'%count)) 
 		return count
 
-	def get_accuracies(self, skipdata=0):
+	def get_accuracies(self, skipdata=0, cloud=True):
 		"""
 		Calculate accuracies for each sensor prediction
 		Returns a dictionary of accuracies
 		"""
 
-		if self.cloud_exists:
+		# TODO : Why is it needed? (For calculating accuracy lag)
+		if self.cloud_exists and cloud:
 			self.ping_cloud(str(skipdata))
 
 		accuracies = {}
 		
 		for test_file in self.test_files:
 			test_data = self.application.get_test_data(self.test_file_handlers[test_file], self.filesizes[test_file], skipdata)
-			accuracies[test_file.split('/')[-1]] = self.application.evaluate(test_data)
+			# Look into the case why test_data can be = []
+			if (test_data != []):
+				accuracies[test_file.split('/')[-1]] = self.application.evaluate(test_data)
+			else:
+				print("WARNING: ", self.cloud_exists, skipdata, test_file, "%s(%r)" % (self.__class__, self.__dict__))
+				accuracies[test_file.split('/')[-1]] = 0
 		
+		print("Accuracies\n", accuracies)
 		return accuracies
 		
 	def create_log(self, log_type, payload):
@@ -285,6 +303,7 @@ class Node(ABC):
 		Write 's' to the log file of this node
 		"""
 
-		self.get_master().log_report(s)
+		value = self.get_master().log_report(s)
 		self.log_file.write(s +'\n')
 		self.log_file.flush()
+		return value

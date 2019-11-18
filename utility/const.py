@@ -25,20 +25,6 @@ TRIGGER_CONTAINER_COMMAND = "docker run -it \
 --detach \
 %s"
 
-TRIGGER_THREAD_NODE_COMMAND = "cd Simulator/TreeNN && python3 slave.py -ni %d -nd \"%s\" -k %s"
-
-TRIGGER_THREAD_CONTAINER_COMMAND = "docker run -it \
--m %s --cpus=%f \
--e NODE_ID='%d' \
--e NODE_DATA=\"%s\" \
--e KAFKA_SERVER='%s' \
--p %d:%d \
---net=host \
---volume %s:%s \
---name %s_c%d \
---rm \
-%s"
-
 NOEXCHANGE_POLICY = {'type': 'NoExchangePolicy', 'args': {}}
 
 ### constants for Logging and Reporting
@@ -50,6 +36,8 @@ PROCESSED	= 'PROC'
 PULLED		= 'PULL'
 PUSHED		= 'PUSH'
 MERGED 		= 'MERG'
+TRAINING	= 'TRAI'
+QUERY		= 'QUER'
 
 NODE_ID	= 'node_id'
 TYPE 	= 'type'
@@ -74,6 +62,8 @@ NETWORK_COST = 'Network Cost'
 ### Communication protocol between Parameter server and Child node
 CONNECTED 	 = 'connected'
 DISCONNECTED = 'disconnected'
+START	= 'start'
+FINISH	= 'finish'
 
 REDSTR = "\033[01;31m%s\033[00m"
 GREENSTR = "\033[1;32m%s\033[00m"

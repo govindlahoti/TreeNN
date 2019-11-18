@@ -27,7 +27,13 @@ class Cloud(Node):
 		self.window_limit = data['window_limit']
 		self.window_count = 0
 
+		self.data_collection_start = None
+
+		# For proper cleaning up
 		self.active_connections = set()
+		self.dead_connections = set()
+
+		self.done = False
 
 		try:
 			self.consumer = KafkaConsumer(bootstrap_servers=str(kafka_server_address), api_version=(0,10))
@@ -72,22 +78,33 @@ class Cloud(Node):
 		"""
 		Runs for the number of epochs specifies in the configuration file.
 		For each epoch:
-		1. Pulls model from parent 
-		2. Runs training algorithm as defined by the application
-		3. Log Statistics for the epoch:
+		1. Runs training algorithm as defined by the application
+		2. Log Statistics for the epoch:
 			a. Epoch ID
 			b. Runtime
 			c. Process time
 			d. Memory usage recorded at the end of the epoch
 			e. Accuracy of the model
-		4. Push model to the parent
 		"""
 		
 		py = psutil.Process(os.getpid())
+		print(time.time(), ": Called RPC")
+		self.log(self.create_log(TRAINING, 'Ready to start training'))
+		condition = self.log(self.create_log(QUERY, 'Checking whether hierarchy is established'))
+		while (not condition):
+			time.sleep(1)
+			condition = self.log(self.create_log(QUERY, 'Checking whether hierarchy is established'))
+		
+		print(time.time(), ": Started Training")
+
+		self.data_collection_start = time.time()
 		while self.window_count < self.window_limit:
+			print(GREENSTR%str(str(time.strftime("%H:%M:%S", time.localtime(time.time()))) + " Processing window: " + str(self.window_count)))
 			epoch_start_cpu, epoch_start = time.process_time(), time.perf_counter()
-			data = self.application.transform_sensor_data(self.get_data())
-			
+			print("Called Get data")
+			data = self.application.transform_sensor_data(self.get_data(max(time.time(), self.data_collection_start + self.window_interval)))
+			self.data_collection_start = time.time()
+			print("Received " + str(len(data)))			
 			self.skiptestdata += len(data)
 
 			### Run training algorithm
@@ -110,23 +127,30 @@ class Cloud(Node):
 			})))
 
 			self.window_count += 1
+
+		while self.done != True:
+			print("Sleeping")
+			time.sleep(10)
+		self.cleanup()
 		
-	def get_data(self):
+	def get_data(self, last_timestamp):
 		"""
 		Consumes data points received from Kafka in batches
 		"""
 
-		start = time.time()
 		sensor_data_string, data_points = "", 0
 		for msg in self.consumer:
 			sensor_data_string += msg.value.decode('utf-8')
 			data_points+=1
 			
-			if (time.time() - start) > self.window_interval: break
+			if msg.timestamp//1000 > last_timestamp: break
 		
 		return sensor_data_string
 
 	def cleanup(self):
+
+		print("Completed the job. Exiting")
+		
 		### Stop Server Thread
 		client = ServerProxy(self.own_server_address)
 		client.remote_shutdown()
@@ -144,13 +168,16 @@ class Cloud(Node):
 
 		if msg == CONNECTED: 
 			self.active_connections.add(sender_id)
-		elif msg == DISCONNECTED: 
-			self.active_connections.remove(sender_id)
+		elif msg == DISCONNECTED:
+			print("Received DISCONNECTED message from ", sender_id)
+			self.dead_connections.add(sender_id)
+			print("Dead Connections %d/%d" % (len(self.dead_connections), len(self.active_connections)))
 
-			if len(self.active_connections) == 0:
-				self.cleanup()
+			if len(self.active_connections) == len(self.dead_connections):
+				self.done = True
 
 		else:
+			print(time.time(), "Receive Message (ping cloud) by ", sender_id)
 			## Test accuracy. Message = Skipdata
 			self.accuracies = self.get_accuracies(skipdata=int(msg))
 
@@ -159,4 +186,6 @@ class Cloud(Node):
 				ACCURACY		: self.accuracies,
 			})))
 
-		self.log(self.create_log(CONNECTION,'Received message from node id %d: %s'%(sender_id, msg)))   
+			print(time.time(), "Receive Message Finished (ping cloud) by ", sender_id)
+
+		self.log(self.create_log(CONNECTION,'Received message from node id %d: %s'%(sender_id, msg)))
