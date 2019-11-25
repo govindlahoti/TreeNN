@@ -1,7 +1,7 @@
 Best viewed in Sublime Text
 
-NOTES:	
-	Window interval for synchronous learning is the time t=interval between initiation of learnings by the root node
+NOTES:
+	Window interval for synchronous learning is the time interval between initiation of learnings by the root node
 	The reason why Parameter Servers (PS) are not able to keep up is because of collection of metrics (accuracy) after each push. If we reduce this count of collection (as is the case with real learning) then they are not the bottlenecks.
 	Avg. window size mentioned in visual.html is wrong and needs to be corrected
 	Sometimes, due to file read error the accuracy of cloud is shown as zero. It should just be ignored in the graphs.
@@ -15,7 +15,7 @@ NOTES:
 	asyn means asynchronous
 	q means 
 		queue is building (in asynchronous)
-		effective window interval is more than mentioned because of either more time taken by workers or PS(in synchronous)
+		effective window interval is more than mentioned because of either more time taken by workers or PS (in synchronous)
 
 Noteworthy parameters and results for each experiment are as follows: For results open visual.html in corresponding folder.
 

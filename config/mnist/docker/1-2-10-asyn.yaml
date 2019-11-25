@@ -13,9 +13,9 @@ default_kafka_server: "10.2.32.91:9092"
 default_test_directory: "/TreeNN/data/"
 
 ## Docker specific fields
-default_cpus: 0.6
+default_cpus: 0.8
 default_memory: "256M"
-default_docker_image: "aniketshirke/distributedlearning:simulator"
+default_docker_image: "mayanksinghal/distributedlearning:simulator"
 default_host_test_directory: "~/Simulator/mnist_data/test"
 default_policy: 0
 default_args: 0
@@ -28,7 +28,7 @@ machine:
 
 ## Kafka script automation 
 kafka:
-   script_name: "1-2-10.sh"
+   script_name: "10-worker.sh"
    directory: "sensor/mnist"
    interarrival_time: 0.25
    address: "10.2.32.91:9092"
@@ -69,7 +69,7 @@ nodes:
 -   id: 1 
     port: 8040
     machine: 0 
-    cpus: 1
+    cpus: 2
 -   id: 2
     port: 8041
     machine: 0
@@ -84,52 +84,52 @@ nodes:
     port: 8043
     machine: 0
     parent_id: 2
-    sensors: [30]
+    sensors: [0]
 -   id: 5
     port: 8044
     machine: 0
     parent_id: 2
-    sensors: [31]
+    sensors: [1]
 -   id: 6
     port: 8045
     machine: 0
     parent_id: 2
-    sensors: [32]
+    sensors: [2]
 -   id: 7
     port: 8046
     machine: 0
     parent_id: 2
-    sensors: [33]
+    sensors: [3]
 -   id: 8
     port: 8047
     machine: 0
     parent_id: 2
-    sensors: [34]
+    sensors: [4]
 -   id: 9
     port: 8048
     machine: 0
     parent_id: 3
-    sensors: [35]
+    sensors: [5]
 -   id: 10
     port: 8049
     machine: 0
     parent_id: 3
-    sensors: [36]
+    sensors: [6]
 -   id: 11
     port: 8050
     machine: 0
     parent_id: 3
-    sensors: [37]
+    sensors: [7]
 -   id: 12
     port: 8051
     machine: 0
     parent_id: 3
-    sensors: [38]
+    sensors: [8]
 -   id: 13
     port: 8052
     machine: 0
     parent_id: 3
-    sensors: [39]
+    sensors: [9]
 
 cloud:
     machine: 0

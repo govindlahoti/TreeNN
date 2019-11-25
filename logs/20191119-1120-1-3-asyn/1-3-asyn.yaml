@@ -13,7 +13,7 @@ default_kafka_server: "10.2.32.91:9092"
 default_test_directory: "/TreeNN/data/"
 
 ## Docker specific fields
-default_cpus: 0.6
+default_cpus: 0.8
 default_memory: "256M"
 default_docker_image: "mayanksinghal/distributedlearning:simulator"
 default_host_test_directory: "~/Simulator/mnist_data/test"
@@ -28,7 +28,7 @@ machine:
 
 ## Kafka script automation 
 kafka:
-   script_name: "10-worker.sh"
+   script_name: "3-worker.sh"
    directory: "sensor/mnist"
    interarrival_time: 0.25
    address: "10.2.32.91:9092"
@@ -45,7 +45,7 @@ application_arguments:
     epochs            : 10
 
 ## Learning Type
-learning: 'Asynchronous' # Othere choice is 'Synchronous'
+learning: 'Asynchronous' # Available choices are 'Synchronous' and 'Asynchronous'
 
 ## Policy for sharing models
 policy:
@@ -85,41 +85,6 @@ nodes:
     machine: 0
     parent_id: 1
     sensors: [2]
--   id: 5
-    port: 8044
-    machine: 0
-    parent_id: 1
-    sensors: [3]
--   id: 6
-    port: 8045
-    machine: 0
-    parent_id: 1
-    sensors: [4]
--   id: 7
-    port: 8046
-    machine: 0
-    parent_id: 1
-    sensors: [5]
--   id: 8
-    port: 8047
-    machine: 0
-    parent_id: 1
-    sensors: [6]
--   id: 9
-    port: 8048
-    machine: 0
-    parent_id: 1
-    sensors: [7]
--   id: 10
-    port: 8049
-    machine: 0
-    parent_id: 1
-    sensors: [8]
--   id: 11
-    port: 8050
-    machine: 0
-    parent_id: 1
-    sensors: [9]
 
 cloud:
     machine: 0
