@@ -278,10 +278,11 @@ class Node(ABC):
 			if (test_data != []):
 				accuracies[test_file.split('/')[-1]] = self.application.evaluate(test_data)
 			else:
-				print("WARNING: ", self.cloud_exists, skipdata, test_file, "%s(%r)" % (self.__class__, self.__dict__))
+				message = ("WARNING: ", self.cloud_exists, skipdata, test_file, "%s(%r)" % (self.__class__, self.__dict__))
+				print(REDSTR%(' '.join(str(s) for s in message)))
 				accuracies[test_file.split('/')[-1]] = 0
 		
-		print("Accuracies\n", accuracies)
+		# print("Accuracies\n", accuracies)
 		return accuracies
 		
 	def create_log(self, log_type, payload):

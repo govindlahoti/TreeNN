@@ -1,4 +1,4 @@
-FROM aniketshirke/distributedlearning:dependencies
+FROM mayanksinghal/distributedlearning:dependencies
 
 # Set the working directory to /TreeNN
 WORKDIR /TreeNN

@@ -1,9 +1,10 @@
-data/*_Data.csv
-*_Data.csv
-docs/
 config/
-trials/
+docs/
+evaluation/
 logs/
+sensor/
+trials/
+.git/
 *.tar
 *.zip
 *.tgz

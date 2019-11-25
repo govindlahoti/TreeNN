@@ -163,47 +163,80 @@ class ParameterServer(Node):
 
 	def asynchronous(self):
 		"""
-		This thread runs till child nodes stop simulating. 
 		In a single rollout:
-		1. Monitors the queue of acquired gradients from the child nodes. (get() method is a blocking function call)
-		2. Pulls model from parent
-		# 3. Logs the accuracy of the model before merging gradients
-		4. Modifies the node's model using those gradients.
-		5. Logs the accuracy of the model after merging gradients 
-		6. Pushes new model to the parent
+		Root Node:
+			1. Monitors the queue of acquired gradients from the child nodes. (get() method is a blocking function call)
+			2. Updates its model using those gradients
+			3. Logs the accuracy of the model after merging gradients 
+			
+		Other Nodes:
+			1.	while (pending pushes to parent < num_children)
+					1.	Monitors the queue of acquired gradients from the child nodes. (get() method is a blocking function call)
+					2.	if (pending pushes == 0)
+							1. Pulls model from parent
+					3.	Updates its model using those gradients
+					4.	if (gradient queue is empty)
+						1.	break
+			2.	Logs the accuracy of the model after merging gradients
+			3.	Pushes new model to the parent
+
 		"""
+		num_children = len(self.children)
 
-		# while len(self.active_children) > 0 or not self.child_ever_connected or not self.acquired_gradients_from_kids.empty():
 		while True:
-			# print(list(self.acquired_gradients_from_kids.queue))
-			print("Merging gradients from queue %s"% str(self.merge_id))
-			weight_gradient, bias_gradient, child_id, skipdata = self.acquired_gradients_from_kids.get()
-			
-			### Pull from parent after consulting the policy
-			if self.policy.pull_from_parent(self):
-				self.application.use_parent_model(*self.pull_from_parent())
+			### Root Node
+			if self.parent_id == -1:
+				print("Merging gradients from queue %s"% str(self.merge_id))
+				weight_gradient, bias_gradient, child_id, skipdata = self.acquired_gradients_from_kids.get()
 
-			### Merge gradients
-			self.application.apply_kid_gradient(weight_gradient, bias_gradient)
-			self.policy.updates += 1
-			
+				if self.policy.pull_from_parent(self):
+					self.application.use_parent_model(*self.pull_from_parent())
+
+				### Merge gradients
+				self.application.apply_kid_gradient(weight_gradient, bias_gradient)
+
+				self.log(self.create_log(MERGED, 'Merged gradients at node %d'%(self.id)))
+				self.policy.updates += 1
+				self.merge_id += 1
+
+			### Parameter Server except Root Node
+			else:
+				merge_count = 0
+				while (merge_count < num_children):
+					print("Merging gradients from queue %s"% str(self.merge_id))
+					weight_gradient, bias_gradient, child_id, skipdata = self.acquired_gradients_from_kids.get()
+
+					if merge_count == 0:
+						### Pull from parent after consulting the policy
+						if self.policy.pull_from_parent(self):
+							self.application.use_parent_model(*self.pull_from_parent())
+
+					### Merge gradients
+					self.application.apply_kid_gradient(weight_gradient, bias_gradient)
+		
+					self.log(self.create_log(MERGED, 'Merged gradients at node %d'%(self.id)))
+					self.policy.updates += 1
+					self.merge_id += 1
+					merge_count += 1
+
+					if self.acquired_gradients_from_kids.empty():
+						break
+
 			### Log post merge accuracy
-			self.log(self.create_log(MERGED, 'Merged gradients at node %d'%(self.id)))
-
-			self.accuracies = self.get_accuracies(skipdata=skipdata)
+			# self.accuracies = self.get_accuracies(skipdata=skipdata)
+			self.accuracies = self.get_accuracies()
 			self.log(self.create_log(STATISTIC, OrderedDict({
 					MERGE_ID			: self.merge_id,
 					CHILD_ID 			: child_id,
-					SKIP_TEST_DATA 		: skipdata,
+					# SKIP_TEST_DATA 		: skipdata,
 					POST_MERGE_ACCURACY	: self.accuracies
 				})))
-			self.skiptestdata = max(self.skiptestdata,skipdata)
+			# self.skiptestdata = max(self.skiptestdata,skipdata)
 
 			### Push Gradient to parent after consulting the policy
 			if self.policy.push_to_parent(self):
 				self.push_to_parent(*self.application.get_and_reset_acquired_gradients())
 
-			self.merge_id += 1
 		print("EXITED THE LOOP")
 		self.cleanup()
 
@@ -245,8 +278,6 @@ class ParameterServer(Node):
 		"""
 		RPC function. Add the gradients obtained from child node into the queue
 		"""
-		# Profiling
-		cur_time = time.time()
 		print("Received Push request from child %s"% str(child_id))
 		self.log(self.create_log(CONNECTION, 'Got gradients from child %d'%(child_id)))
 		
@@ -254,7 +285,6 @@ class ParameterServer(Node):
 		bias_gradient = [np.array(x)/(1.*len(self.active_children)) for x in bias_gradient]
 
 		self.acquired_gradients_from_kids.put([weight_gradient, bias_gradient, child_id, skipdata])
-		print("Time taken for push request", time.time()-cur_time)
 
 	def pull_from_child(self, child_id):
 		"""

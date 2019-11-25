@@ -6,10 +6,11 @@ import math
 
 from io import StringIO
 from copy import deepcopy
+from utility.const import *
 
-# from app.application import Application
+from app.application import Application
 
-class MNIST():
+class MNIST(Application):
 
 	def __init__(self, **kwargs):
 		# Method to initialize a Neural Network Object
@@ -185,6 +186,8 @@ class MNIST():
 		try:
 			rows, cols = test_data.shape
 		except Exception as e:
+			message = "Exception: " + str(e)
+			print(REDSTR%message)
 			return 0.0
 		X = test_data[:, range(cols-1)]
 		Y = np.array(one_hot_encode_y(test_data[:, cols-1], 10))

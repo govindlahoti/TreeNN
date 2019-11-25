@@ -53,7 +53,7 @@ class Worker(Node):
 		if self.learning == "Synchronous":
 			train_thread = threading.Thread(target = self.synchronous)
 		elif self.learning == "Asynchronous":
-			train_thread = threading.Thread(target = self.training_thread)
+			train_thread = threading.Thread(target = self.asynchronous)
 		server_thread = threading.Thread(target = self.run_rpc_server_thread)
 		
 		train_thread.start()
@@ -145,7 +145,7 @@ class Worker(Node):
 			self.start = False
 			time.sleep(1)
 
-	def training_thread(self):
+	def asynchronous(self):
 		"""
 		Runs for the number of epochs specifies in the configuration file.
 		For each epoch:
@@ -172,7 +172,7 @@ class Worker(Node):
 
 		self.data_collection_start = time.time()
 		while self.window_count < self.window_limit:
-			print(GREENSTR%str("Processing window: " + str(self.window_count)))
+			print(GREENSTR%str(str(time.strftime("%H:%M:%S", time.localtime(time.time()))) + " Processing window: " + str(self.window_count)))
 			epoch_start_cpu, epoch_start = time.process_time(), time.perf_counter()
 			print("Called Get data")
 			data = self.application.transform_sensor_data(self.get_data(max(time.time(), self.data_collection_start+self.window_interval)))

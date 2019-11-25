@@ -186,6 +186,6 @@ class Cloud(Node):
 				ACCURACY		: self.accuracies,
 			})))
 
-			print(time.time(), "Receive Message Finished (ping cloud) by ", sender_id)
+			# print(time.time(), "Receive Message Finished (ping cloud) by ", sender_id)
 
 		self.log(self.create_log(CONNECTION,'Received message from node id %d: %s'%(sender_id, msg)))

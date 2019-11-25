@@ -5,14 +5,20 @@ FROM python:3.6-slim
 # Set the working directory to /TreeNN
 WORKDIR /TreeNN
 
-# Copy the current directory contents into the container at /TreeNN
-COPY requirements.txt /TreeNN
-
 # Install gcc for psutil (for memory usage computation)
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get -y install gcc mono-mcs && \
     rm -rf /var/lib/apt/lists/*
 
+# Copy the current directory contents into the container at /TreeNN
+COPY docker/requirements.txt /TreeNN
+
 # Install any needed packages specified in requirements.txt
 RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
+
+# Create logs directory
+RUN mkdir logs
+
+# Remove requirements.txt
+RUN rm requirements.txt
