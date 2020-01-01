@@ -15,7 +15,7 @@ default_test_directory: "/TreeNN/data/"
 ## Docker specific fields
 default_cpus: 0.8
 default_memory: "400M"
-default_docker_image: "aniketshirke/distributedlearning:simulator"
+default_docker_image: "mayanksinghal/distributedlearning:simulator"
 default_host_test_directory: "~/Simulator/mnist_data/test"
 default_policy: 0
 default_args: 0
@@ -28,7 +28,7 @@ machine:
 
 ## Kafka script automation 
 kafka:
-   script_name: "1-2-4.sh"
+   script_name: "4-worker.sh"
    directory: "sensor/mnist"
    interarrival_time: 0.25
    address: "10.2.32.91:9092"
@@ -45,7 +45,7 @@ application_arguments:
     epochs            : 10
 
 ## Learning Type
-learning: 'Synchronous' # Othere choice is 'Asynchronous'
+learning: 'Synchronous' # Other choice is 'Asynchronous'
 
 ## Policy for sharing models
 policy:
